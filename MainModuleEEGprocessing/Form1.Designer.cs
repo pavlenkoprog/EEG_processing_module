@@ -29,9 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.StarButton = new System.Windows.Forms.ToolStripButton();
             this.ConnectionButton = new System.Windows.Forms.ToolStripButton();
@@ -43,21 +46,25 @@
             this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
             this.SplineButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.RawSignalButton = new System.Windows.Forms.ToolStripButton();
-            this.LogButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.StartButton = new System.Windows.Forms.ToolStripButton();
             this.PauseButton = new System.Windows.Forms.ToolStripButton();
             this.OffButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.RawSignalButton = new System.Windows.Forms.ToolStripButton();
+            this.toolChartFilter = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.LogButton = new System.Windows.Forms.ToolStripButton();
+            this.LogNumericOutButton = new System.Windows.Forms.ToolStripButton();
             this.InfoSplitContainer = new System.Windows.Forms.SplitContainer();
             this.ChartsSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.SpectChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.RawSignalChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.InfoGroupBox1 = new System.Windows.Forms.GroupBox();
             this.LogBox = new System.Windows.Forms.TextBox();
             this.InfoGroupBox2 = new System.Windows.Forms.GroupBox();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.DopInfoPanel = new System.Windows.Forms.Panel();
+            this.IterationTimeText = new System.Windows.Forms.Label();
+            this.IterationTimeСheckBox = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.InfoSplitContainer)).BeginInit();
@@ -65,10 +72,14 @@
             this.InfoSplitContainer.Panel2.SuspendLayout();
             this.InfoSplitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ChartsSplitContainer)).BeginInit();
+            this.ChartsSplitContainer.Panel1.SuspendLayout();
             this.ChartsSplitContainer.Panel2.SuspendLayout();
             this.ChartsSplitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SpectChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RawSignalChart)).BeginInit();
             this.InfoGroupBox1.SuspendLayout();
+            this.InfoGroupBox2.SuspendLayout();
+            this.DopInfoPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -105,6 +116,7 @@
             this.ConnectionButton.Name = "ConnectionButton";
             this.ConnectionButton.Size = new System.Drawing.Size(89, 22);
             this.ConnectionButton.Text = "Подключения";
+            this.ConnectionButton.Click += new System.EventHandler(this.ConnectionButton_Click);
             // 
             // OptionsButton
             // 
@@ -114,6 +126,7 @@
             this.OptionsButton.Name = "OptionsButton";
             this.OptionsButton.Size = new System.Drawing.Size(73, 22);
             this.OptionsButton.Text = "Насиройки";
+            this.OptionsButton.Click += new System.EventHandler(this.OptionsButton_Click);
             // 
             // toolStrip2
             // 
@@ -132,13 +145,13 @@
             this.OffButton,
             this.toolStripSeparator4,
             this.RawSignalButton,
-            this.toolStripButton1,
+            this.toolChartFilter,
             this.toolStripSeparator3,
             this.LogButton,
-            this.toolStripButton3});
+            this.LogNumericOutButton});
             this.toolStrip2.Location = new System.Drawing.Point(0, 25);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.toolStrip2.Size = new System.Drawing.Size(883, 27);
             this.toolStrip2.TabIndex = 5;
             this.toolStrip2.Text = "toolStrip2";
@@ -170,6 +183,8 @@
             // 
             // toolStripButton6
             // 
+            this.toolStripButton6.Checked = true;
+            this.toolStripButton6.CheckState = System.Windows.Forms.CheckState.Checked;
             this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton6.Enabled = false;
             this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
@@ -191,37 +206,6 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
-            // 
-            // RawSignalButton
-            // 
-            this.RawSignalButton.Checked = true;
-            this.RawSignalButton.CheckOnClick = true;
-            this.RawSignalButton.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RawSignalButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.RawSignalButton.Image = ((System.Drawing.Image)(resources.GetObject("RawSignalButton.Image")));
-            this.RawSignalButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.RawSignalButton.Name = "RawSignalButton";
-            this.RawSignalButton.Size = new System.Drawing.Size(24, 24);
-            this.RawSignalButton.Text = "Скрыть график сигнала энцефалографа";
-            this.RawSignalButton.Click += new System.EventHandler(this.RawSignalButton_Click);
-            // 
-            // LogButton
-            // 
-            this.LogButton.Checked = true;
-            this.LogButton.CheckOnClick = true;
-            this.LogButton.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.LogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LogButton.Image = ((System.Drawing.Image)(resources.GetObject("LogButton.Image")));
-            this.LogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.LogButton.Name = "LogButton";
-            this.LogButton.Size = new System.Drawing.Size(24, 24);
-            this.LogButton.Text = "Скрыть вывод текстовых данных";
-            this.LogButton.Click += new System.EventHandler(this.LogButton_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
             // 
             // StartButton
             // 
@@ -255,6 +239,68 @@
             this.OffButton.Text = "Остановка для повторного запуска";
             this.OffButton.Click += new System.EventHandler(this.OffButton_Click);
             // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 27);
+            // 
+            // RawSignalButton
+            // 
+            this.RawSignalButton.Checked = true;
+            this.RawSignalButton.CheckOnClick = true;
+            this.RawSignalButton.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.RawSignalButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.RawSignalButton.Image = ((System.Drawing.Image)(resources.GetObject("RawSignalButton.Image")));
+            this.RawSignalButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.RawSignalButton.Name = "RawSignalButton";
+            this.RawSignalButton.Size = new System.Drawing.Size(24, 24);
+            this.RawSignalButton.Text = "Скрыть график сигнала энцефалографа";
+            this.RawSignalButton.Click += new System.EventHandler(this.RawSignalButton_Click);
+            // 
+            // toolChartFilter
+            // 
+            this.toolChartFilter.Checked = true;
+            this.toolChartFilter.CheckOnClick = true;
+            this.toolChartFilter.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolChartFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolChartFilter.Image = ((System.Drawing.Image)(resources.GetObject("toolChartFilter.Image")));
+            this.toolChartFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolChartFilter.Name = "toolChartFilter";
+            this.toolChartFilter.Size = new System.Drawing.Size(24, 24);
+            this.toolChartFilter.Text = "Вывод данных после фильтрации";
+            this.toolChartFilter.Click += new System.EventHandler(this.toolChartFilter_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
+            // 
+            // LogButton
+            // 
+            this.LogButton.Checked = true;
+            this.LogButton.CheckOnClick = true;
+            this.LogButton.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.LogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.LogButton.Image = ((System.Drawing.Image)(resources.GetObject("LogButton.Image")));
+            this.LogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LogButton.Name = "LogButton";
+            this.LogButton.Size = new System.Drawing.Size(24, 24);
+            this.LogButton.Text = "Скрыть вывод текстовых данных";
+            this.LogButton.Click += new System.EventHandler(this.LogButton_Click);
+            // 
+            // LogNumericOutButton
+            // 
+            this.LogNumericOutButton.Checked = true;
+            this.LogNumericOutButton.CheckOnClick = true;
+            this.LogNumericOutButton.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.LogNumericOutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.LogNumericOutButton.Image = ((System.Drawing.Image)(resources.GetObject("LogNumericOutButton.Image")));
+            this.LogNumericOutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LogNumericOutButton.Name = "LogNumericOutButton";
+            this.LogNumericOutButton.Size = new System.Drawing.Size(24, 24);
+            this.LogNumericOutButton.Text = "Вывод полученных значений в окно логов";
+            this.LogNumericOutButton.Click += new System.EventHandler(this.LogNumericOutButton_Click);
+            // 
             // InfoSplitContainer
             // 
             this.InfoSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -276,7 +322,7 @@
             this.InfoSplitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoSplitContainer.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoSplitContainer.Size = new System.Drawing.Size(883, 398);
-            this.InfoSplitContainer.SplitterDistance = 649;
+            this.InfoSplitContainer.SplitterDistance = 648;
             this.InfoSplitContainer.TabIndex = 6;
             // 
             // ChartsSplitContainer
@@ -290,37 +336,70 @@
             // ChartsSplitContainer.Panel1
             // 
             this.ChartsSplitContainer.Panel1.BackColor = System.Drawing.SystemColors.Window;
+            this.ChartsSplitContainer.Panel1.Controls.Add(this.SpectChart);
             // 
             // ChartsSplitContainer.Panel2
             // 
             this.ChartsSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.Window;
             this.ChartsSplitContainer.Panel2.Controls.Add(this.RawSignalChart);
-            this.ChartsSplitContainer.Size = new System.Drawing.Size(642, 390);
-            this.ChartsSplitContainer.SplitterDistance = 300;
+            this.ChartsSplitContainer.Size = new System.Drawing.Size(641, 390);
+            this.ChartsSplitContainer.SplitterDistance = 298;
             this.ChartsSplitContainer.TabIndex = 0;
+            // 
+            // SpectChart
+            // 
+            this.SpectChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            chartArea5.AxisX.Interval = 10D;
+            chartArea5.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea5.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea5.AxisX.Maximum = 50D;
+            chartArea5.AxisX.Minimum = 0D;
+            chartArea5.AxisX.Title = "Частота";
+            chartArea5.AxisY.Title = "Амплитуда";
+            chartArea5.Name = "ChartArea1";
+            this.SpectChart.ChartAreas.Add(chartArea5);
+            legend5.Alignment = System.Drawing.StringAlignment.Center;
+            legend5.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend5.Name = "Legend1";
+            this.SpectChart.Legends.Add(legend5);
+            this.SpectChart.Location = new System.Drawing.Point(-15, 20);
+            this.SpectChart.Margin = new System.Windows.Forms.Padding(2);
+            this.SpectChart.Name = "SpectChart";
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series5.Legend = "Legend1";
+            series5.LegendText = "Значения спектра ЭЭГ";
+            series5.Name = "Series1";
+            this.SpectChart.Series.Add(series5);
+            this.SpectChart.Size = new System.Drawing.Size(311, 381);
+            this.SpectChart.TabIndex = 1;
+            this.SpectChart.Text = "Значения спектра ЭЭГ";
             // 
             // RawSignalChart
             // 
             this.RawSignalChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.AxisX.Maximum = 2500D;
-            chartArea2.Name = "ChartArea1";
-            this.RawSignalChart.ChartAreas.Add(chartArea2);
-            legend2.Alignment = System.Drawing.StringAlignment.Center;
-            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend2.Name = "Legend1";
-            this.RawSignalChart.Legends.Add(legend2);
+            chartArea6.AxisX.Maximum = 2500D;
+            chartArea6.AxisX.Minimum = 0D;
+            chartArea6.Name = "ChartArea1";
+            this.RawSignalChart.ChartAreas.Add(chartArea6);
+            legend6.Alignment = System.Drawing.StringAlignment.Center;
+            legend6.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend6.Name = "Legend1";
+            this.RawSignalChart.Legends.Add(legend6);
             this.RawSignalChart.Location = new System.Drawing.Point(2, 3);
-            this.RawSignalChart.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RawSignalChart.Margin = new System.Windows.Forms.Padding(2);
             this.RawSignalChart.Name = "RawSignalChart";
             this.RawSignalChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.LegendText = "ЭЭГ полученное по LSL";
-            series2.Name = "Series1";
-            this.RawSignalChart.Series.Add(series2);
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series6.Legend = "Legend1";
+            series6.LegendText = "ЭЭГ полученное по LSL";
+            series6.Name = "Series1";
+            this.RawSignalChart.Series.Add(series6);
             this.RawSignalChart.Size = new System.Drawing.Size(313, 381);
             this.RawSignalChart.TabIndex = 0;
             this.RawSignalChart.Text = "Полученные значения ЭЭГ";
@@ -362,6 +441,7 @@
             this.InfoGroupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.InfoGroupBox2.BackColor = System.Drawing.SystemColors.Window;
+            this.InfoGroupBox2.Controls.Add(this.DopInfoPanel);
             this.InfoGroupBox2.Location = new System.Drawing.Point(2, 218);
             this.InfoGroupBox2.Name = "InfoGroupBox2";
             this.InfoGroupBox2.Size = new System.Drawing.Size(220, 172);
@@ -369,32 +449,36 @@
             this.InfoGroupBox2.TabStop = false;
             this.InfoGroupBox2.Text = "Доп. инфо.";
             // 
-            // toolStripSeparator4
+            // DopInfoPanel
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 27);
+            this.DopInfoPanel.AutoScroll = true;
+            this.DopInfoPanel.Controls.Add(this.IterationTimeText);
+            this.DopInfoPanel.Location = new System.Drawing.Point(4, 19);
+            this.DopInfoPanel.Name = "DopInfoPanel";
+            this.DopInfoPanel.Size = new System.Drawing.Size(210, 147);
+            this.DopInfoPanel.TabIndex = 1;
             // 
-            // toolStripButton1
+            // IterationTimeText
             // 
-            this.toolStripButton1.Checked = true;
-            this.toolStripButton1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(24, 24);
-            this.toolStripButton1.Text = "Вывод данных после фильтрации";
+            this.IterationTimeText.AutoSize = true;
+            this.IterationTimeText.Location = new System.Drawing.Point(3, 9);
+            this.IterationTimeText.Name = "IterationTimeText";
+            this.IterationTimeText.Size = new System.Drawing.Size(35, 13);
+            this.IterationTimeText.TabIndex = 2;
+            this.IterationTimeText.Text = "label1";
             // 
-            // toolStripButton3
+            // IterationTimeСheckBox
             // 
-            this.toolStripButton3.Checked = true;
-            this.toolStripButton3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(24, 24);
-            this.toolStripButton3.Text = "toolStripButton3";
+            this.IterationTimeСheckBox.AutoSize = true;
+            this.IterationTimeСheckBox.Checked = true;
+            this.IterationTimeСheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.IterationTimeСheckBox.Location = new System.Drawing.Point(608, 36);
+            this.IterationTimeСheckBox.Name = "IterationTimeСheckBox";
+            this.IterationTimeСheckBox.Size = new System.Drawing.Size(126, 17);
+            this.IterationTimeСheckBox.TabIndex = 0;
+            this.IterationTimeСheckBox.Text = "Время на итерацию";
+            this.IterationTimeСheckBox.UseVisualStyleBackColor = true;
+            this.IterationTimeСheckBox.CheckedChanged += new System.EventHandler(this.IterationTimeСheckBox_CheckedChanged);
             // 
             // Form1
             // 
@@ -402,6 +486,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(883, 450);
             this.Controls.Add(this.InfoSplitContainer);
+            this.Controls.Add(this.IterationTimeСheckBox);
             this.Controls.Add(this.toolStrip2);
             this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -416,12 +501,17 @@
             this.InfoSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.InfoSplitContainer)).EndInit();
             this.InfoSplitContainer.ResumeLayout(false);
+            this.ChartsSplitContainer.Panel1.ResumeLayout(false);
             this.ChartsSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ChartsSplitContainer)).EndInit();
             this.ChartsSplitContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SpectChart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RawSignalChart)).EndInit();
             this.InfoGroupBox1.ResumeLayout(false);
             this.InfoGroupBox1.PerformLayout();
+            this.InfoGroupBox2.ResumeLayout(false);
+            this.DopInfoPanel.ResumeLayout(false);
+            this.DopInfoPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -453,8 +543,12 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.DataVisualization.Charting.Chart RawSignalChart;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripButton toolChartFilter;
+        private System.Windows.Forms.ToolStripButton LogNumericOutButton;
+        private System.Windows.Forms.DataVisualization.Charting.Chart SpectChart;
+        private System.Windows.Forms.CheckBox IterationTimeСheckBox;
+        private System.Windows.Forms.Panel DopInfoPanel;
+        private System.Windows.Forms.Label IterationTimeText;
     }
 }
 
