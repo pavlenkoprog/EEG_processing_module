@@ -521,8 +521,8 @@
 
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton StarButton;
-        private System.Windows.Forms.ToolStripButton OptionsButton;
-        private System.Windows.Forms.ToolStripButton ConnectionButton;
+        public System.Windows.Forms.ToolStripButton OptionsButton;
+        public System.Windows.Forms.ToolStripButton ConnectionButton;
         private System.Windows.Forms.ToolStrip toolStrip2;
         private System.Windows.Forms.ToolStripButton StartButton;
         private System.Windows.Forms.SplitContainer InfoSplitContainer;

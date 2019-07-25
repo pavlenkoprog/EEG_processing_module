@@ -19,6 +19,7 @@ namespace MainModuleEEGprocessing
 {
     public partial class Form1 : Form
     {
+
         Thread LSLreceiveThread;
         Thread LSLoutletThread;
         liblsl.StreamInlet inlet;
@@ -44,14 +45,28 @@ namespace MainModuleEEGprocessing
         //При нажатии кнопки подключения
         private void ConnectionButton_Click(object sender , EventArgs e)
         {
-
+            SettingsForm _SettingsForm = new SettingsForm ( this );
+            OptionsButonOn optbuton = new OptionsButonOn ( _SettingsForm.funData );
+            _SettingsForm.Show ( );
+            OptionsButton.Enabled = false;
+            ConnectionButton.Enabled = false;
         }
 
         //При нажатии кнопки настройки
         private void OptionsButton_Click(object sender , EventArgs e)
         {
-
+            SettingsForm _SettingsForm = new SettingsForm ( );
+            _SettingsForm.Show ( );
+            OptionsButton.Enabled = false;
+            ConnectionButton.Enabled = false;
         }
+
+        //Включение кнопок настройки
+        public delegate void OptionsButonOn();
+        //{
+        //    OptionsButton.Enabled = true;
+        //    ConnectionButton.Enabled = true;
+        //}
 
         //При нажатии кнопки старт
         private void StartButton_Click(object sender , EventArgs e)
@@ -76,7 +91,7 @@ namespace MainModuleEEGprocessing
         private void OffButton_Click(object sender , EventArgs e)
         {
             StartButton.Enabled = true;
-            PauseButton.Enabled = true;
+            PauseButton.Enabled = false;
             OffButton.Enabled = false;
 
             LSLreceiveThread.Abort ( );
@@ -112,6 +127,7 @@ namespace MainModuleEEGprocessing
             }
         }
 
+        //Вывод логов
         public void LogOutlet(string text)
         {
             LogBox.Invoke ( ( MethodInvoker ) delegate
@@ -226,7 +242,8 @@ namespace MainModuleEEGprocessing
         //Подготовка к запуску LSL
         [DllImport ( "liblsl32.dll" )]
         public static extern int SetForegroundWindow(IntPtr point);
-        
+        public string [ ] deadStreams = new string [ 20];
+        public int deadStreamsCounter = 0;
         public void StartLSL()
         {
             LogOutlet ( "Поиск потоков..." );
@@ -241,16 +258,56 @@ namespace MainModuleEEGprocessing
                 }
             }
             else
+            {
                 LogOutlet ( "Ошибка! Потоки не найдены" );
+                StartButton.Enabled = true;
+                PauseButton.Enabled = false;
+                OffButton.Enabled = false;
+
+                LSLreceiveThread.Abort ( );
+                LSLoutletThread.Abort ( );
+            }
 
             //Настройка параметров LSL
             //Ждет подключения
             liblsl.StreamInfo [ ] results = liblsl.resolve_stream ( "type" , "EEG" );
-            inlet = new liblsl.StreamInlet ( results [ 0 ] );
+
+            //Проверка потоков LSL
+            bool _normres=false;
+            foreach (var result in results)
+            {
+                if(!deadStreams.Contains(result.name ( )))
+                {
+                    inlet = new liblsl.StreamInlet ( result );
+                    _normres = true;
+                    break;
+                }
+            }
+            if(!_normres)
+            {
+                LogOutlet ( "Ошибка! все LSL каналы не рабочие ! " );
+                StartButton.Enabled = true;
+                PauseButton.Enabled = false;
+                OffButton.Enabled = false;
+
+                LSLreceiveThread.Abort ( );
+                LSLoutletThread.Abort ( );
+            }
+
+
+
+            //inlet = new liblsl.StreamInlet ( results [ 0 ] );
+            //inlet = new liblsl.StreamInlet ( results [ results.Length-1 ] );
 
             //Вывод информации о подкл. потоке
             LogOutlet ( "Подключен LSL поток с им. " + inlet.info ( ).name ( ) );
             LogOutlet ( "Доступно каналов: " + inlet.info ( ).channel_count ( ) );
+            if(inlet.info ( ).channel_count ( )==0)
+            {
+                deadStreams [ deadStreamsCounter ] = inlet.info ( ).name ( );
+                deadStreamsCounter++;
+            }
+            sample = new float [ inlet.info ( ).channel_count ( ) ];
         }
         #endregion
 
@@ -282,7 +339,6 @@ namespace MainModuleEEGprocessing
             Xe = G * ( val - Zp ) + Xp; // "фильтрованное" значение
             return ( Xe );
         }
-
         #endregion
 
         Complex [ ] EEGcomplex = new Complex [ 2048 ];
@@ -293,9 +349,27 @@ namespace MainModuleEEGprocessing
         int Xmax = 50;
         double T = 0;
         double t = 0;
-        
-        #region Первый раз заполняет масив данными
 
+        #region Проверка канала на наличие данных
+        int EmptyDataCounter =0;
+        public void DataAvailabilityCheck()
+        {
+            if (inlet.samples_available ( ) == 0)
+                EmptyDataCounter++;
+            else
+                EmptyDataCounter = 0;
+            if(EmptyDataCounter>=10)
+            {
+                LogOutlet ( "Ошибка! сбой потока" );
+                deadStreams [ deadStreamsCounter ] = inlet.info ( ).name ( );
+                deadStreamsCounter++;
+                EmptyDataCounter = 0;
+                StartLSL ( );
+            }
+        }
+        #endregion
+
+        #region Первый раз заполняет масив данными
         public void FirstFillMasiv(float[] sample)
         {
             //double T = 0;
@@ -304,7 +378,9 @@ namespace MainModuleEEGprocessing
             stopWatch_1.Start ( );
             for (int i = 0 ; i < N ; i++)
             {
-                inlet.pull_sample ( sample );
+                inlet.pull_sample ( sample,0.5 );
+                DataAvailabilityCheck ( );
+
                 EEGcomplex [ i ] = filter ( sample [ 0 ] );
 
                 //Переменная для вывода графика LSL
@@ -319,7 +395,6 @@ namespace MainModuleEEGprocessing
         #endregion
 
         #region Повторно заполняет масив данными
-
         public void FillMasiv(float [ ] sample)
         {
             //double T = 0;
@@ -333,7 +408,9 @@ namespace MainModuleEEGprocessing
             stopWatch_1.Start ( );
             for (int i = 0 ; i < N ; i++)
             {
-                inlet.pull_sample ( sample );
+                inlet.pull_sample ( sample , 0.5 );
+                DataAvailabilityCheck ( );
+
                 EEGcomplex [ i ] = filter ( sample [ 0 ] );
 
                 //Переменная для вывода графика LSL
@@ -355,26 +432,28 @@ namespace MainModuleEEGprocessing
         double [ ] frequencyOut;
         double [ ] amplitudeOut;
         Stopwatch stopWatch_2 = new Stopwatch ( );
+        float [ ] sample;
 
         #region Прием данных
         private void LSLreceive()
         {
             StartLSL ( );
 
-            float [ ] sample = new float [ inlet.info ( ).channel_count ( ) ];
-
             while (true)
             {
-                
+                //inlet.pull_sample ( sample );
 
-                inlet.pull_sample ( sample );
+                //if (LSLLogOutlet) LogOutlet ( sample [ 0 ].ToString ( ) );
 
-                if (LSLLogOutlet) LogOutlet ( sample [ 0 ].ToString ( ) );
+                //LogOutlet ( inlet.info().name() );
 
+                //Методы заполнения массивов
                 if (EEGcomplex [ 1 ].Real == 0)
                     FirstFillMasiv ( sample );
                 else
                     FillMasiv ( sample );
+
+                //Основные операции обработки
                 DataProcessing ( );
 
                 if (IterationTimeB)
@@ -517,6 +596,19 @@ namespace MainModuleEEGprocessing
         #endregion
 
         #endregion
+
+
+        public string ButonsEnabled
+        {
+            get
+            {
+                return ConnectionButton.Text;
+            }
+            set
+            {
+                ConnectionButton.Text = value;
+            }
+        }
 
     }
 }
