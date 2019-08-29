@@ -46,7 +46,6 @@ namespace MainModuleEEGprocessing
         private void ConnectionButton_Click(object sender , EventArgs e)
         {
             SettingsForm _SettingsForm = new SettingsForm ( this );
-            OptionsButonOn optbuton = new OptionsButonOn ( _SettingsForm.funData );
             _SettingsForm.Show ( );
             OptionsButton.Enabled = false;
             ConnectionButton.Enabled = false;
@@ -55,7 +54,7 @@ namespace MainModuleEEGprocessing
         //При нажатии кнопки настройки
         private void OptionsButton_Click(object sender , EventArgs e)
         {
-            SettingsForm _SettingsForm = new SettingsForm ( );
+            SettingsForm _SettingsForm = new SettingsForm ( this );
             _SettingsForm.Show ( );
             OptionsButton.Enabled = false;
             ConnectionButton.Enabled = false;
@@ -212,7 +211,8 @@ namespace MainModuleEEGprocessing
         #region Вывод графика Спектра
         public void SpectOutlet(double lastSpect)
         {
-            int i1 = 0;
+            int CHARTCOUNTER = 0;
+            int CHARTMAX = 2500;
             double prev = 0;
             while (true)
             {
@@ -220,12 +220,12 @@ namespace MainModuleEEGprocessing
                 //Выводит данные из lsl в график Вх. данных
                 if (lastSpect != prev)
                 {
-                    //prev = lastLSLin;
-                    i1++;
+                    prev = lastLSLin;
+                    CHARTCOUNTER++;
                     SpectChart.Invoke ( ( MethodInvoker ) delegate {
                         SpectChart.Series [ 0 ].Points.AddY ( lastLSLin );
-                        if (i1 >= 2500)
-                        { SpectChart.Series [ 0 ].Points.Clear ( ); i1 = 0; }
+                        if (CHARTCOUNTER >= CHARTMAX)
+                        { SpectChart.Series [ 0 ].Points.Clear ( ); CHARTCOUNTER = 0; }
                     } );
 
                 }
@@ -237,6 +237,63 @@ namespace MainModuleEEGprocessing
         #endregion
 
         #region Логический код
+
+        #region Main метод и прием данных
+        Complex [ ] EEGcomplex = new Complex [ 2048 ];
+        Complex [ ] EEGcomplex2 = new Complex [ 2048 ];
+
+        int N = 256;
+        int n = 128;
+        int Xmax = 50;
+        double T = 0;
+        double t = 0;
+
+        double [ ] frequencyOut;
+        double [ ] amplitudeOut;
+        Stopwatch stopWatch_2 = new Stopwatch ( );
+        float [ ] sample;
+
+        private void LSLreceive()
+        {
+            StartLSL ( );
+
+            while (true)
+            {
+                //inlet.pull_sample ( sample );
+
+                //if (LSLLogOutlet) LogOutlet ( sample [ 0 ].ToString ( ) );
+
+                //LogOutlet ( inlet.info().name() );
+
+                //Методы заполнения массивов
+                if (EEGcomplex [ 1 ].Real == 0)
+                    FirstFillMasiv ( sample );
+                else
+                    FillMasiv ( sample );
+
+                //Основные операции обработки
+                DataProcessing ( );
+
+                if (IterationTimeB)
+                {
+                    //Label IterationTimeText = new Label ( );
+
+                    //IterationTimeText.Location = new Point ( 10 , DopInfoPanel.Controls.Count * 20 );
+                    //DopInfoPanel.Invoke ( ( MethodInvoker ) delegate {
+                    //    DopInfoPanel.Controls.Add ( IterationTimeText );
+                    //    IterationTimeText.Text = "Время на итерацию: " + stopWatch_2.ElapsedMilliseconds + " мс";
+                    //} );
+
+                    if (IterationTimeText.InvokeRequired)
+                        IterationTimeText.Invoke ( new Action ( () => IterationTimeText.Text = "Время на итерацию: " + stopWatch_2.ElapsedMilliseconds + " мс" ) );
+                    else IterationTimeСheckBox.Text = "Время на итерацию: " + stopWatch_2.ElapsedMilliseconds + " мс";
+                    Application.DoEvents( );
+                }
+
+                stopWatch_2.Restart();
+            }
+        }
+        #endregion
 
         #region Поиск и подключение LSL
         //Подготовка к запуску LSL
@@ -283,6 +340,7 @@ namespace MainModuleEEGprocessing
                     break;
                 }
             }
+
             if(!_normres)
             {
                 LogOutlet ( "Ошибка! все LSL каналы не рабочие ! " );
@@ -294,11 +352,6 @@ namespace MainModuleEEGprocessing
                 LSLoutletThread.Abort ( );
             }
 
-
-
-            //inlet = new liblsl.StreamInlet ( results [ 0 ] );
-            //inlet = new liblsl.StreamInlet ( results [ results.Length-1 ] );
-
             //Вывод информации о подкл. потоке
             LogOutlet ( "Подключен LSL поток с им. " + inlet.info ( ).name ( ) );
             LogOutlet ( "Доступно каналов: " + inlet.info ( ).channel_count ( ) );
@@ -308,6 +361,26 @@ namespace MainModuleEEGprocessing
                 deadStreamsCounter++;
             }
             sample = new float [ inlet.info ( ).channel_count ( ) ];
+        }
+        #endregion
+
+        #region Подключение к LSL по имени потока
+        public void ConnectionByName(string StreamName)
+        {
+            liblsl.StreamInfo [ ] allStreams = liblsl.resolve_stream ( "type" , 1 , 0.5 );
+            bool _normres = false;
+            foreach (var result in allStreams)
+            {
+                if (result.name ( ).Equals ( StreamName ))
+                {
+                    inlet = new liblsl.StreamInlet ( result );
+                    _normres = true;
+                    LogOutlet ( "Подключено к потоку: " + result.name ( ) );
+                    break;
+                }
+            }
+            if(!_normres)
+                LogOutlet("Ошибка! Поток не обнаружен");
         }
         #endregion
 
@@ -340,15 +413,6 @@ namespace MainModuleEEGprocessing
             return ( Xe );
         }
         #endregion
-
-        Complex [ ] EEGcomplex = new Complex [ 2048 ];
-        Complex [ ] EEGcomplex2 = new Complex [ 2048 ];
-        
-        int N = 256;
-        int n = 128;
-        int Xmax = 50;
-        double T = 0;
-        double t = 0;
 
         #region Проверка канала на наличие данных
         int EmptyDataCounter =0;
@@ -429,61 +493,11 @@ namespace MainModuleEEGprocessing
 
         #endregion
 
-        double [ ] frequencyOut;
-        double [ ] amplitudeOut;
-        Stopwatch stopWatch_2 = new Stopwatch ( );
-        float [ ] sample;
-
-        #region Прием данных
-        private void LSLreceive()
-        {
-            StartLSL ( );
-
-            while (true)
-            {
-                //inlet.pull_sample ( sample );
-
-                //if (LSLLogOutlet) LogOutlet ( sample [ 0 ].ToString ( ) );
-
-                //LogOutlet ( inlet.info().name() );
-
-                //Методы заполнения массивов
-                if (EEGcomplex [ 1 ].Real == 0)
-                    FirstFillMasiv ( sample );
-                else
-                    FillMasiv ( sample );
-
-                //Основные операции обработки
-                DataProcessing ( );
-
-                if (IterationTimeB)
-                {
-                    //Label IterationTimeText = new Label ( );
-
-                    //IterationTimeText.Location = new Point ( 10 , DopInfoPanel.Controls.Count * 20 );
-                    //DopInfoPanel.Invoke ( ( MethodInvoker ) delegate {
-                    //    DopInfoPanel.Controls.Add ( IterationTimeText );
-                    //    IterationTimeText.Text = "Время на итерацию: " + stopWatch_2.ElapsedMilliseconds + " мс";
-                    //} );
-
-                    if (IterationTimeText.InvokeRequired)
-                        IterationTimeText.Invoke ( new Action ( () => IterationTimeText.Text = "Время на итерацию: " + stopWatch_2.ElapsedMilliseconds + " мс" ) );
-                    else IterationTimeСheckBox.Text = "Время на итерацию: " + stopWatch_2.ElapsedMilliseconds + " мс";
-                    Application.DoEvents( );
-                }
-
-                stopWatch_2.Restart();
-            }
-        }
-        #endregion
-
+        #region Быстрое преобразование Фурье (БПФ)
         int spectrumoutN = 0;
         double MuSum = 0;
         double CompareSum = 0;
         double SpectCon = 0;
-
-        #region Быстрое преобразование Фурье (БПФ)
-
         /// <summary>
         /// Вычисление поворачивающего модуля e^(-i*2*PI*k/N)
         /// </summary>
@@ -596,19 +610,5 @@ namespace MainModuleEEGprocessing
         #endregion
 
         #endregion
-
-
-        public string ButonsEnabled
-        {
-            get
-            {
-                return ConnectionButton.Text;
-            }
-            set
-            {
-                ConnectionButton.Text = value;
-            }
-        }
-
     }
 }
