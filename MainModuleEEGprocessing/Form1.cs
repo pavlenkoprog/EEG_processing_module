@@ -19,7 +19,7 @@ namespace MainModuleEEGprocessing
 {
     public partial class Form1 : Form
     {
-
+        //AutoResetEvent ThreadReset = new AutoResetEvent ( false );
         Thread LSLreceiveThread;
         Thread LSLoutletThread;
         liblsl.StreamInlet inlet;
@@ -70,31 +70,57 @@ namespace MainModuleEEGprocessing
         //При нажатии кнопки старт
         private void StartButton_Click(object sender , EventArgs e)
         {
-            StartButton.Enabled = false;
-            PauseButton.Enabled = true;
-            OffButton.Enabled = true;
-
-            LSLreceiveThread.Start ( );
-            LSLoutletThread.Start ( );
+            if(!LSLreceiveThread.IsAlive)
+            {
+                StartButton.Enabled = false;
+                PauseButton.Enabled = true;
+                OffButton.Enabled = true;
+                LSLreceiveThread = new Thread ( LSLreceive );
+                LSLreceiveThread.Start ( );
+            }
+            if (!LSLoutletThread.IsAlive)
+            {
+                LSLoutletThread = new Thread ( LSLoutlet );
+                LSLoutletThread.Start ( );
+            }
         }
 
         //При нажатии кнопки пауза
         private void PauseButton_Click(object sender , EventArgs e)
         {
-            StartButton.Enabled = true;
-            PauseButton.Enabled = false;
-            OffButton.Enabled = true;
+            if (LSLreceiveThread.IsAlive)
+            {
+                StartButton.Enabled = true;
+                PauseButton.Enabled = false;
+                OffButton.Enabled = true;
+
+                LSLreceiveThread.Abort ( );
+                LSLreceiveThread.Join ( );
+            }
+            if (LSLoutletThread.IsAlive)
+            {
+                LSLoutletThread.Abort ( );
+                LSLoutletThread.Join ( );
+            }
         }
 
         //При нажатии кнопки Выкл
         private void OffButton_Click(object sender , EventArgs e)
         {
-            StartButton.Enabled = true;
-            PauseButton.Enabled = false;
-            OffButton.Enabled = false;
+            if (LSLreceiveThread.IsAlive)
+            {
+                StartButton.Enabled = true;
+                PauseButton.Enabled = false;
+                OffButton.Enabled = false;
 
-            LSLreceiveThread.Abort ( );
-            LSLoutletThread.Abort ( );
+                LSLreceiveThread.Abort ( );
+                LSLreceiveThread.Join ( );
+            }
+            if (LSLoutletThread.IsAlive)
+            {
+                LSLoutletThread.Abort ( );
+                LSLoutletThread.Join ( );
+            }
         }
 
         //Элементы управления отвечающие за вкл/откл окон
@@ -119,9 +145,19 @@ namespace MainModuleEEGprocessing
             {
             case true:
             ChartsSplitContainer.Panel2Collapsed = false;
+            if (!LSLoutletThread.IsAlive)
+            {
+                LSLoutletThread = new Thread ( LSLoutlet );
+                LSLoutletThread.Start ( );
+            }
             break;
             case false:
-            ChartsSplitContainer.Panel2Collapsed = true;
+            ChartsSplitContainer.Panel2Collapsed = true;            
+            if (LSLoutletThread.IsAlive)
+            {
+                LSLoutletThread.Abort ( );
+                LSLoutletThread.Join ( );
+            }
             break;
             }
         }
@@ -167,33 +203,58 @@ namespace MainModuleEEGprocessing
 
         #region Вывод графика LSL
 
+        public void NewLSLoutlet()
+        {
+            int counter1 = 0;
+            double [ ] RawSignalMass = new double [ 2500 ];
+            while (true)
+            {
+                RawSignalMass [ counter1 ] = lastLSLin;
+                RawSignalChart.Invoke ( ( MethodInvoker ) delegate
+                {
+                    RawSignalChart.Series [ 0 ].Points.DataBindY ( RawSignalMass );
+                } );
+
+                if (counter1 >= 2400)
+                {
+                    counter1 = 0;
+                    RawSignalChart.Invoke ( ( MethodInvoker ) delegate
+                    {
+                        RawSignalChart.Series [ 0 ].Points.Clear ( );
+                        Array.Clear ( RawSignalMass , 0 , RawSignalMass.Length );
+                    } );
+                }
+                counter1++;
+                Thread.Sleep ( 10 );
+            }
+        }
+
         static double lastLSLin = 0;
         //Поток для вывода графика входящих данных
         public void LSLoutlet()
         {
-            int i1 = 0;
-            int i2 = 0;
-            double [ ] RawSignalMass  = new double [ 2500 ];
+            //NewLSLoutlet ( );
+            int counter1 = 0;
+            double [ ] RawSignalMass = new double [ 2500 ];
             double prev = 0;
             while (true)
             {
-                //mutexObj.WaitOne();
                 //Выводит данные из lsl в график Вх. данных
                 if (lastLSLin != prev)
                 {
                     prev = lastLSLin;
-                    RawSignalMass[i1] = lastLSLin;
-                    i2++;i1++;
+                    RawSignalMass [ counter1 ] = lastLSLin;
+                    counter1++;
 
-                    if(i1%5==0)
-                    RawSignalChart.Invoke ( ( MethodInvoker ) delegate
-                    {
-                        RawSignalChart.Series [ 0 ].Points.DataBindY ( RawSignalMass );
-                    } );
+                    if (counter1 % 5 == 0)
+                        RawSignalChart.Invoke ( ( MethodInvoker ) delegate
+                        {
+                            RawSignalChart.Series [ 0 ].Points.DataBindY ( RawSignalMass );
+                        } );
 
-                    if (i1 >= 2500)
+                    if (counter1 >= 2500)
                     {
-                        i1 = 0;
+                        counter1 = 0;
                         RawSignalChart.Invoke ( ( MethodInvoker ) delegate
                         {
                             RawSignalChart.Series [ 0 ].Points.Clear ( );
@@ -202,7 +263,6 @@ namespace MainModuleEEGprocessing
                     }
 
                 }
-                //mutexObj.ReleaseMutex();
             }
         }
 
@@ -317,6 +377,7 @@ namespace MainModuleEEGprocessing
             else
             {
                 LogOutlet ( "Ошибка! Потоки не найдены" );
+
                 StartButton.Enabled = true;
                 PauseButton.Enabled = false;
                 OffButton.Enabled = false;

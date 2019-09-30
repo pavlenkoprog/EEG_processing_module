@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.StarButton = new System.Windows.Forms.ToolStripButton();
             this.ConnectionButton = new System.Windows.Forms.ToolStripButton();
@@ -63,6 +63,12 @@
             this.LogBox = new System.Windows.Forms.TextBox();
             this.InfoGroupBox2 = new System.Windows.Forms.GroupBox();
             this.DopInfoPanel = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ConnectedSensorText = new System.Windows.Forms.Label();
+            this.ConnectedLSLText = new System.Windows.Forms.Label();
+            this.ControlSignalText = new System.Windows.Forms.Label();
+            this.SignalRatioText = new System.Windows.Forms.Label();
             this.IterationTimeText = new System.Windows.Forms.Label();
             this.IterationTimeСheckBox = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
@@ -351,28 +357,28 @@
             this.SpectChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea5.AxisX.Interval = 10D;
-            chartArea5.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea5.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            chartArea5.AxisX.Maximum = 50D;
-            chartArea5.AxisX.Minimum = 0D;
-            chartArea5.AxisX.Title = "Частота";
-            chartArea5.AxisY.Title = "Амплитуда";
-            chartArea5.Name = "ChartArea1";
-            this.SpectChart.ChartAreas.Add(chartArea5);
-            legend5.Alignment = System.Drawing.StringAlignment.Center;
-            legend5.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend5.Name = "Legend1";
-            this.SpectChart.Legends.Add(legend5);
+            chartArea1.AxisX.Interval = 10D;
+            chartArea1.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea1.AxisX.Maximum = 50D;
+            chartArea1.AxisX.Minimum = 0D;
+            chartArea1.AxisX.Title = "Частота";
+            chartArea1.AxisY.Title = "Амплитуда";
+            chartArea1.Name = "ChartArea1";
+            this.SpectChart.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Center;
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend1.Name = "Legend1";
+            this.SpectChart.Legends.Add(legend1);
             this.SpectChart.Location = new System.Drawing.Point(-15, 20);
             this.SpectChart.Margin = new System.Windows.Forms.Padding(2);
             this.SpectChart.Name = "SpectChart";
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series5.Legend = "Legend1";
-            series5.LegendText = "Значения спектра ЭЭГ";
-            series5.Name = "Series1";
-            this.SpectChart.Series.Add(series5);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.LegendText = "Значения спектра ЭЭГ";
+            series1.Name = "Series1";
+            this.SpectChart.Series.Add(series1);
             this.SpectChart.Size = new System.Drawing.Size(311, 381);
             this.SpectChart.TabIndex = 1;
             this.SpectChart.Text = "Значения спектра ЭЭГ";
@@ -382,24 +388,24 @@
             this.RawSignalChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea6.AxisX.Maximum = 2500D;
-            chartArea6.AxisX.Minimum = 0D;
-            chartArea6.Name = "ChartArea1";
-            this.RawSignalChart.ChartAreas.Add(chartArea6);
-            legend6.Alignment = System.Drawing.StringAlignment.Center;
-            legend6.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend6.Name = "Legend1";
-            this.RawSignalChart.Legends.Add(legend6);
+            chartArea2.AxisX.Maximum = 2500D;
+            chartArea2.AxisX.Minimum = 0D;
+            chartArea2.Name = "ChartArea1";
+            this.RawSignalChart.ChartAreas.Add(chartArea2);
+            legend2.Alignment = System.Drawing.StringAlignment.Center;
+            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend2.Name = "Legend1";
+            this.RawSignalChart.Legends.Add(legend2);
             this.RawSignalChart.Location = new System.Drawing.Point(2, 3);
             this.RawSignalChart.Margin = new System.Windows.Forms.Padding(2);
             this.RawSignalChart.Name = "RawSignalChart";
             this.RawSignalChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series6.Legend = "Legend1";
-            series6.LegendText = "ЭЭГ полученное по LSL";
-            series6.Name = "Series1";
-            this.RawSignalChart.Series.Add(series6);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.LegendText = "ЭЭГ полученное по LSL";
+            series2.Name = "Series1";
+            this.RawSignalChart.Series.Add(series2);
             this.RawSignalChart.Size = new System.Drawing.Size(313, 381);
             this.RawSignalChart.TabIndex = 0;
             this.RawSignalChart.Text = "Полученные значения ЭЭГ";
@@ -452,20 +458,80 @@
             // DopInfoPanel
             // 
             this.DopInfoPanel.AutoScroll = true;
+            this.DopInfoPanel.Controls.Add(this.label2);
+            this.DopInfoPanel.Controls.Add(this.label1);
+            this.DopInfoPanel.Controls.Add(this.ConnectedSensorText);
+            this.DopInfoPanel.Controls.Add(this.ConnectedLSLText);
+            this.DopInfoPanel.Controls.Add(this.ControlSignalText);
+            this.DopInfoPanel.Controls.Add(this.SignalRatioText);
             this.DopInfoPanel.Controls.Add(this.IterationTimeText);
             this.DopInfoPanel.Location = new System.Drawing.Point(4, 19);
             this.DopInfoPanel.Name = "DopInfoPanel";
             this.DopInfoPanel.Size = new System.Drawing.Size(210, 147);
             this.DopInfoPanel.TabIndex = 1;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 63);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(103, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Сигнал сравнения:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 43);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(98, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Основной сигнал:";
+            // 
+            // ConnectedSensorText
+            // 
+            this.ConnectedSensorText.AutoSize = true;
+            this.ConnectedSensorText.Location = new System.Drawing.Point(3, 23);
+            this.ConnectedSensorText.Name = "ConnectedSensorText";
+            this.ConnectedSensorText.Size = new System.Drawing.Size(135, 13);
+            this.ConnectedSensorText.TabIndex = 6;
+            this.ConnectedSensorText.Text = "Подключеное отведение:";
+            // 
+            // ConnectedLSLText
+            // 
+            this.ConnectedLSLText.AutoSize = true;
+            this.ConnectedLSLText.Location = new System.Drawing.Point(3, 3);
+            this.ConnectedLSLText.Name = "ConnectedLSLText";
+            this.ConnectedLSLText.Size = new System.Drawing.Size(114, 13);
+            this.ConnectedLSLText.TabIndex = 5;
+            this.ConnectedLSLText.Text = "Подключеный канал:";
+            // 
+            // ControlSignalText
+            // 
+            this.ControlSignalText.AutoSize = true;
+            this.ControlSignalText.Location = new System.Drawing.Point(3, 123);
+            this.ControlSignalText.Name = "ControlSignalText";
+            this.ControlSignalText.Size = new System.Drawing.Size(127, 13);
+            this.ControlSignalText.TabIndex = 4;
+            this.ControlSignalText.Text = "Управвляющий сигнал:";
+            // 
+            // SignalRatioText
+            // 
+            this.SignalRatioText.AutoSize = true;
+            this.SignalRatioText.Location = new System.Drawing.Point(3, 83);
+            this.SignalRatioText.Name = "SignalRatioText";
+            this.SignalRatioText.Size = new System.Drawing.Size(128, 13);
+            this.SignalRatioText.TabIndex = 3;
+            this.SignalRatioText.Text = "Соотношение сигналов:";
+            // 
             // IterationTimeText
             // 
             this.IterationTimeText.AutoSize = true;
-            this.IterationTimeText.Location = new System.Drawing.Point(3, 9);
+            this.IterationTimeText.Location = new System.Drawing.Point(3, 103);
             this.IterationTimeText.Name = "IterationTimeText";
-            this.IterationTimeText.Size = new System.Drawing.Size(35, 13);
+            this.IterationTimeText.Size = new System.Drawing.Size(110, 13);
             this.IterationTimeText.TabIndex = 2;
-            this.IterationTimeText.Text = "label1";
+            this.IterationTimeText.Text = "Время на итерацию:";
             // 
             // IterationTimeСheckBox
             // 
@@ -549,6 +615,12 @@
         private System.Windows.Forms.CheckBox IterationTimeСheckBox;
         private System.Windows.Forms.Panel DopInfoPanel;
         private System.Windows.Forms.Label IterationTimeText;
+        private System.Windows.Forms.Label ConnectedSensorText;
+        private System.Windows.Forms.Label ConnectedLSLText;
+        private System.Windows.Forms.Label ControlSignalText;
+        private System.Windows.Forms.Label SignalRatioText;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
 
