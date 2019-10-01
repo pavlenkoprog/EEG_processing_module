@@ -60,6 +60,12 @@
     <Compile Include="LSL.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectionRangeSlider.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SelectionRangeSlider.Designer.cs">
+      <DependentUpon>SelectionRangeSlider.cs</DependentUpon>
+    </Compile>
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +84,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SelectionRangeSlider.resx">
+      <DependentUpon>SelectionRangeSlider.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>

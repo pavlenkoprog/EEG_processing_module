@@ -28,6 +28,11 @@ namespace MainModuleEEGprocessing
             InitializeComponent ( );
         }
 
+        public void trackBarLoad()
+        {
+
+        }
+
         private void SettingsForm_FormClosing(object sender , FormClosingEventArgs e)
         {
             _form1.ConnectionButton.Enabled = true;
