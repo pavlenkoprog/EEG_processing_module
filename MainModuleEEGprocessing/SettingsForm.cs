@@ -30,7 +30,7 @@ namespace MainModuleEEGprocessing
 
         public void trackBarLoad()
         {
-
+            trackBar1.Value = 1;
         }
 
         private void SettingsForm_FormClosing(object sender , FormClosingEventArgs e)

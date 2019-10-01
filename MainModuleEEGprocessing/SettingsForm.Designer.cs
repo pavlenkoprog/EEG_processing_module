@@ -35,6 +35,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SettingTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.selectionRangeSlider1 = new MainModuleEEGprocessing.SelectionRangeSlider();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -64,7 +65,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.ConnectedLSLText = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.selectionRangeSlider1 = new MainModuleEEGprocessing.SelectionRangeSlider();
             this.SettingTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
@@ -147,6 +147,18 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Обработка";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // selectionRangeSlider1
+            // 
+            this.selectionRangeSlider1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.selectionRangeSlider1.Location = new System.Drawing.Point(304, 138);
+            this.selectionRangeSlider1.Max = 100;
+            this.selectionRangeSlider1.Min = 0;
+            this.selectionRangeSlider1.Name = "selectionRangeSlider1";
+            this.selectionRangeSlider1.SelectedMax = 100;
+            this.selectionRangeSlider1.SelectedMin = 0;
+            this.selectionRangeSlider1.Size = new System.Drawing.Size(181, 39);
+            this.selectionRangeSlider1.TabIndex = 12;
             // 
             // trackBar2
             // 
@@ -454,18 +466,6 @@
             this.label1.Size = new System.Drawing.Size(229, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Доступные в данный момент подключения:";
-            // 
-            // selectionRangeSlider1
-            // 
-            this.selectionRangeSlider1.Location = new System.Drawing.Point(304, 138);
-            this.selectionRangeSlider1.Max = 100;
-            this.selectionRangeSlider1.Min = 0;
-            this.selectionRangeSlider1.Name = "selectionRangeSlider1";
-            this.selectionRangeSlider1.SelectedMax = 100;
-            this.selectionRangeSlider1.SelectedMin = 0;
-            this.selectionRangeSlider1.Size = new System.Drawing.Size(181, 39);
-            this.selectionRangeSlider1.TabIndex = 12;
-            this.selectionRangeSlider1.Value = 50;
             // 
             // SettingsForm
             // 
