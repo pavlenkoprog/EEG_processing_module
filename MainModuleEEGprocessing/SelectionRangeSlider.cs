@@ -72,7 +72,7 @@ namespace MainModuleEEGprocessing
         /// <summary>
         /// Fired when SelectedMin or SelectedMax changes.
         /// </summary>
-        [Description( "Fired when SelectedMin or SelectedMax changes." )]
+        [ Description( "Fired when SelectedMin or SelectedMax changes." )]
         public event EventHandler SelectionChanged;
 
         public SelectionRangeSlider()
@@ -88,31 +88,52 @@ namespace MainModuleEEGprocessing
 
         void SelectionRangeSlider_Paint( object sender , PaintEventArgs e )
         {
+            int UserHeightMax = Height - 5;
+            int UserWidthMax = Width - 30;
+
             //paint background in white
-            e.Graphics.FillRectangle( Brushes.White , ClientRectangle );
+            //e.Graphics.FillRectangle( Brushes.White , ClientRectangle );
             //paint selection range in blue
             Rectangle selectionRect = new Rectangle(
-                ( selectedMin - Min ) * Width / ( Max - Min ) ,
-                Height-Height / 5 ,
-                ( selectedMax - selectedMin ) * Width / ( Max - Min ) ,
-                Height/5 );
-            e.Graphics.FillRectangle( Brushes.Blue , selectionRect );
-            for( int n = 10 ; n <= 0 ; n-- )
-            {
-                e.Graphics.DrawLine( Pens.Black ,
-                    1 , 0 ,
-                    2 , Height );
-            }
+                ( selectedMin - Min ) * UserWidthMax / ( Max - Min ) + 15 ,
+                UserHeightMax - 5 ,
+                ( selectedMax - selectedMin ) * UserWidthMax / ( Max - Min ) ,
+                6 );
+            e.Graphics.FillRectangle( Brushes.DodgerBlue , selectionRect );
             //draw a black frame around our control
-            //e.Graphics.DrawRectangle( Pens.Black , 0 , 0 , Width - 1 , Height - 1 );
+            e.Graphics.DrawRectangle( Pens.LightGray , 15 , UserHeightMax - 21 , Width - 30 , 3);
             //draw a simple vertical line at the Value position
+            for(int n=Max ;n>=0 ;n-- )
+            {
+            e.Graphics.DrawLine( Pens.LightGray ,
+                ( n - Min ) * UserWidthMax / ( Max - Min ) +15 , UserHeightMax - 5 ,
+                ( n - Min ) * UserWidthMax / ( Max - Min ) +15, UserHeightMax );
+            }
+            DrowThumb( (selectedMin - Min ) * UserWidthMax / ( Max - Min ) +15, e );
+            DrowThumb( ( selectedMax - Min ) * UserWidthMax / ( Max - Min ) +15 , e );
+        }
+
+        //Рисую бегунки (Pos - позиция на шкале)
+        void DrowThumb (int Pos , PaintEventArgs e )
+        {
+            int UserHeightMax = Height - 5;
+            e.Graphics.FillPolygon( Brushes.DodgerBlue , new Point[ ]
+                {
+                    new Point(Pos,UserHeightMax - 10),new Point(Pos-5,UserHeightMax - 15),
+                    new Point(Pos-5,UserHeightMax - 15),new Point(Pos-5,UserHeightMax - 25),
+                    new Point(Pos-5,UserHeightMax - 25),new Point(Pos+5,UserHeightMax - 25),
+                    new Point(Pos+5,UserHeightMax - 25),new Point(Pos+5,UserHeightMax - 15),
+                    new Point(Pos+5,UserHeightMax - 15),new Point(Pos,UserHeightMax - 10)
+                }
+                );
 
         }
 
         void SelectionRangeSlider_MouseDown( object sender , MouseEventArgs e )
         {
+            int UserWidthMax = Width - 30;
             //check where the user clicked so we can decide which thumb to move
-            int pointedValue = Min + e.X * ( Max - Min ) / Width;
+            int pointedValue = Min + e.X * ( Max - Min ) / UserWidthMax;
             //int distValue = Math.Abs( pointedValue - Value );
             int distMin = Math.Abs( pointedValue - SelectedMin );
             int distMax = Math.Abs( pointedValue - SelectedMax );
@@ -128,13 +149,14 @@ namespace MainModuleEEGprocessing
 
         void SelectionRangeSlider_MouseMove( object sender , MouseEventArgs e )
         {
+            int UserWidthMax = Width - 30;
             //if the left button is pushed, move the selected thumb
             if( e.Button != MouseButtons.Left )
                 return;
-            int pointedValue = Min + e.X * ( Max - Min ) / Width;
-            if( movingMode == MovingMode.MovingMin )
+            int pointedValue = Min + e.X * ( Max - Min ) / UserWidthMax-1 ;
+            if( movingMode == MovingMode.MovingMin && ( pointedValue < SelectedMax ) && ( pointedValue > 0 ) )
                 SelectedMin = pointedValue;
-            else if( movingMode == MovingMode.MovingMax )
+            else if( movingMode == MovingMode.MovingMax && ( pointedValue > SelectedMin ) && ( pointedValue < Max ) )
                 SelectedMax = pointedValue;
         }
 

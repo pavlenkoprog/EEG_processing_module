@@ -35,20 +35,19 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SettingTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.selectionRangeSlider1 = new MainModuleEEGprocessing.SelectionRangeSlider();
-            this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.ComparisonRangeLabel = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.MainRangeLabel = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.OutletTextBox = new System.Windows.Forms.TextBox();
@@ -65,16 +64,38 @@
             this.label2 = new System.Windows.Forms.Label();
             this.ConnectedLSLText = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button4 = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.KalmanRadio1 = new System.Windows.Forms.RadioButton();
+            this.KalmanRadio = new System.Windows.Forms.RadioButton();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.AverageDeviationLabel = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.AverageDeviationTrack = new System.Windows.Forms.TrackBar();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.ReactionSpeedLabel = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.ReactionSpeedTrack = new System.Windows.Forms.TrackBar();
+            this.ComparisonRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
+            this.MainRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
+            this.buttonToDefault = new System.Windows.Forms.Button();
             this.SettingTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AverageDeviationTrack)).BeginInit();
+            this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ReactionSpeedTrack)).BeginInit();
             this.SuspendLayout();
             // 
             // InletSearch
@@ -127,6 +148,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SettingTabControl.Controls.Add(this.tabPage1);
             this.SettingTabControl.Controls.Add(this.tabPage2);
+            this.SettingTabControl.Controls.Add(this.tabPage3);
             this.SettingTabControl.Location = new System.Drawing.Point(0, 0);
             this.SettingTabControl.Name = "SettingTabControl";
             this.SettingTabControl.SelectedIndex = 0;
@@ -135,8 +157,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.selectionRangeSlider1);
-            this.tabPage1.Controls.Add(this.trackBar2);
+            this.tabPage1.Controls.Add(this.buttonToDefault);
             this.tabPage1.Controls.Add(this.button3);
             this.tabPage1.Controls.Add(this.groupBox6);
             this.tabPage1.Controls.Add(this.groupBox4);
@@ -148,28 +169,9 @@
             this.tabPage1.Text = "Обработка";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // selectionRangeSlider1
-            // 
-            this.selectionRangeSlider1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.selectionRangeSlider1.Location = new System.Drawing.Point(304, 138);
-            this.selectionRangeSlider1.Max = 100;
-            this.selectionRangeSlider1.Min = 0;
-            this.selectionRangeSlider1.Name = "selectionRangeSlider1";
-            this.selectionRangeSlider1.SelectedMax = 100;
-            this.selectionRangeSlider1.SelectedMin = 0;
-            this.selectionRangeSlider1.Size = new System.Drawing.Size(181, 39);
-            this.selectionRangeSlider1.TabIndex = 12;
-            // 
-            // trackBar2
-            // 
-            this.trackBar2.Location = new System.Drawing.Point(184, 173);
-            this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(104, 45);
-            this.trackBar2.TabIndex = 11;
-            // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(425, 396);
+            this.button3.Location = new System.Drawing.Point(416, 381);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 10;
@@ -180,94 +182,101 @@
             // 
             this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox6.Controls.Add(this.comboBox3);
+            this.groupBox6.Controls.Add(this.comboBox2);
             this.groupBox6.Controls.Add(this.label15);
             this.groupBox6.Controls.Add(this.label16);
-            this.groupBox6.Controls.Add(this.button5);
             this.groupBox6.Controls.Add(this.label17);
-            this.groupBox6.Controls.Add(this.comboBox4);
-            this.groupBox6.Location = new System.Drawing.Point(6, 270);
+            this.groupBox6.Location = new System.Drawing.Point(6, 195);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(485, 126);
+            this.groupBox6.Size = new System.Drawing.Size(485, 147);
             this.groupBox6.TabIndex = 9;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "ЭЭГ канал";
+            this.groupBox6.Text = "Эпоха анализа";
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(276, 16);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(121, 21);
+            this.comboBox3.TabIndex = 10;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(276, 43);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 21);
+            this.comboBox2.TabIndex = 9;
             // 
             // label15
             // 
-            this.label15.Location = new System.Drawing.Point(7, 78);
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label15.Location = new System.Drawing.Point(7, 72);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(499, 45);
+            this.label15.Size = new System.Drawing.Size(472, 67);
             this.label15.TabIndex = 8;
-            this.label15.Text = "Данные от каждого отведения энцефалографа передаются в отдельных канале LSL подкл" +
-    "ючения.  По умолчанию подключается первый доступный канал. При необходимости его" +
-    " можно выбрать из списка";
+            this.label15.Text = resources.GetString("label15.Text");
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(7, 56);
+            this.label16.Location = new System.Drawing.Point(7, 46);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(120, 13);
+            this.label16.Size = new System.Drawing.Size(263, 13);
             this.label16.TabIndex = 7;
-            this.label16.Text = "Подключенный канал:";
-            // 
-            // button5
-            // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(405, 31);
-            this.button5.Margin = new System.Windows.Forms.Padding(2);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "обновить";
-            this.button5.UseVisualStyleBackColor = true;
+            this.label16.Text = "Количество данных в пересечении эпохи анализа:";
             // 
             // label17
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 16);
+            this.label17.Location = new System.Drawing.Point(7, 19);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(200, 13);
             this.label17.TabIndex = 1;
-            this.label17.Text = "Доступные в данный момент каналы:";
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(9, 32);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(391, 21);
-            this.comboBox4.TabIndex = 3;
+            this.label17.Text = "Количество данных в эпохе анализа:";
             // 
             // groupBox4
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.trackBar1);
+            this.groupBox4.Controls.Add(this.ComparisonRangeLabel);
+            this.groupBox4.Controls.Add(this.ComparisonRangeSlider);
+            this.groupBox4.Controls.Add(this.label10);
+            this.groupBox4.Controls.Add(this.MainRangeSlider);
             this.groupBox4.Controls.Add(this.label12);
             this.groupBox4.Controls.Add(this.label9);
-            this.groupBox4.Controls.Add(this.label11);
+            this.groupBox4.Controls.Add(this.MainRangeLabel);
             this.groupBox4.Location = new System.Drawing.Point(6, 6);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(485, 126);
+            this.groupBox4.Size = new System.Drawing.Size(485, 183);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "ЭЭГ канал";
             // 
-            // trackBar1
+            // ComparisonRangeLabel
             // 
-            this.trackBar1.Location = new System.Drawing.Point(178, 32);
-            this.trackBar1.Maximum = 50;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(301, 45);
-            this.trackBar1.TabIndex = 10;
+            this.ComparisonRangeLabel.AutoSize = true;
+            this.ComparisonRangeLabel.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.ComparisonRangeLabel.Location = new System.Drawing.Point(167, 83);
+            this.ComparisonRangeLabel.Name = "ComparisonRangeLabel";
+            this.ComparisonRangeLabel.Size = new System.Drawing.Size(33, 13);
+            this.ComparisonRangeLabel.TabIndex = 15;
+            this.ComparisonRangeLabel.Text = "от до";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(7, 16);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(147, 13);
+            this.label10.TabIndex = 13;
+            this.label10.Text = "Основной диапазон частот:";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(7, 43);
+            this.label12.Location = new System.Drawing.Point(7, 83);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(154, 13);
             this.label12.TabIndex = 9;
@@ -275,21 +284,22 @@
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(6, 93);
+            this.label9.Location = new System.Drawing.Point(7, 148);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(473, 30);
             this.label9.TabIndex = 8;
             this.label9.Text = "Управляющий сигнал вычисляется путем деления мощности сигнала в основном диапазон" +
-    "е частот на мощность сигнала диапозона частот сравнения";
+    "е частот на мощность сигнала диапозона частот сравнения.";
             // 
-            // label11
+            // MainRangeLabel
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 16);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(147, 13);
-            this.label11.TabIndex = 1;
-            this.label11.Text = "Основной диапазон частот:";
+            this.MainRangeLabel.AutoSize = true;
+            this.MainRangeLabel.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.MainRangeLabel.Location = new System.Drawing.Point(160, 16);
+            this.MainRangeLabel.Name = "MainRangeLabel";
+            this.MainRangeLabel.Size = new System.Drawing.Size(33, 13);
+            this.MainRangeLabel.TabIndex = 1;
+            this.MainRangeLabel.Text = "от до";
             // 
             // tabPage2
             // 
@@ -334,10 +344,10 @@
             // 
             this.label6.Location = new System.Drawing.Point(7, 78);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(499, 32);
+            this.label6.Size = new System.Drawing.Size(472, 29);
             this.label6.TabIndex = 8;
             this.label6.Text = "При выводе обработаных данных используется тот-же протокол LSL. Для удобства можн" +
-    "о изменить название канала вывода, который должен быть указан в БОС модулях";
+    "о изменить название канала вывода, который должен быть указан в БОС модулях.";
             // 
             // label7
             // 
@@ -388,11 +398,11 @@
             // 
             this.label5.Location = new System.Drawing.Point(7, 78);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(499, 45);
+            this.label5.Size = new System.Drawing.Size(472, 45);
             this.label5.TabIndex = 8;
             this.label5.Text = "Данные от каждого отведения энцефалографа передаются в отдельных канале LSL подкл" +
     "ючения.  По умолчанию подключается первый доступный канал. При необходимости его" +
-    " можно выбрать из списка";
+    " можно выбрать из списка.";
             // 
             // label4
             // 
@@ -467,6 +477,184 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Доступные в данный момент подключения:";
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.button4);
+            this.tabPage3.Controls.Add(this.groupBox7);
+            this.tabPage3.Controls.Add(this.groupBox5);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(500, 410);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Фильтрация";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(416, 381);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 11;
+            this.button4.Text = "Сохранить";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.KalmanRadio1);
+            this.groupBox7.Controls.Add(this.KalmanRadio);
+            this.groupBox7.Location = new System.Drawing.Point(6, 6);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(485, 41);
+            this.groupBox7.TabIndex = 7;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Выбор фильтра";
+            // 
+            // KalmanRadio1
+            // 
+            this.KalmanRadio1.AutoSize = true;
+            this.KalmanRadio1.Location = new System.Drawing.Point(144, 16);
+            this.KalmanRadio1.Name = "KalmanRadio1";
+            this.KalmanRadio1.Size = new System.Drawing.Size(113, 17);
+            this.KalmanRadio1.TabIndex = 7;
+            this.KalmanRadio1.TabStop = true;
+            this.KalmanRadio1.Text = "Фильтр Калмана";
+            this.KalmanRadio1.UseVisualStyleBackColor = true;
+            // 
+            // KalmanRadio
+            // 
+            this.KalmanRadio.AutoSize = true;
+            this.KalmanRadio.Location = new System.Drawing.Point(9, 16);
+            this.KalmanRadio.Name = "KalmanRadio";
+            this.KalmanRadio.Size = new System.Drawing.Size(113, 17);
+            this.KalmanRadio.TabIndex = 6;
+            this.KalmanRadio.TabStop = true;
+            this.KalmanRadio.Text = "Фильтр Калмана";
+            this.KalmanRadio.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.groupBox9);
+            this.groupBox5.Controls.Add(this.groupBox8);
+            this.groupBox5.Location = new System.Drawing.Point(6, 53);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(485, 132);
+            this.groupBox5.TabIndex = 5;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Фильтр Калмана";
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.AverageDeviationLabel);
+            this.groupBox9.Controls.Add(this.label14);
+            this.groupBox9.Controls.Add(this.AverageDeviationTrack);
+            this.groupBox9.Location = new System.Drawing.Point(170, 10);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(155, 116);
+            this.groupBox9.TabIndex = 9;
+            this.groupBox9.TabStop = false;
+            // 
+            // AverageDeviationLabel
+            // 
+            this.AverageDeviationLabel.Location = new System.Drawing.Point(8, 95);
+            this.AverageDeviationLabel.Name = "AverageDeviationLabel";
+            this.AverageDeviationLabel.Size = new System.Drawing.Size(135, 18);
+            this.AverageDeviationLabel.TabIndex = 13;
+            this.AverageDeviationLabel.Text = "= 0.0005";
+            this.AverageDeviationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 16);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(139, 13);
+            this.label14.TabIndex = 12;
+            this.label14.Text = "Среднее отклонение (0.3):";
+            // 
+            // AverageDeviationTrack
+            // 
+            this.AverageDeviationTrack.Location = new System.Drawing.Point(9, 47);
+            this.AverageDeviationTrack.Name = "AverageDeviationTrack";
+            this.AverageDeviationTrack.Size = new System.Drawing.Size(135, 45);
+            this.AverageDeviationTrack.TabIndex = 9;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.ReactionSpeedLabel);
+            this.groupBox8.Controls.Add(this.label11);
+            this.groupBox8.Controls.Add(this.ReactionSpeedTrack);
+            this.groupBox8.Location = new System.Drawing.Point(9, 10);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(155, 116);
+            this.groupBox8.TabIndex = 8;
+            this.groupBox8.TabStop = false;
+            // 
+            // ReactionSpeedLabel
+            // 
+            this.ReactionSpeedLabel.Location = new System.Drawing.Point(9, 95);
+            this.ReactionSpeedLabel.Name = "ReactionSpeedLabel";
+            this.ReactionSpeedLabel.Size = new System.Drawing.Size(135, 18);
+            this.ReactionSpeedLabel.TabIndex = 11;
+            this.ReactionSpeedLabel.Text = "= 0.0005";
+            this.ReactionSpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label11
+            // 
+            this.label11.Location = new System.Drawing.Point(6, 13);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(138, 31);
+            this.label11.TabIndex = 10;
+            this.label11.Text = "Скорость реакции на изменение (0.0005):";
+            // 
+            // ReactionSpeedTrack
+            // 
+            this.ReactionSpeedTrack.Location = new System.Drawing.Point(9, 47);
+            this.ReactionSpeedTrack.Name = "ReactionSpeedTrack";
+            this.ReactionSpeedTrack.Size = new System.Drawing.Size(135, 45);
+            this.ReactionSpeedTrack.TabIndex = 9;
+            // 
+            // ComparisonRangeSlider
+            // 
+            this.ComparisonRangeSlider.BackColor = System.Drawing.SystemColors.Control;
+            this.ComparisonRangeSlider.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ComparisonRangeSlider.Location = new System.Drawing.Point(6, 99);
+            this.ComparisonRangeSlider.Max = 50;
+            this.ComparisonRangeSlider.Min = 0;
+            this.ComparisonRangeSlider.Name = "ComparisonRangeSlider";
+            this.ComparisonRangeSlider.SelectedMax = 50;
+            this.ComparisonRangeSlider.SelectedMin = 0;
+            this.ComparisonRangeSlider.Size = new System.Drawing.Size(473, 37);
+            this.ComparisonRangeSlider.TabIndex = 14;
+            this.ComparisonRangeSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ComparisonRangeGet);
+            this.ComparisonRangeSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComparisonRangeGet);
+            // 
+            // MainRangeSlider
+            // 
+            this.MainRangeSlider.BackColor = System.Drawing.SystemColors.Control;
+            this.MainRangeSlider.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.MainRangeSlider.Location = new System.Drawing.Point(6, 32);
+            this.MainRangeSlider.Max = 50;
+            this.MainRangeSlider.Min = 0;
+            this.MainRangeSlider.Name = "MainRangeSlider";
+            this.MainRangeSlider.SelectedMax = 50;
+            this.MainRangeSlider.SelectedMin = 0;
+            this.MainRangeSlider.Size = new System.Drawing.Size(473, 37);
+            this.MainRangeSlider.TabIndex = 12;
+            this.MainRangeSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
+            this.MainRangeSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
+            // 
+            // buttonToDefault
+            // 
+            this.buttonToDefault.Location = new System.Drawing.Point(323, 381);
+            this.buttonToDefault.Name = "buttonToDefault";
+            this.buttonToDefault.Size = new System.Drawing.Size(87, 23);
+            this.buttonToDefault.TabIndex = 11;
+            this.buttonToDefault.Text = "Станд. настр.";
+            this.buttonToDefault.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -479,13 +667,10 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsForm_FormClosing);
             this.SettingTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -493,6 +678,16 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AverageDeviationTrack)).EndInit();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ReactionSpeedTrack)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -525,15 +720,31 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label MainRangeLabel;
+        private SelectionRangeSlider MainRangeSlider;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label ComparisonRangeLabel;
+        private SelectionRangeSlider ComparisonRangeSlider;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.RadioButton KalmanRadio;
+        private System.Windows.Forms.RadioButton KalmanRadio1;
+        private System.Windows.Forms.TrackBar ReactionSpeedTrack;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TrackBar trackBar2;
-        private SelectionRangeSlider selectionRangeSlider1;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Label AverageDeviationLabel;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TrackBar AverageDeviationTrack;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label ReactionSpeedLabel;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button buttonToDefault;
     }
 }

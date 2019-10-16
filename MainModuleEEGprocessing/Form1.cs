@@ -302,8 +302,8 @@ namespace MainModuleEEGprocessing
         Complex [ ] EEGcomplex = new Complex [ 2048 ];
         Complex [ ] EEGcomplex2 = new Complex [ 2048 ];
 
-        int N = 256;
-        int n = 128;
+        int AnalysisEra = 256;//Эпоха анализа
+        int IntersectionEra = 128;//Пересечение эпохи
         int Xmax = 50;
         double T = 0;
         double t = 0;
@@ -316,7 +316,6 @@ namespace MainModuleEEGprocessing
         private void LSLreceive()
         {
             StartLSL ( );
-
             while (true)
             {
                 //inlet.pull_sample ( sample );
@@ -501,7 +500,7 @@ namespace MainModuleEEGprocessing
             //double t = 0;
             Stopwatch stopWatch_1 = new Stopwatch ( );
             stopWatch_1.Start ( );
-            for (int i = 0 ; i < N ; i++)
+            for (int i = 0 ; i < AnalysisEra ; i++)
             {
                 inlet.pull_sample ( sample,0.5 );
                 DataAvailabilityCheck ( );
@@ -516,7 +515,6 @@ namespace MainModuleEEGprocessing
             stopWatch_1.Reset ( );
             spectrumoutN = ( int ) ( Xmax * T / 1000 );
         }
-
         #endregion
 
         #region Повторно заполняет масив данными
@@ -527,11 +525,11 @@ namespace MainModuleEEGprocessing
 
             Stopwatch stopWatch_1 = new Stopwatch ( );
 
-            for (int i = N - n - 1 ; i > 0 ; i--)
-                EEGcomplex [ i + n ] = EEGcomplex [ i ];
+            for (int i = AnalysisEra - IntersectionEra - 1 ; i > 0 ; i--)
+                EEGcomplex [ i + IntersectionEra ] = EEGcomplex [ i ];
 
             stopWatch_1.Start ( );
-            for (int i = 0 ; i < N ; i++)
+            for (int i = 0 ; i < AnalysisEra ; i++)
             {
                 inlet.pull_sample ( sample , 0.5 );
                 DataAvailabilityCheck ( );
@@ -637,7 +635,7 @@ namespace MainModuleEEGprocessing
         #region Обработка данных
         public void DataProcessing()
         {
-            EEGcomplex2 = fft ( EEGcomplex , N );
+            EEGcomplex2 = fft ( EEGcomplex , AnalysisEra );
             frequencyOut = new double [ spectrumoutN ];
             amplitudeOut = new double [ spectrumoutN ];
 
@@ -648,7 +646,7 @@ namespace MainModuleEEGprocessing
             {
                 frequencyOut [ i ] = ( double ) i / T * 1000;
                 amplitudeOut [ i ] = 2.0 * Math.Sqrt ( Math.Pow ( EEGcomplex2 [ i ].Real , 2 ) +
-                    Math.Pow ( EEGcomplex2 [ i ].Imaginary , 2 ) ) / ( double ) N;
+                    Math.Pow ( EEGcomplex2 [ i ].Imaginary , 2 ) ) / ( double ) AnalysisEra;
                 //убрать *10 !!!!!
 
 
