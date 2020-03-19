@@ -1628,6 +1628,26 @@
         YII=
 </value>
   </data>
+  <data name="InversionButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAMnSURBVHhe7ZwxqupAFIYFO0Gw09JSG3tba92KnYU7cBXi
+        BlyFpSsQEUtLVyDzOEN8hOHEnNzE+E/yf/C9woxxcr7n9V6LdByBgkHAiD5Ip9MxGQsMAgaDgMEgYDAI
+        GK0JIsYAg4ARfRBBG75mDDAIGK0KIqLDIGAwCBitCyIi04gggjb4LJFhEDBq3d3r9XLL5dJ1u123Wq2S
+        R6tBG/wnUak9yGw28wOZz+fJo9UQDjxPVGrfmbwzZCCTycTt93t3OBzc4/FIjpYjHHqeiJh3dbvd3PV6
+        LeXlcvHvjHAw2+3WH5fXKEN43jwRMe9qOp268XhcWvn8CAfT6/X8MXmNMoTntYiGeUfaxXzDsmjnzBMJ
+        BklEwbyTGH5kCeG5i4iAeRcxfKi/Cc9f1F9S+6t/89feN+GA0U1Ta5Bv/mEYEl40smlqD/Ktr05CtAtH
+        NU2tQepGu3hE0zQ6iKANAM00jQ8iaENAMk0rggjaIFBM05ogb7SB/No0rQuCDoOAwSBgMAgYDAIGg4DB
+        IGAwCBgMAgaDgMEgYDAIGAwCBoOAwSBg+CDad/RWNbR1Vj+hrbeahbbWqoa2zqp/fhUnCdHWWf2Ett5q
+        FtpaqxraOqv++VWcJERbZ/UT2nqrWWhrrWpo66z65/t/CQwMAgaDgMEgYDAIGAwCBoOAwSBgMAgYDAIG
+        g4DBIGAwCBgMAoYaRPtq+Je2iSiCvG0DUQURm050QcQmE2UQsalEG0RsIgwCRtRBxKYBcUXaoK3+kvP5
+        7Eajkb+70WazSR4tB9R/MW3gFn/F6XT6v4f1ep08Wg6493x60FZ/xf1+d4PBwO9hsVj4u+OJz+czWVEc
+        uCBCOPA8i1LF/SPF4/Hob+AZ7me32/njf7mHJGQQIbzIPItQ1R1Wh8Ohupd+v++P/+Uuq7BBBO1isyyC
+        9vxvWRQG+bJFgQ4iaBeZpRX+yCqBdsFZWuGHeknCC86yblrza29IOPgs66YVfxhqpIeeZ500/quTT2jD
+        14wdBgGDQcCI6gq0AKGxwyBgNC6IGDMMAkZ0u9cChMYMg4DBIGAwCBgMAkbcu28gDAKFc/8ATaYZyLwR
+        LTIAAAAASUVORK5CYII=
+</value>
+  </data>
   <data name="RawSignalButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8

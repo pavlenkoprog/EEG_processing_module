@@ -49,6 +49,7 @@
             this.StartButton = new System.Windows.Forms.ToolStripButton();
             this.PauseButton = new System.Windows.Forms.ToolStripButton();
             this.OffButton = new System.Windows.Forms.ToolStripButton();
+            this.InversionButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.RawSignalButton = new System.Windows.Forms.ToolStripButton();
             this.toolChartFilter = new System.Windows.Forms.ToolStripButton();
@@ -63,12 +64,12 @@
             this.LogBox = new System.Windows.Forms.TextBox();
             this.InfoGroupBox2 = new System.Windows.Forms.GroupBox();
             this.DopInfoPanel = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.CompareSumLabel = new System.Windows.Forms.Label();
+            this.MainSumLabel = new System.Windows.Forms.Label();
             this.ConnectedSensorText = new System.Windows.Forms.Label();
             this.ConnectedLSLText = new System.Windows.Forms.Label();
             this.ControlSignalText = new System.Windows.Forms.Label();
-            this.SignalRatioText = new System.Windows.Forms.Label();
+            this.SumRatioLabel = new System.Windows.Forms.Label();
             this.IterationTimeText = new System.Windows.Forms.Label();
             this.IterationTimeСheckBox = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
@@ -149,6 +150,7 @@
             this.StartButton,
             this.PauseButton,
             this.OffButton,
+            this.InversionButton,
             this.toolStripSeparator4,
             this.RawSignalButton,
             this.toolChartFilter,
@@ -245,6 +247,17 @@
             this.OffButton.Text = "Остановка для повторного запуска";
             this.OffButton.Click += new System.EventHandler(this.OffButton_Click);
             // 
+            // InversionButton
+            // 
+            this.InversionButton.CheckOnClick = true;
+            this.InversionButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.InversionButton.Image = ((System.Drawing.Image)(resources.GetObject("InversionButton.Image")));
+            this.InversionButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.InversionButton.Name = "InversionButton";
+            this.InversionButton.Size = new System.Drawing.Size(24, 24);
+            this.InversionButton.Text = "Инверсия управляющего сигнала";
+            this.InversionButton.Click += new System.EventHandler(this.InversionButton_Click);
+            // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
@@ -327,7 +340,7 @@
             this.InfoSplitContainer.Panel2.Controls.Add(this.InfoGroupBox1);
             this.InfoSplitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoSplitContainer.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.InfoSplitContainer.Size = new System.Drawing.Size(883, 398);
+            this.InfoSplitContainer.Size = new System.Drawing.Size(883, 397);
             this.InfoSplitContainer.SplitterDistance = 648;
             this.InfoSplitContainer.TabIndex = 6;
             // 
@@ -348,7 +361,7 @@
             // 
             this.ChartsSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.Window;
             this.ChartsSplitContainer.Panel2.Controls.Add(this.RawSignalChart);
-            this.ChartsSplitContainer.Size = new System.Drawing.Size(641, 390);
+            this.ChartsSplitContainer.Size = new System.Drawing.Size(641, 389);
             this.ChartsSplitContainer.SplitterDistance = 298;
             this.ChartsSplitContainer.TabIndex = 0;
             // 
@@ -379,7 +392,7 @@
             series1.LegendText = "Значения спектра ЭЭГ";
             series1.Name = "Series1";
             this.SpectChart.Series.Add(series1);
-            this.SpectChart.Size = new System.Drawing.Size(311, 381);
+            this.SpectChart.Size = new System.Drawing.Size(311, 380);
             this.SpectChart.TabIndex = 1;
             this.SpectChart.Text = "Значения спектра ЭЭГ";
             // 
@@ -406,7 +419,7 @@
             series2.LegendText = "ЭЭГ полученное по LSL";
             series2.Name = "Series1";
             this.RawSignalChart.Series.Add(series2);
-            this.RawSignalChart.Size = new System.Drawing.Size(313, 381);
+            this.RawSignalChart.Size = new System.Drawing.Size(313, 380);
             this.RawSignalChart.TabIndex = 0;
             this.RawSignalChart.Text = "Полученные значения ЭЭГ";
             // 
@@ -420,7 +433,7 @@
             this.InfoGroupBox1.Controls.Add(this.InfoGroupBox2);
             this.InfoGroupBox1.Location = new System.Drawing.Point(1, 3);
             this.InfoGroupBox1.Name = "InfoGroupBox1";
-            this.InfoGroupBox1.Size = new System.Drawing.Size(222, 389);
+            this.InfoGroupBox1.Size = new System.Drawing.Size(222, 388);
             this.InfoGroupBox1.TabIndex = 0;
             this.InfoGroupBox1.TabStop = false;
             this.InfoGroupBox1.Text = "Вывод текстовых данных";
@@ -437,7 +450,7 @@
             this.LogBox.Name = "LogBox";
             this.LogBox.ReadOnly = true;
             this.LogBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LogBox.Size = new System.Drawing.Size(210, 192);
+            this.LogBox.Size = new System.Drawing.Size(210, 183);
             this.LogBox.TabIndex = 1;
             this.LogBox.Text = "Вывод логов\r\n\r\nЗдесь будут отображаться основные события и ошибки произошедшие пр" +
     "и выполнении программы\r\n";
@@ -448,86 +461,88 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.InfoGroupBox2.BackColor = System.Drawing.SystemColors.Window;
             this.InfoGroupBox2.Controls.Add(this.DopInfoPanel);
-            this.InfoGroupBox2.Location = new System.Drawing.Point(2, 218);
+            this.InfoGroupBox2.Location = new System.Drawing.Point(2, 208);
             this.InfoGroupBox2.Name = "InfoGroupBox2";
-            this.InfoGroupBox2.Size = new System.Drawing.Size(220, 172);
+            this.InfoGroupBox2.Size = new System.Drawing.Size(220, 180);
             this.InfoGroupBox2.TabIndex = 0;
             this.InfoGroupBox2.TabStop = false;
             this.InfoGroupBox2.Text = "Доп. инфо.";
             // 
             // DopInfoPanel
             // 
+            this.DopInfoPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.DopInfoPanel.AutoScroll = true;
-            this.DopInfoPanel.Controls.Add(this.label2);
-            this.DopInfoPanel.Controls.Add(this.label1);
+            this.DopInfoPanel.Controls.Add(this.CompareSumLabel);
+            this.DopInfoPanel.Controls.Add(this.MainSumLabel);
             this.DopInfoPanel.Controls.Add(this.ConnectedSensorText);
             this.DopInfoPanel.Controls.Add(this.ConnectedLSLText);
             this.DopInfoPanel.Controls.Add(this.ControlSignalText);
-            this.DopInfoPanel.Controls.Add(this.SignalRatioText);
+            this.DopInfoPanel.Controls.Add(this.SumRatioLabel);
             this.DopInfoPanel.Controls.Add(this.IterationTimeText);
             this.DopInfoPanel.Location = new System.Drawing.Point(4, 19);
             this.DopInfoPanel.Name = "DopInfoPanel";
-            this.DopInfoPanel.Size = new System.Drawing.Size(210, 147);
+            this.DopInfoPanel.Size = new System.Drawing.Size(210, 155);
             this.DopInfoPanel.TabIndex = 1;
             // 
-            // label2
+            // CompareSumLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 63);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(103, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Сигнал сравнения:";
+            this.CompareSumLabel.AutoSize = true;
+            this.CompareSumLabel.Location = new System.Drawing.Point(3, 74);
+            this.CompareSumLabel.Name = "CompareSumLabel";
+            this.CompareSumLabel.Size = new System.Drawing.Size(103, 13);
+            this.CompareSumLabel.TabIndex = 8;
+            this.CompareSumLabel.Text = "Сигнал сравнения:";
             // 
-            // label1
+            // MainSumLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 43);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Основной сигнал:";
+            this.MainSumLabel.AutoSize = true;
+            this.MainSumLabel.Location = new System.Drawing.Point(3, 54);
+            this.MainSumLabel.Name = "MainSumLabel";
+            this.MainSumLabel.Size = new System.Drawing.Size(98, 13);
+            this.MainSumLabel.TabIndex = 7;
+            this.MainSumLabel.Text = "Основной сигнал:";
             // 
             // ConnectedSensorText
             // 
             this.ConnectedSensorText.AutoSize = true;
-            this.ConnectedSensorText.Location = new System.Drawing.Point(3, 23);
+            this.ConnectedSensorText.Location = new System.Drawing.Point(3, 34);
             this.ConnectedSensorText.Name = "ConnectedSensorText";
-            this.ConnectedSensorText.Size = new System.Drawing.Size(135, 13);
+            this.ConnectedSensorText.Size = new System.Drawing.Size(112, 13);
             this.ConnectedSensorText.TabIndex = 6;
-            this.ConnectedSensorText.Text = "Подключеное отведение:";
+            this.ConnectedSensorText.Text = "Подключеное канал:";
             // 
             // ConnectedLSLText
             // 
-            this.ConnectedLSLText.AutoSize = true;
             this.ConnectedLSLText.Location = new System.Drawing.Point(3, 3);
             this.ConnectedLSLText.Name = "ConnectedLSLText";
-            this.ConnectedLSLText.Size = new System.Drawing.Size(114, 13);
+            this.ConnectedLSLText.Size = new System.Drawing.Size(204, 30);
             this.ConnectedLSLText.TabIndex = 5;
-            this.ConnectedLSLText.Text = "Подключеный канал:";
+            this.ConnectedLSLText.Text = "Подключеный поток:";
             // 
             // ControlSignalText
             // 
             this.ControlSignalText.AutoSize = true;
-            this.ControlSignalText.Location = new System.Drawing.Point(3, 123);
+            this.ControlSignalText.Location = new System.Drawing.Point(3, 116);
             this.ControlSignalText.Name = "ControlSignalText";
-            this.ControlSignalText.Size = new System.Drawing.Size(127, 13);
+            this.ControlSignalText.Size = new System.Drawing.Size(121, 13);
             this.ControlSignalText.TabIndex = 4;
-            this.ControlSignalText.Text = "Управвляющий сигнал:";
+            this.ControlSignalText.Text = "Управляющий сигнал:";
             // 
-            // SignalRatioText
+            // SumRatioLabel
             // 
-            this.SignalRatioText.AutoSize = true;
-            this.SignalRatioText.Location = new System.Drawing.Point(3, 83);
-            this.SignalRatioText.Name = "SignalRatioText";
-            this.SignalRatioText.Size = new System.Drawing.Size(128, 13);
-            this.SignalRatioText.TabIndex = 3;
-            this.SignalRatioText.Text = "Соотношение сигналов:";
+            this.SumRatioLabel.AutoSize = true;
+            this.SumRatioLabel.Location = new System.Drawing.Point(3, 94);
+            this.SumRatioLabel.Name = "SumRatioLabel";
+            this.SumRatioLabel.Size = new System.Drawing.Size(128, 13);
+            this.SumRatioLabel.TabIndex = 3;
+            this.SumRatioLabel.Text = "Соотношение сигналов:";
             // 
             // IterationTimeText
             // 
             this.IterationTimeText.AutoSize = true;
-            this.IterationTimeText.Location = new System.Drawing.Point(3, 103);
+            this.IterationTimeText.Location = new System.Drawing.Point(3, 136);
             this.IterationTimeText.Name = "IterationTimeText";
             this.IterationTimeText.Size = new System.Drawing.Size(110, 13);
             this.IterationTimeText.TabIndex = 2;
@@ -538,7 +553,7 @@
             this.IterationTimeСheckBox.AutoSize = true;
             this.IterationTimeСheckBox.Checked = true;
             this.IterationTimeСheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.IterationTimeСheckBox.Location = new System.Drawing.Point(608, 36);
+            this.IterationTimeСheckBox.Location = new System.Drawing.Point(351, 32);
             this.IterationTimeСheckBox.Name = "IterationTimeСheckBox";
             this.IterationTimeСheckBox.Size = new System.Drawing.Size(126, 17);
             this.IterationTimeСheckBox.TabIndex = 0;
@@ -550,7 +565,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(883, 450);
+            this.ClientSize = new System.Drawing.Size(883, 449);
             this.Controls.Add(this.InfoSplitContainer);
             this.Controls.Add(this.IterationTimeСheckBox);
             this.Controls.Add(this.toolStrip2);
@@ -618,9 +633,10 @@
         private System.Windows.Forms.Label ConnectedSensorText;
         private System.Windows.Forms.Label ConnectedLSLText;
         private System.Windows.Forms.Label ControlSignalText;
-        private System.Windows.Forms.Label SignalRatioText;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label SumRatioLabel;
+        private System.Windows.Forms.Label CompareSumLabel;
+        private System.Windows.Forms.Label MainSumLabel;
+        private System.Windows.Forms.ToolStripButton InversionButton;
     }
 }
 

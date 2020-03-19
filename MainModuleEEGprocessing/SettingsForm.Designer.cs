@@ -31,11 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.InletSearch = new System.Windows.Forms.Button();
             this.InletComboBox = new System.Windows.Forms.ComboBox();
-            this.SaveButton = new System.Windows.Forms.Button();
+            this.SaveButton2 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SettingTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.button3 = new System.Windows.Forms.Button();
+            this.buttonToDefault = new System.Windows.Forms.Button();
+            this.SaveButton1 = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
@@ -44,7 +45,9 @@
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.ComparisonRangeLabel = new System.Windows.Forms.Label();
+            this.ComparisonRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
             this.label10 = new System.Windows.Forms.Label();
+            this.MainRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
             this.label12 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.MainRangeLabel = new System.Windows.Forms.Label();
@@ -78,9 +81,12 @@
             this.ReactionSpeedLabel = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.ReactionSpeedTrack = new System.Windows.Forms.TrackBar();
-            this.ComparisonRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
-            this.MainRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
-            this.buttonToDefault = new System.Windows.Forms.Button();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.SettingTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -96,6 +102,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.AverageDeviationTrack)).BeginInit();
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReactionSpeedTrack)).BeginInit();
+            this.groupBox10.SuspendLayout();
+            this.groupBox11.SuspendLayout();
             this.SuspendLayout();
             // 
             // InletSearch
@@ -121,15 +129,16 @@
             this.InletComboBox.TabIndex = 1;
             this.InletComboBox.SelectionChangeCommitted += new System.EventHandler(this.InletComboBox_SelectionChangeCommitted);
             // 
-            // SaveButton
+            // SaveButton2
             // 
-            this.SaveButton.Location = new System.Drawing.Point(416, 381);
-            this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(75, 23);
-            this.SaveButton.TabIndex = 2;
-            this.SaveButton.Text = "Сохранить";
-            this.SaveButton.UseVisualStyleBackColor = true;
-            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            this.SaveButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SaveButton2.Location = new System.Drawing.Point(416, 462);
+            this.SaveButton2.Name = "SaveButton2";
+            this.SaveButton2.Size = new System.Drawing.Size(75, 23);
+            this.SaveButton2.TabIndex = 2;
+            this.SaveButton2.Text = "Сохранить";
+            this.SaveButton2.UseVisualStyleBackColor = true;
+            this.SaveButton2.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // comboBox1
             // 
@@ -152,31 +161,43 @@
             this.SettingTabControl.Location = new System.Drawing.Point(0, 0);
             this.SettingTabControl.Name = "SettingTabControl";
             this.SettingTabControl.SelectedIndex = 0;
-            this.SettingTabControl.Size = new System.Drawing.Size(508, 436);
+            this.SettingTabControl.Size = new System.Drawing.Size(508, 520);
             this.SettingTabControl.TabIndex = 4;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.buttonToDefault);
-            this.tabPage1.Controls.Add(this.button3);
+            this.tabPage1.Controls.Add(this.SaveButton1);
             this.tabPage1.Controls.Add(this.groupBox6);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(500, 410);
+            this.tabPage1.Size = new System.Drawing.Size(500, 539);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Обработка";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // buttonToDefault
             // 
-            this.button3.Location = new System.Drawing.Point(416, 381);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 10;
-            this.button3.Text = "Сохранить";
-            this.button3.UseVisualStyleBackColor = true;
+            this.buttonToDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonToDefault.Location = new System.Drawing.Point(323, 381);
+            this.buttonToDefault.Name = "buttonToDefault";
+            this.buttonToDefault.Size = new System.Drawing.Size(87, 23);
+            this.buttonToDefault.TabIndex = 11;
+            this.buttonToDefault.Text = "Станд. настр.";
+            this.buttonToDefault.UseVisualStyleBackColor = true;
+            // 
+            // SaveButton1
+            // 
+            this.SaveButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SaveButton1.Location = new System.Drawing.Point(416, 381);
+            this.SaveButton1.Name = "SaveButton1";
+            this.SaveButton1.Size = new System.Drawing.Size(75, 23);
+            this.SaveButton1.TabIndex = 10;
+            this.SaveButton1.Text = "Сохранить";
+            this.SaveButton1.UseVisualStyleBackColor = true;
+            this.SaveButton1.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // groupBox6
             // 
@@ -196,19 +217,32 @@
             // 
             // comboBox3
             // 
+            this.comboBox3.AutoCompleteCustomSource.AddRange(new string[] {
+            "256",
+            "512",
+            "1024",
+            "2048"});
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Location = new System.Drawing.Point(276, 16);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(121, 21);
             this.comboBox3.TabIndex = 10;
+            this.comboBox3.SelectedValueChanged += new System.EventHandler(this.comboBox3_SelectedValueChanged);
             // 
             // comboBox2
             // 
+            this.comboBox2.AutoCompleteCustomSource.AddRange(new string[] {
+            "128",
+            "256",
+            "512",
+            "1024",
+            "2048"});
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(276, 43);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(121, 21);
             this.comboBox2.TabIndex = 9;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // label15
             // 
@@ -264,6 +298,21 @@
             this.ComparisonRangeLabel.TabIndex = 15;
             this.ComparisonRangeLabel.Text = "от до";
             // 
+            // ComparisonRangeSlider
+            // 
+            this.ComparisonRangeSlider.BackColor = System.Drawing.SystemColors.Control;
+            this.ComparisonRangeSlider.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ComparisonRangeSlider.Location = new System.Drawing.Point(6, 99);
+            this.ComparisonRangeSlider.Max = 50;
+            this.ComparisonRangeSlider.Min = 0;
+            this.ComparisonRangeSlider.Name = "ComparisonRangeSlider";
+            this.ComparisonRangeSlider.SelectedMax = 50;
+            this.ComparisonRangeSlider.SelectedMin = 0;
+            this.ComparisonRangeSlider.Size = new System.Drawing.Size(473, 37);
+            this.ComparisonRangeSlider.TabIndex = 14;
+            this.ComparisonRangeSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ComparisonRangeGet);
+            this.ComparisonRangeSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComparisonRangeGet);
+            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -272,6 +321,21 @@
             this.label10.Size = new System.Drawing.Size(147, 13);
             this.label10.TabIndex = 13;
             this.label10.Text = "Основной диапазон частот:";
+            // 
+            // MainRangeSlider
+            // 
+            this.MainRangeSlider.BackColor = System.Drawing.SystemColors.Control;
+            this.MainRangeSlider.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.MainRangeSlider.Location = new System.Drawing.Point(6, 32);
+            this.MainRangeSlider.Max = 50;
+            this.MainRangeSlider.Min = 0;
+            this.MainRangeSlider.Name = "MainRangeSlider";
+            this.MainRangeSlider.SelectedMax = 50;
+            this.MainRangeSlider.SelectedMin = 0;
+            this.MainRangeSlider.Size = new System.Drawing.Size(473, 37);
+            this.MainRangeSlider.TabIndex = 12;
+            this.MainRangeSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
+            this.MainRangeSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
             // 
             // label12
             // 
@@ -303,14 +367,16 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.groupBox11);
+            this.tabPage2.Controls.Add(this.groupBox10);
             this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Controls.Add(this.groupBox2);
             this.tabPage2.Controls.Add(this.groupBox1);
-            this.tabPage2.Controls.Add(this.SaveButton);
+            this.tabPage2.Controls.Add(this.SaveButton2);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(500, 410);
+            this.tabPage2.Size = new System.Drawing.Size(500, 494);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Подключения";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -324,7 +390,7 @@
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.button2);
             this.groupBox3.Controls.Add(this.label8);
-            this.groupBox3.Location = new System.Drawing.Point(6, 268);
+            this.groupBox3.Location = new System.Drawing.Point(6, 343);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(485, 110);
             this.groupBox3.TabIndex = 6;
@@ -387,7 +453,7 @@
             this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.comboBox1);
-            this.groupBox2.Location = new System.Drawing.Point(6, 136);
+            this.groupBox2.Location = new System.Drawing.Point(6, 211);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(485, 126);
             this.groupBox2.TabIndex = 5;
@@ -442,7 +508,7 @@
             this.groupBox1.Controls.Add(this.InletComboBox);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.InletSearch);
-            this.groupBox1.Location = new System.Drawing.Point(6, 6);
+            this.groupBox1.Location = new System.Drawing.Point(6, 81);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(485, 124);
             this.groupBox1.TabIndex = 4;
@@ -485,13 +551,14 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(500, 410);
+            this.tabPage3.Size = new System.Drawing.Size(500, 539);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Фильтрация";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.Location = new System.Drawing.Point(416, 381);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
@@ -580,6 +647,7 @@
             this.AverageDeviationTrack.Name = "AverageDeviationTrack";
             this.AverageDeviationTrack.Size = new System.Drawing.Size(135, 45);
             this.AverageDeviationTrack.TabIndex = 9;
+            this.AverageDeviationTrack.ValueChanged += new System.EventHandler(this.AverageDeviationTrack_ValueChanged);
             // 
             // groupBox8
             // 
@@ -615,51 +683,83 @@
             this.ReactionSpeedTrack.Name = "ReactionSpeedTrack";
             this.ReactionSpeedTrack.Size = new System.Drawing.Size(135, 45);
             this.ReactionSpeedTrack.TabIndex = 9;
+            this.ReactionSpeedTrack.ValueChanged += new System.EventHandler(this.ReactionSpeedTrack_ValueChanged);
             // 
-            // ComparisonRangeSlider
+            // groupBox10
             // 
-            this.ComparisonRangeSlider.BackColor = System.Drawing.SystemColors.Control;
-            this.ComparisonRangeSlider.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ComparisonRangeSlider.Location = new System.Drawing.Point(6, 99);
-            this.ComparisonRangeSlider.Max = 50;
-            this.ComparisonRangeSlider.Min = 0;
-            this.ComparisonRangeSlider.Name = "ComparisonRangeSlider";
-            this.ComparisonRangeSlider.SelectedMax = 50;
-            this.ComparisonRangeSlider.SelectedMin = 0;
-            this.ComparisonRangeSlider.Size = new System.Drawing.Size(473, 37);
-            this.ComparisonRangeSlider.TabIndex = 14;
-            this.ComparisonRangeSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ComparisonRangeGet);
-            this.ComparisonRangeSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComparisonRangeGet);
+            this.groupBox10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox10.Controls.Add(this.radioButton2);
+            this.groupBox10.Controls.Add(this.radioButton1);
+            this.groupBox10.Location = new System.Drawing.Point(6, 6);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(235, 69);
+            this.groupBox10.TabIndex = 8;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Протокол приема данных";
             // 
-            // MainRangeSlider
+            // radioButton1
             // 
-            this.MainRangeSlider.BackColor = System.Drawing.SystemColors.Control;
-            this.MainRangeSlider.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.MainRangeSlider.Location = new System.Drawing.Point(6, 32);
-            this.MainRangeSlider.Max = 50;
-            this.MainRangeSlider.Min = 0;
-            this.MainRangeSlider.Name = "MainRangeSlider";
-            this.MainRangeSlider.SelectedMax = 50;
-            this.MainRangeSlider.SelectedMin = 0;
-            this.MainRangeSlider.Size = new System.Drawing.Size(473, 37);
-            this.MainRangeSlider.TabIndex = 12;
-            this.MainRangeSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
-            this.MainRangeSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(10, 19);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(94, 17);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "протокол LSL";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
-            // buttonToDefault
+            // radioButton2
             // 
-            this.buttonToDefault.Location = new System.Drawing.Point(323, 381);
-            this.buttonToDefault.Name = "buttonToDefault";
-            this.buttonToDefault.Size = new System.Drawing.Size(87, 23);
-            this.buttonToDefault.TabIndex = 11;
-            this.buttonToDefault.Text = "Станд. настр.";
-            this.buttonToDefault.UseVisualStyleBackColor = true;
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(10, 42);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(96, 17);
+            this.radioButton2.TabIndex = 1;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "протокол TCP";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox11.Controls.Add(this.radioButton3);
+            this.groupBox11.Controls.Add(this.radioButton4);
+            this.groupBox11.Location = new System.Drawing.Point(258, 6);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(233, 69);
+            this.groupBox11.TabIndex = 9;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "Протокол отправки данных";
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(10, 42);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(96, 17);
+            this.radioButton3.TabIndex = 1;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "протокол TCP";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(10, 19);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(94, 17);
+            this.radioButton4.TabIndex = 0;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "протокол LSL";
+            this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(507, 435);
+            this.ClientSize = new System.Drawing.Size(507, 519);
             this.Controls.Add(this.SettingTabControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SettingsForm";
@@ -688,6 +788,10 @@
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReactionSpeedTrack)).EndInit();
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -696,7 +800,7 @@
 
         private System.Windows.Forms.Button InletSearch;
         private System.Windows.Forms.ComboBox InletComboBox;
-        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button SaveButton2;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TabControl SettingTabControl;
         private System.Windows.Forms.TabPage tabPage1;
@@ -716,7 +820,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox OutletTextBox;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button SaveButton1;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
@@ -746,5 +850,11 @@
         private System.Windows.Forms.Label ReactionSpeedLabel;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button buttonToDefault;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.RadioButton radioButton3;
+        private System.Windows.Forms.RadioButton radioButton4;
     }
 }

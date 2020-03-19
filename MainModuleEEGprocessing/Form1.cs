@@ -23,14 +23,38 @@ namespace MainModuleEEGprocessing
         Thread LSLreceiveThread;
         Thread LSLoutletThread;
         liblsl.StreamInlet inlet;
+        liblsl.StreamOutlet outlet;
 
-        
         public Form1()
         {
             InitializeComponent ( );
+            StartProcess( );
 
             LSLreceiveThread = new Thread ( LSLreceive );
             LSLoutletThread = new Thread ( LSLoutlet );
+
+            liblsl.StreamInfo info = new liblsl.StreamInfo( "BioSemi" , "float" , 1 , 500 , liblsl.channel_format_t.cf_float32 , "sddsfsdf" );
+            outlet = new liblsl.StreamOutlet( info );
+        }
+
+        void StartProcess()
+        {
+            Process[ ] Processes = Process.GetProcessesByName( "MainModuleEEGprocessing" );
+            if( Processes.Count() >= 2)
+            {
+                if(Processes[ 0 ].StartTime < Processes[ 1 ].StartTime )
+                {
+                    Processes[ 0 ].Kill( );
+                    Processes[ 0 ].WaitForExit( );
+                    Processes[ 0 ].Dispose( );
+                }
+                else
+                {
+                    Processes[ 1 ].Kill( );
+                    Processes[ 1 ].WaitForExit( );
+                    Processes[ 1 ].Dispose( );
+                }
+            }
         }
 
         #region Код управления интерфейсом 
@@ -66,6 +90,14 @@ namespace MainModuleEEGprocessing
         //    OptionsButton.Enabled = true;
         //    ConnectionButton.Enabled = true;
         //}
+
+        //Инверсия упр. сигнала
+        public bool inversionSign = false;
+        private void InversionButton_Click( object sender , EventArgs e )
+        {
+            if( inversionSign ) inversionSign = false;
+            else inversionSign = true;
+        }
 
         //При нажатии кнопки старт
         private void StartButton_Click(object sender , EventArgs e)
@@ -168,6 +200,46 @@ namespace MainModuleEEGprocessing
             LogBox.Invoke ( ( MethodInvoker ) delegate
             {
                 LogBox.AppendText ( "\r\n" + text );
+            } );
+        }
+
+        //Вывод доп информации
+        public void InfOutlet( double [] _DopInfoList )
+        {
+            DopInfoPanel.Invoke( ( MethodInvoker ) delegate
+            {
+                ConnectedLSLText.Text = "Подкл. поток: " + inlet.info().name();
+                ConnectedSensorText.Text = "Подкл. канал:" + AbductionLabels[AbductionNumber];
+                MainSumLabel.Text = "Мощность осн. част.: " + Math.Truncate(_DopInfoList[ 0 ]).ToString( );
+                CompareSumLabel.Text = "Мощность част. сравн.: " + Math.Truncate( _DopInfoList[ 1 ] ).ToString( );
+                SumRatioLabel.Text = "Соотношение сигналов: " + Math.Truncate( _DopInfoList[ 2 ] ).ToString( )+ "%";
+                ControlSignalText.Text = "Управляющий сигнал: " + Math.Truncate( _DopInfoList[ 2 ] ).ToString( ) ;
+            } );
+        }
+
+        //Вывод доп информации
+        public void FullInfOutlet( double[ ] _DopInfoList )
+        {
+            //double[ ] DopInfoList = { alpha , beta , gamma , delta , mu , theta , kappa  };
+            DopInfoPanel.Invoke( ( MethodInvoker ) delegate
+            {
+                ConnectedLSLText.Text = "Подкл. поток: " + inlet.info( ).name( );
+                ConnectedSensorText.Text = "Подкл. канал:" + AbductionLabels[ AbductionNumber ];
+                MainSumLabel.Text = "Мощность осн. частот: " +
+                "alpha " + Math.Truncate( _DopInfoList[ 0 ] ).ToString( ) + "%  \r\n" +
+                "beta " + Math.Truncate( _DopInfoList[ 1 ] ).ToString( ) + "% " +
+                "gamma " + Math.Truncate( _DopInfoList[ 2 ] ).ToString( ) + "% " +
+                "delta " + Math.Truncate( _DopInfoList[ 3 ] ).ToString( ) + "% ";
+
+                CompareSumLabel.Text = "";
+
+                SumRatioLabel.Text = "Мощность доп. частот: " +
+                "mu " + Math.Truncate( _DopInfoList[ 4 ] ).ToString( ) + "%  \r\n" +
+                "theta " + Math.Truncate( _DopInfoList[ 5 ] ).ToString( ) + "% " +
+                "kappa " + Math.Truncate( _DopInfoList[ 6 ] ).ToString( ) + "% ";
+
+                ControlSignalText.Text = "";
+                
             } );
         }
 
@@ -302,8 +374,18 @@ namespace MainModuleEEGprocessing
         Complex [ ] EEGcomplex = new Complex [ 2048 ];
         Complex [ ] EEGcomplex2 = new Complex [ 2048 ];
 
-        int AnalysisEra = 256;//Эпоха анализа
-        int IntersectionEra = 128;//Пересечение эпохи
+        //Булевые значения
+        public bool FullRhythmAnalysis = true;
+
+        //Переменные для настроек
+        public int AnalysisEra = 256;//Эпоха анализа
+        public int IntersectionEra = 128;//Пересечение эпохи
+        //Области ритмов
+        public int MainAreaStart = 8;
+        public int MainAreaEnd = 14;
+        public int ComparisonAreaStart = 0;
+        public int ComparisonAreaEnd = 50;        
+
         int Xmax = 50;
         double T = 0;
         double t = 0;
@@ -403,7 +485,7 @@ namespace MainModuleEEGprocessing
 
             if(!_normres)
             {
-                LogOutlet ( "Ошибка! все LSL каналы не рабочие ! " );
+                LogOutlet ( "Ошибка! все LSL потоки не рабочие ! " );
                 StartButton.Enabled = true;
                 PauseButton.Enabled = false;
                 OffButton.Enabled = false;
@@ -412,15 +494,39 @@ namespace MainModuleEEGprocessing
                 LSLoutletThread.Abort ( );
             }
 
+            //Подключенное отведение
+            XMLReader( );
+
             //Вывод информации о подкл. потоке
             LogOutlet ( "Подключен LSL поток с им. " + inlet.info ( ).name ( ) );
             LogOutlet ( "Доступно каналов: " + inlet.info ( ).channel_count ( ) );
+            LogOutlet ( "Подкл. канал: " + AbductionLabels[AbductionNumber] );
             if(inlet.info ( ).channel_count ( )==0)
             {
                 deadStreams [ deadStreamsCounter ] = inlet.info ( ).name ( );
                 deadStreamsCounter++;
             }
             sample = new float [ inlet.info ( ).channel_count ( ) ];
+        }
+        #endregion
+
+        #region Получение данных по отведениям
+        int AbductionNumber = 0;
+        string[ ] AbductionLabels = new string[ 40 ];
+        public void XMLReader()
+        {
+            string xmlstring = inlet.info( ).as_xml( ); // загрузить XML
+            string separators = "<";
+            string[ ] words = xmlstring.Split( Convert.ToChar( separators ) );
+            int n = 0;
+            foreach( string label in words )
+            {
+                if( label.Contains( "label" ) && !label.Contains( "/" ) )
+                {
+                    AbductionLabels[ n ] = ( label.Replace( "label>" , "" ) );
+                    n++;
+                }
+            }
         }
         #endregion
 
@@ -451,8 +557,8 @@ namespace MainModuleEEGprocessing
         // переменные для калмана
         //double varVolt = 0.25;  // среднее отклонение (ищем в excel)
         //double varProcess = 0.05; // скорость реакции на изменение (подбирается вручную)
-        double varVolt = 0.3;
-        double varProcess = 0.0005;
+        public double varVolt = 0.3;
+        public double varProcess = 0.0005;
 
         double Pc = 0;
         double G = 0;
@@ -475,7 +581,7 @@ namespace MainModuleEEGprocessing
         #endregion
 
         #region Проверка канала на наличие данных
-        int EmptyDataCounter =0;
+        int EmptyDataCounter = 0;
         public void DataAvailabilityCheck()
         {
             if (inlet.samples_available ( ) == 0)
@@ -554,8 +660,6 @@ namespace MainModuleEEGprocessing
 
         #region Быстрое преобразование Фурье (БПФ)
         int spectrumoutN = 0;
-        double MuSum = 0;
-        double CompareSum = 0;
         double SpectCon = 0;
         /// <summary>
         /// Вычисление поворачивающего модуля e^(-i*2*PI*k/N)
@@ -639,6 +743,19 @@ namespace MainModuleEEGprocessing
             frequencyOut = new double [ spectrumoutN ];
             amplitudeOut = new double [ spectrumoutN ];
 
+            double MainSum = 0;
+            double CompareSum = 0;
+
+            double alpha = 0;
+            double beta = 0;
+            double gamma = 0;
+            double delta = 0;
+
+            double mu = 0;
+            double theta = 0;
+            double kappa = 0;
+
+
             if (spectrumoutN > EEGcomplex2.Length)
                 spectrumoutN = EEGcomplex2.Length;
 
@@ -649,15 +766,64 @@ namespace MainModuleEEGprocessing
                     Math.Pow ( EEGcomplex2 [ i ].Imaginary , 2 ) ) / ( double ) AnalysisEra;
                 //убрать *10 !!!!!
 
-
                 if (( frequencyOut [ i ] >= 0 ) && ( frequencyOut [ i ] <= 48 ))
                 {
-                    if (( frequencyOut [ i ] >= 8 ) && ( frequencyOut [ i ] <= 14 ))
-                        MuSum += amplitudeOut [ i ];
-                    if (( frequencyOut [ i ] >= 0 ) && ( frequencyOut [ i ] <= 50 ))
-                        CompareSum += amplitudeOut [ i ];
+                    if( FullRhythmAnalysis )
+                    {
+                        if( ( frequencyOut[ i ] >= 8 ) && ( frequencyOut[ i ] <= 13 ) )
+                            alpha += amplitudeOut[ i ];
+                        if( ( frequencyOut[ i ] >= 14 ) && ( frequencyOut[ i ] <= 40 ) )
+                            beta += amplitudeOut[ i ];
+                        if( ( frequencyOut[ i ] >= 30 ) && ( frequencyOut[ i ] <= 50 ) )
+                            gamma += amplitudeOut[ i ];
+                        if( ( frequencyOut[ i ] >= 1 ) && ( frequencyOut[ i ] <= 4 ) )
+                            delta += amplitudeOut[ i ];
+                        if( ( frequencyOut[ i ] >= 8 ) && ( frequencyOut[ i ] <= 13 ) )
+                            mu += amplitudeOut[ i ];
+                        if( ( frequencyOut[ i ] >= 4 ) && ( frequencyOut[ i ] <= 8 ) )
+                            theta += amplitudeOut[ i ];
+                        if( ( frequencyOut[ i ] >= 8 ) && ( frequencyOut[ i ] <= 13 ) )
+                            kappa += amplitudeOut[ i ];
+                        CompareSum += amplitudeOut[ i ];
+                    }
+                    else
+                    {
+                        if (( frequencyOut [ i ] >= 8 ) && ( frequencyOut [ i ] <= 14 ))
+                            MainSum += amplitudeOut [ i ];
+                        if (( frequencyOut [ i ] >= 0 ) && ( frequencyOut [ i ] <= 50 ))
+                            CompareSum += amplitudeOut [ i ];
+                    }
+                    
                 }
             }
+
+            if(FullRhythmAnalysis)
+            {
+                alpha = alpha / CompareSum * 100;
+                beta = beta / CompareSum * 100;
+                gamma = gamma / CompareSum * 100;
+                delta = delta / CompareSum * 100;
+                mu = mu / CompareSum * 100;
+                theta = theta / CompareSum * 100;
+                kappa = kappa / CompareSum * 100;
+                double[ ] DopInfoList = { alpha , beta , gamma , delta , mu , theta , kappa };
+                FullInfOutlet( DopInfoList );
+
+                //Убрать заглушку
+                SendSignalLSL( alpha );
+            }
+            else
+            {
+                double SumRatio;
+                if( inversionSign )
+                    SumRatio = 100 - MainSum / CompareSum * 100;
+                else
+                    SumRatio = MainSum / CompareSum * 100;
+                double[ ] DopInfoList = { MainSum , CompareSum , SumRatio };
+
+                InfOutlet( DopInfoList );
+                SendSignalLSL( SumRatio );
+            }            
 
             SpectChart.Invoke ( ( MethodInvoker ) delegate {
                 SpectChart.Series [ 0 ].Points.Clear ( );
@@ -665,6 +831,17 @@ namespace MainModuleEEGprocessing
             } );
         }
 
+
+        #endregion
+
+        #region Отправка сигнала
+
+        float[ ] data = new float[ 1 ];
+        public void SendSignalLSL(double _SumRatio )
+        {
+            data[ 0 ] = ( float ) _SumRatio;
+            outlet.push_sample( data );
+        }
 
         #endregion
 
