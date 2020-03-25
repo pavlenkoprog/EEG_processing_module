@@ -31,6 +31,7 @@ namespace MainModuleEEGprocessing
         int _MainAreaEnd;
         int _ComparisonAreaStart;
         int _ComparisonAreaEnd;
+        bool _FullRhythmAnalysis;
         //Фильтрация
         double _varVolt;
         double _varProcess;
@@ -50,6 +51,7 @@ namespace MainModuleEEGprocessing
             _MainAreaEnd = _form1.MainAreaEnd;
             _ComparisonAreaStart = _form1.ComparisonAreaStart;
             _ComparisonAreaEnd = _form1.ComparisonAreaEnd;
+            _FullRhythmAnalysis = _form1.FullRhythmAnalysis;
 
             _varVolt = _form1.varVolt;
             _varProcess = _form1.varProcess;
@@ -109,7 +111,10 @@ namespace MainModuleEEGprocessing
             if( _ComparisonAreaStart != _form1.ComparisonAreaStart || _ComparisonAreaEnd != _form1.ComparisonAreaEnd )
             { _form1.ComparisonAreaStart = _ComparisonAreaStart; _form1.ComparisonAreaEnd = _ComparisonAreaStart; _form1.LogOutlet( "Сравн.част.изм." ); }
 
-                _form1.LogOutlet ( "Настройки сохранены");
+            if( _FullRhythmAnalysis != _form1.FullRhythmAnalysis )
+            { _form1.FullRhythmAnalysis = _FullRhythmAnalysis; _form1.LogOutlet( "Тип обработки ЭЭГ изменен. Чтобы измменения вступили в силу требуется перезапустить программу" ); }
+
+            _form1.LogOutlet ( "Настройки сохранены");
         }
         #endregion
 
@@ -128,6 +133,20 @@ namespace MainModuleEEGprocessing
             _ComparisonAreaStart = ComparisonRangeSlider.SelectedMin;
             _ComparisonAreaEnd = ComparisonRangeSlider.SelectedMax;
             ComparisonRangeLabel.Text = "от " + _ComparisonAreaStart.ToString( ) + "Гц до " + _ComparisonAreaEnd.ToString( ) + "Гц.";
+        }
+
+        //Изменение настроект типа обработки
+        private void FullRhythmRadio_CheckedChanged( object sender , EventArgs e )
+        {
+            groupBox4.Enabled = false;
+            _FullRhythmAnalysis = true;
+        }
+
+        //Изменение настроект типа обработки
+        private void MainAreaRadio_CheckedChanged( object sender , EventArgs e )
+        {
+            groupBox4.Enabled = true;
+            _FullRhythmAnalysis = false;
         }
         #endregion
 

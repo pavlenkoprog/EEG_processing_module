@@ -24,6 +24,9 @@ namespace MainModuleEEGprocessing
         Thread LSLoutletThread;
         liblsl.StreamInlet inlet;
         liblsl.StreamOutlet outlet;
+        liblsl.StreamOutlet Fulloutlet;
+        liblsl.StreamInfo info;
+        liblsl.StreamInfo Fullinfo;
 
         public Form1()
         {
@@ -33,8 +36,15 @@ namespace MainModuleEEGprocessing
             LSLreceiveThread = new Thread ( LSLreceive );
             LSLoutletThread = new Thread ( LSLoutlet );
 
-            liblsl.StreamInfo info = new liblsl.StreamInfo( "BioSemi" , "float" , 1 , 500 , liblsl.channel_format_t.cf_float32 , "sddsfsdf" );
+            //if(FullRhythmAnalysis)
+            //    info = new liblsl.StreamInfo( "FullBioSemi" , "float" , 7 , 500 , liblsl.channel_format_t.cf_float32 , "sddsfsdf" );
+            //else
+            //    info = new liblsl.StreamInfo( "BioSemi" , "float" , 1 , 500 , liblsl.channel_format_t.cf_float32 , "sddsfsdf" );
+
+            info = new liblsl.StreamInfo( "BioSemi" , "float" , 1 , 500 , liblsl.channel_format_t.cf_float32 , "sddsfsdf" );
+            Fullinfo = new liblsl.StreamInfo( "FullBioSemi" , "float" , 7 , 500 , liblsl.channel_format_t.cf_float32 , "sddsfsdf" );
             outlet = new liblsl.StreamOutlet( info );
+            Fulloutlet = new liblsl.StreamOutlet( Fullinfo );
         }
 
         void StartProcess()
@@ -218,7 +228,7 @@ namespace MainModuleEEGprocessing
         }
 
         //Вывод доп информации
-        public void FullInfOutlet( double[ ] _DopInfoList )
+        public void InfOutletFull( float[ ] _DopInfoList )
         {
             //double[ ] DopInfoList = { alpha , beta , gamma , delta , mu , theta , kappa  };
             DopInfoPanel.Invoke( ( MethodInvoker ) delegate
@@ -375,7 +385,7 @@ namespace MainModuleEEGprocessing
         Complex [ ] EEGcomplex2 = new Complex [ 2048 ];
 
         //Булевые значения
-        public bool FullRhythmAnalysis = true;
+        public bool FullRhythmAnalysis = false;
 
         //Переменные для настроек
         public int AnalysisEra = 256;//Эпоха анализа
@@ -806,11 +816,10 @@ namespace MainModuleEEGprocessing
                 mu = mu / CompareSum * 100;
                 theta = theta / CompareSum * 100;
                 kappa = kappa / CompareSum * 100;
-                double[ ] DopInfoList = { alpha , beta , gamma , delta , mu , theta , kappa };
-                FullInfOutlet( DopInfoList );
+                float[ ] DopInfoList = { ( float ) alpha , ( float ) beta , ( float ) gamma , ( float ) delta , ( float ) mu , ( float ) theta , ( float ) kappa };
 
-                //Убрать заглушку
-                SendSignalLSL( alpha );
+                InfOutletFull( DopInfoList );
+                SendSignalLSLFull( DopInfoList );
             }
             else
             {
@@ -835,11 +844,17 @@ namespace MainModuleEEGprocessing
         #endregion
 
         #region Отправка сигнала
-
         float[ ] data = new float[ 1 ];
         public void SendSignalLSL(double _SumRatio )
         {
             data[ 0 ] = ( float ) _SumRatio;
+            outlet.push_sample( data );
+        }
+
+        //float[ ] dataFull = new float[ 1 ];
+        public void SendSignalLSLFull( float [] data )
+        {
+            //data[ 0 ] = ( float ) _SumRatio;
             outlet.push_sample( data );
         }
 

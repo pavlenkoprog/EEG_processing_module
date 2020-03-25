@@ -52,6 +52,12 @@
             this.label9 = new System.Windows.Forms.Label();
             this.MainRangeLabel = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.OutletTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -81,17 +87,16 @@
             this.ReactionSpeedLabel = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.ReactionSpeedTrack = new System.Windows.Forms.TrackBar();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.MainAreaRadio = new System.Windows.Forms.RadioButton();
+            this.FullRhythmRadio = new System.Windows.Forms.RadioButton();
             this.SettingTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox11.SuspendLayout();
+            this.groupBox10.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -102,8 +107,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.AverageDeviationTrack)).BeginInit();
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReactionSpeedTrack)).BeginInit();
-            this.groupBox10.SuspendLayout();
-            this.groupBox11.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.SuspendLayout();
             // 
             // InletSearch
@@ -166,6 +170,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.groupBox12);
             this.tabPage1.Controls.Add(this.buttonToDefault);
             this.tabPage1.Controls.Add(this.SaveButton1);
             this.tabPage1.Controls.Add(this.groupBox6);
@@ -173,7 +178,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(500, 539);
+            this.tabPage1.Size = new System.Drawing.Size(500, 494);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Обработка";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -181,7 +186,7 @@
             // buttonToDefault
             // 
             this.buttonToDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonToDefault.Location = new System.Drawing.Point(323, 381);
+            this.buttonToDefault.Location = new System.Drawing.Point(323, 462);
             this.buttonToDefault.Name = "buttonToDefault";
             this.buttonToDefault.Size = new System.Drawing.Size(87, 23);
             this.buttonToDefault.TabIndex = 11;
@@ -191,7 +196,7 @@
             // SaveButton1
             // 
             this.SaveButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.SaveButton1.Location = new System.Drawing.Point(416, 381);
+            this.SaveButton1.Location = new System.Drawing.Point(416, 462);
             this.SaveButton1.Name = "SaveButton1";
             this.SaveButton1.Size = new System.Drawing.Size(75, 23);
             this.SaveButton1.TabIndex = 10;
@@ -208,7 +213,7 @@
             this.groupBox6.Controls.Add(this.label15);
             this.groupBox6.Controls.Add(this.label16);
             this.groupBox6.Controls.Add(this.label17);
-            this.groupBox6.Location = new System.Drawing.Point(6, 195);
+            this.groupBox6.Location = new System.Drawing.Point(6, 267);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(485, 147);
             this.groupBox6.TabIndex = 9;
@@ -281,12 +286,12 @@
             this.groupBox4.Controls.Add(this.label12);
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.MainRangeLabel);
-            this.groupBox4.Location = new System.Drawing.Point(6, 6);
+            this.groupBox4.Location = new System.Drawing.Point(6, 78);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(485, 183);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "ЭЭГ канал";
+            this.groupBox4.Text = "Выбор частотных облостей";
             // 
             // ComparisonRangeLabel
             // 
@@ -380,6 +385,78 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Подключения";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox11.Controls.Add(this.radioButton3);
+            this.groupBox11.Controls.Add(this.radioButton4);
+            this.groupBox11.Location = new System.Drawing.Point(258, 6);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(233, 69);
+            this.groupBox11.TabIndex = 9;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "Протокол отправки данных";
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Enabled = false;
+            this.radioButton3.Location = new System.Drawing.Point(10, 42);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(96, 17);
+            this.radioButton3.TabIndex = 1;
+            this.radioButton3.Text = "протокол TCP";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Checked = true;
+            this.radioButton4.Location = new System.Drawing.Point(10, 19);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(94, 17);
+            this.radioButton4.TabIndex = 0;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "протокол LSL";
+            this.radioButton4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox10.Controls.Add(this.radioButton2);
+            this.groupBox10.Controls.Add(this.radioButton1);
+            this.groupBox10.Location = new System.Drawing.Point(6, 6);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(235, 69);
+            this.groupBox10.TabIndex = 8;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Протокол приема данных";
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Enabled = false;
+            this.radioButton2.Location = new System.Drawing.Point(10, 42);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(96, 17);
+            this.radioButton2.TabIndex = 1;
+            this.radioButton2.Text = "протокол TCP";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Checked = true;
+            this.radioButton1.Location = new System.Drawing.Point(10, 19);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(94, 17);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "протокол LSL";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -551,7 +628,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(500, 539);
+            this.tabPage3.Size = new System.Drawing.Size(500, 494);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Фильтрация";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -685,75 +762,42 @@
             this.ReactionSpeedTrack.TabIndex = 9;
             this.ReactionSpeedTrack.ValueChanged += new System.EventHandler(this.ReactionSpeedTrack_ValueChanged);
             // 
-            // groupBox10
+            // groupBox12
             // 
-            this.groupBox10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox10.Controls.Add(this.radioButton2);
-            this.groupBox10.Controls.Add(this.radioButton1);
-            this.groupBox10.Location = new System.Drawing.Point(6, 6);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(235, 69);
-            this.groupBox10.TabIndex = 8;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Протокол приема данных";
+            this.groupBox12.Controls.Add(this.MainAreaRadio);
+            this.groupBox12.Controls.Add(this.FullRhythmRadio);
+            this.groupBox12.Location = new System.Drawing.Point(6, 6);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(485, 68);
+            this.groupBox12.TabIndex = 11;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Тип обработки ЭЭГ";
             // 
-            // radioButton1
+            // MainAreaRadio
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(10, 19);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(94, 17);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "протокол LSL";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.MainAreaRadio.AutoSize = true;
+            this.MainAreaRadio.Checked = true;
+            this.MainAreaRadio.Location = new System.Drawing.Point(13, 42);
+            this.MainAreaRadio.Name = "MainAreaRadio";
+            this.MainAreaRadio.Size = new System.Drawing.Size(354, 17);
+            this.MainAreaRadio.TabIndex = 3;
+            this.MainAreaRadio.TabStop = true;
+            this.MainAreaRadio.Text = "Получение данных по мощности выделеных частотных облостей";
+            this.MainAreaRadio.UseVisualStyleBackColor = true;
+            this.MainAreaRadio.CheckedChanged += new System.EventHandler(this.MainAreaRadio_CheckedChanged);
             // 
-            // radioButton2
+            // FullRhythmRadio
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(10, 42);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(96, 17);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "протокол TCP";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // groupBox11
-            // 
-            this.groupBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox11.Controls.Add(this.radioButton3);
-            this.groupBox11.Controls.Add(this.radioButton4);
-            this.groupBox11.Location = new System.Drawing.Point(258, 6);
-            this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(233, 69);
-            this.groupBox11.TabIndex = 9;
-            this.groupBox11.TabStop = false;
-            this.groupBox11.Text = "Протокол отправки данных";
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(10, 42);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(96, 17);
-            this.radioButton3.TabIndex = 1;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "протокол TCP";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // radioButton4
-            // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(10, 19);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(94, 17);
-            this.radioButton4.TabIndex = 0;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "протокол LSL";
-            this.radioButton4.UseVisualStyleBackColor = true;
+            this.FullRhythmRadio.AutoSize = true;
+            this.FullRhythmRadio.Location = new System.Drawing.Point(13, 19);
+            this.FullRhythmRadio.Name = "FullRhythmRadio";
+            this.FullRhythmRadio.Size = new System.Drawing.Size(255, 17);
+            this.FullRhythmRadio.TabIndex = 2;
+            this.FullRhythmRadio.Text = "Получение данных по мощности всех ритмов";
+            this.FullRhythmRadio.UseVisualStyleBackColor = true;
+            this.FullRhythmRadio.CheckedChanged += new System.EventHandler(this.FullRhythmRadio_CheckedChanged);
             // 
             // SettingsForm
             // 
@@ -772,6 +816,10 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -788,10 +836,8 @@
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReactionSpeedTrack)).EndInit();
-            this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
-            this.groupBox11.ResumeLayout(false);
-            this.groupBox11.PerformLayout();
+            this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -856,5 +902,8 @@
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton4;
+        private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.RadioButton MainAreaRadio;
+        private System.Windows.Forms.RadioButton FullRhythmRadio;
     }
 }
