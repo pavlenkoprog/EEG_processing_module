@@ -14,6 +14,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Numerics;
 
+
 namespace MainModuleEEGprocessing
 {
     public delegate void MainFrm();
@@ -51,7 +52,11 @@ namespace MainModuleEEGprocessing
             _MainAreaEnd = _form1.MainAreaEnd;
             _ComparisonAreaStart = _form1.ComparisonAreaStart;
             _ComparisonAreaEnd = _form1.ComparisonAreaEnd;
+
             _FullRhythmAnalysis = _form1.FullRhythmAnalysis;
+            _FullRhythmAnalysis = Properties.Settings.Default.FullRhythmAnalysis;
+            if( _FullRhythmAnalysis )
+                FullRhythmRadio.Checked = true;
 
             _varVolt = _form1.varVolt;
             _varProcess = _form1.varProcess;
@@ -140,6 +145,9 @@ namespace MainModuleEEGprocessing
         {
             groupBox4.Enabled = false;
             _FullRhythmAnalysis = true;
+
+            Properties.Settings.Default.FullRhythmAnalysis = true;
+            Properties.Settings.Default.Save( );
         }
 
         //Изменение настроект типа обработки
@@ -147,6 +155,9 @@ namespace MainModuleEEGprocessing
         {
             groupBox4.Enabled = true;
             _FullRhythmAnalysis = false;
+
+            Properties.Settings.Default.FullRhythmAnalysis = false;
+            Properties.Settings.Default.Save( );
         }
         #endregion
 
@@ -179,6 +190,11 @@ namespace MainModuleEEGprocessing
         }
 
         private void comboBox2_SelectedIndexChanged( object sender , EventArgs e )
+        {
+
+        }
+
+        private void button1_Click( object sender , EventArgs e )
         {
 
         }

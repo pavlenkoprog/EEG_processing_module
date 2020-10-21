@@ -45,6 +45,8 @@ namespace MainModuleEEGprocessing
             Fullinfo = new liblsl.StreamInfo( "FullBioSemi" , "float" , 7 , 500 , liblsl.channel_format_t.cf_float32 , "sddsfsdf" );
             outlet = new liblsl.StreamOutlet( info );
             Fulloutlet = new liblsl.StreamOutlet( Fullinfo );
+
+            FullRhythmAnalysis = Properties.Settings.Default.FullRhythmAnalysis;
         }
 
         void StartProcess()
@@ -504,12 +506,12 @@ namespace MainModuleEEGprocessing
                 LSLoutletThread.Abort ( );
             }
 
-            //Подключенное отведение
+            //Определение подключенных датчиков
             XMLReader( );
 
             //Вывод информации о подкл. потоке
             LogOutlet ( "Подключен LSL поток с им. " + inlet.info ( ).name ( ) );
-            LogOutlet ( "Доступно каналов: " + inlet.info ( ).channel_count ( ) );
+            LogOutlet ( "Доступно каналов (датчиков): " + inlet.info ( ).channel_count ( ) );
             LogOutlet ( "Подкл. канал: " + AbductionLabels[AbductionNumber] );
             if(inlet.info ( ).channel_count ( )==0)
             {
@@ -825,7 +827,10 @@ namespace MainModuleEEGprocessing
             {
                 double SumRatio;
                 if( inversionSign )
-                    SumRatio = 100 - MainSum / CompareSum * 100;
+                    //SumRatio = 100 - MainSum / CompareSum * 100;
+                    SumRatio = 50 - MainSum / CompareSum * 100;
+                    if( 50 - MainSum / CompareSum * 100 < 0 )
+                        SumRatio = 0;
                 else
                     SumRatio = MainSum / CompareSum * 100;
                 double[ ] DopInfoList = { MainSum , CompareSum , SumRatio };
@@ -855,7 +860,7 @@ namespace MainModuleEEGprocessing
         public void SendSignalLSLFull( float [] data )
         {
             //data[ 0 ] = ( float ) _SumRatio;
-            outlet.push_sample( data );
+            Fulloutlet.push_sample( data );
         }
 
         #endregion

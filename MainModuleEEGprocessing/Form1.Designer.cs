@@ -101,7 +101,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(883, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(884, 25);
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -160,7 +160,7 @@
             this.toolStrip2.Location = new System.Drawing.Point(0, 25);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip2.Size = new System.Drawing.Size(883, 27);
+            this.toolStrip2.Size = new System.Drawing.Size(884, 27);
             this.toolStrip2.TabIndex = 5;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -340,8 +340,8 @@
             this.InfoSplitContainer.Panel2.Controls.Add(this.InfoGroupBox1);
             this.InfoSplitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoSplitContainer.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.InfoSplitContainer.Size = new System.Drawing.Size(883, 397);
-            this.InfoSplitContainer.SplitterDistance = 648;
+            this.InfoSplitContainer.Size = new System.Drawing.Size(884, 397);
+            this.InfoSplitContainer.SplitterDistance = 649;
             this.InfoSplitContainer.TabIndex = 6;
             // 
             // ChartsSplitContainer
@@ -361,7 +361,7 @@
             // 
             this.ChartsSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.Window;
             this.ChartsSplitContainer.Panel2.Controls.Add(this.RawSignalChart);
-            this.ChartsSplitContainer.Size = new System.Drawing.Size(641, 389);
+            this.ChartsSplitContainer.Size = new System.Drawing.Size(642, 389);
             this.ChartsSplitContainer.SplitterDistance = 298;
             this.ChartsSplitContainer.TabIndex = 0;
             // 
@@ -419,7 +419,7 @@
             series2.LegendText = "ЭЭГ полученное по LSL";
             series2.Name = "Series1";
             this.RawSignalChart.Series.Add(series2);
-            this.RawSignalChart.Size = new System.Drawing.Size(313, 380);
+            this.RawSignalChart.Size = new System.Drawing.Size(314, 380);
             this.RawSignalChart.TabIndex = 0;
             this.RawSignalChart.Text = "Полученные значения ЭЭГ";
             // 
@@ -553,7 +553,7 @@
             this.IterationTimeСheckBox.AutoSize = true;
             this.IterationTimeСheckBox.Checked = true;
             this.IterationTimeСheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.IterationTimeСheckBox.Location = new System.Drawing.Point(351, 32);
+            this.IterationTimeСheckBox.Location = new System.Drawing.Point(318, 29);
             this.IterationTimeСheckBox.Name = "IterationTimeСheckBox";
             this.IterationTimeСheckBox.Size = new System.Drawing.Size(126, 17);
             this.IterationTimeСheckBox.TabIndex = 0;
@@ -565,7 +565,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(883, 449);
+            this.ClientSize = new System.Drawing.Size(884, 449);
             this.Controls.Add(this.InfoSplitContainer);
             this.Controls.Add(this.IterationTimeСheckBox);
             this.Controls.Add(this.toolStrip2);

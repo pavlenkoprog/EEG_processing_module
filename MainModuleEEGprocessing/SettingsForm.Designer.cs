@@ -35,6 +35,9 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SettingTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.MainAreaRadio = new System.Windows.Forms.RadioButton();
+            this.FullRhythmRadio = new System.Windows.Forms.RadioButton();
             this.buttonToDefault = new System.Windows.Forms.Button();
             this.SaveButton1 = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -87,11 +90,9 @@
             this.ReactionSpeedLabel = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.ReactionSpeedTrack = new System.Windows.Forms.TrackBar();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.MainAreaRadio = new System.Windows.Forms.RadioButton();
-            this.FullRhythmRadio = new System.Windows.Forms.RadioButton();
             this.SettingTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -107,7 +108,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.AverageDeviationTrack)).BeginInit();
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReactionSpeedTrack)).BeginInit();
-            this.groupBox12.SuspendLayout();
             this.SuspendLayout();
             // 
             // InletSearch
@@ -182,6 +182,43 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Обработка";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox12
+            // 
+            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox12.Controls.Add(this.MainAreaRadio);
+            this.groupBox12.Controls.Add(this.FullRhythmRadio);
+            this.groupBox12.Location = new System.Drawing.Point(6, 6);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(485, 68);
+            this.groupBox12.TabIndex = 11;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Тип обработки ЭЭГ";
+            // 
+            // MainAreaRadio
+            // 
+            this.MainAreaRadio.AutoSize = true;
+            this.MainAreaRadio.Checked = true;
+            this.MainAreaRadio.Location = new System.Drawing.Point(13, 42);
+            this.MainAreaRadio.Name = "MainAreaRadio";
+            this.MainAreaRadio.Size = new System.Drawing.Size(354, 17);
+            this.MainAreaRadio.TabIndex = 3;
+            this.MainAreaRadio.TabStop = true;
+            this.MainAreaRadio.Text = "Получение данных по мощности выделеных частотных облостей";
+            this.MainAreaRadio.UseVisualStyleBackColor = true;
+            this.MainAreaRadio.CheckedChanged += new System.EventHandler(this.MainAreaRadio_CheckedChanged);
+            // 
+            // FullRhythmRadio
+            // 
+            this.FullRhythmRadio.AutoSize = true;
+            this.FullRhythmRadio.Location = new System.Drawing.Point(13, 19);
+            this.FullRhythmRadio.Name = "FullRhythmRadio";
+            this.FullRhythmRadio.Size = new System.Drawing.Size(255, 17);
+            this.FullRhythmRadio.TabIndex = 2;
+            this.FullRhythmRadio.Text = "Получение данных по мощности всех ритмов";
+            this.FullRhythmRadio.UseVisualStyleBackColor = true;
+            this.FullRhythmRadio.CheckedChanged += new System.EventHandler(this.FullRhythmRadio_CheckedChanged);
             // 
             // buttonToDefault
             // 
@@ -535,7 +572,7 @@
             this.groupBox2.Size = new System.Drawing.Size(485, 126);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "ЭЭГ канал";
+            this.groupBox2.Text = "ЭЭГ датчики";
             // 
             // label5
             // 
@@ -544,17 +581,17 @@
             this.label5.Size = new System.Drawing.Size(472, 45);
             this.label5.TabIndex = 8;
             this.label5.Text = "Данные от каждого отведения энцефалографа передаются в отдельных канале LSL подкл" +
-    "ючения.  По умолчанию подключается первый доступный канал. При необходимости его" +
-    " можно выбрать из списка.";
+    "ючения.  По умолчанию это первый по порядку датчик. При необходимости его можно " +
+    "выбрать из списка.";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(7, 56);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(120, 13);
+            this.label4.Size = new System.Drawing.Size(124, 13);
             this.label4.TabIndex = 7;
-            this.label4.Text = "Подключенный канал:";
+            this.label4.Text = "Подключенный датчик:";
             // 
             // button1
             // 
@@ -566,15 +603,16 @@
             this.button1.TabIndex = 4;
             this.button1.Text = "обновить";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 16);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(200, 13);
+            this.label3.Size = new System.Drawing.Size(202, 13);
             this.label3.TabIndex = 1;
-            this.label3.Text = "Доступные в данный момент каналы:";
+            this.label3.Text = "Доступные в данный момент датчики:";
             // 
             // groupBox1
             // 
@@ -762,43 +800,6 @@
             this.ReactionSpeedTrack.TabIndex = 9;
             this.ReactionSpeedTrack.ValueChanged += new System.EventHandler(this.ReactionSpeedTrack_ValueChanged);
             // 
-            // groupBox12
-            // 
-            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox12.Controls.Add(this.MainAreaRadio);
-            this.groupBox12.Controls.Add(this.FullRhythmRadio);
-            this.groupBox12.Location = new System.Drawing.Point(6, 6);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(485, 68);
-            this.groupBox12.TabIndex = 11;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "Тип обработки ЭЭГ";
-            // 
-            // MainAreaRadio
-            // 
-            this.MainAreaRadio.AutoSize = true;
-            this.MainAreaRadio.Checked = true;
-            this.MainAreaRadio.Location = new System.Drawing.Point(13, 42);
-            this.MainAreaRadio.Name = "MainAreaRadio";
-            this.MainAreaRadio.Size = new System.Drawing.Size(354, 17);
-            this.MainAreaRadio.TabIndex = 3;
-            this.MainAreaRadio.TabStop = true;
-            this.MainAreaRadio.Text = "Получение данных по мощности выделеных частотных облостей";
-            this.MainAreaRadio.UseVisualStyleBackColor = true;
-            this.MainAreaRadio.CheckedChanged += new System.EventHandler(this.MainAreaRadio_CheckedChanged);
-            // 
-            // FullRhythmRadio
-            // 
-            this.FullRhythmRadio.AutoSize = true;
-            this.FullRhythmRadio.Location = new System.Drawing.Point(13, 19);
-            this.FullRhythmRadio.Name = "FullRhythmRadio";
-            this.FullRhythmRadio.Size = new System.Drawing.Size(255, 17);
-            this.FullRhythmRadio.TabIndex = 2;
-            this.FullRhythmRadio.Text = "Получение данных по мощности всех ритмов";
-            this.FullRhythmRadio.UseVisualStyleBackColor = true;
-            this.FullRhythmRadio.CheckedChanged += new System.EventHandler(this.FullRhythmRadio_CheckedChanged);
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -811,6 +812,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsForm_FormClosing);
             this.SettingTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -836,8 +839,6 @@
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReactionSpeedTrack)).EndInit();
-            this.groupBox12.ResumeLayout(false);
-            this.groupBox12.PerformLayout();
             this.ResumeLayout(false);
 
         }
