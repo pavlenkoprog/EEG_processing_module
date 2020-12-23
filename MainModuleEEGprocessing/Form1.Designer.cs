@@ -96,8 +96,8 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StarButton,
-            this.ConnectionButton,
-            this.OptionsButton});
+            this.OptionsButton,
+            this.ConnectionButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -131,8 +131,8 @@
             this.OptionsButton.Image = ((System.Drawing.Image)(resources.GetObject("OptionsButton.Image")));
             this.OptionsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OptionsButton.Name = "OptionsButton";
-            this.OptionsButton.Size = new System.Drawing.Size(73, 22);
-            this.OptionsButton.Text = "Насиройки";
+            this.OptionsButton.Size = new System.Drawing.Size(71, 22);
+            this.OptionsButton.Text = "Настройки";
             this.OptionsButton.Click += new System.EventHandler(this.OptionsButton_Click);
             // 
             // toolStrip2
@@ -249,7 +249,9 @@
             // 
             // InversionButton
             // 
+            this.InversionButton.Checked = true;
             this.InversionButton.CheckOnClick = true;
+            this.InversionButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.InversionButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.InversionButton.Image = ((System.Drawing.Image)(resources.GetObject("InversionButton.Image")));
             this.InversionButton.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -553,7 +555,7 @@
             this.IterationTimeСheckBox.AutoSize = true;
             this.IterationTimeСheckBox.Checked = true;
             this.IterationTimeСheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.IterationTimeСheckBox.Location = new System.Drawing.Point(318, 29);
+            this.IterationTimeСheckBox.Location = new System.Drawing.Point(341, 29);
             this.IterationTimeСheckBox.Name = "IterationTimeСheckBox";
             this.IterationTimeСheckBox.Size = new System.Drawing.Size(126, 17);
             this.IterationTimeСheckBox.TabIndex = 0;

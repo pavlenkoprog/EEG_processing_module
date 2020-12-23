@@ -47,6 +47,7 @@ namespace MainModuleEEGprocessing
             Fulloutlet = new liblsl.StreamOutlet( Fullinfo );
 
             FullRhythmAnalysis = Properties.Settings.Default.FullRhythmAnalysis;
+            AbductionNumber = Properties.Settings.Default.AbductionNumber;
         }
 
         void StartProcess()
@@ -78,23 +79,26 @@ namespace MainModuleEEGprocessing
             InfoSplitContainer.SplitterDistance = 650;
         }
 
+        public int TubIndex;
+        //При нажатии кнопки настройки
+        private void OptionsButton_Click( object sender , EventArgs e )
+        {
+            TubIndex = 0;
+            SettingsForm _SettingsForm = new SettingsForm( this );
+            _SettingsForm.Show( );
+            OptionsButton.Enabled = false;
+            ConnectionButton.Enabled = false;            
+        }
+
         //При нажатии кнопки подключения
         private void ConnectionButton_Click(object sender , EventArgs e)
         {
+            TubIndex = 1;
             SettingsForm _SettingsForm = new SettingsForm ( this );
             _SettingsForm.Show ( );
             OptionsButton.Enabled = false;
-            ConnectionButton.Enabled = false;
-        }
-
-        //При нажатии кнопки настройки
-        private void OptionsButton_Click(object sender , EventArgs e)
-        {
-            SettingsForm _SettingsForm = new SettingsForm ( this );
-            _SettingsForm.Show ( );
-            OptionsButton.Enabled = false;
-            ConnectionButton.Enabled = false;
-        }
+            ConnectionButton.Enabled = false;            
+        }        
 
         //Включение кнопок настройки
         public delegate void OptionsButonOn();
@@ -104,7 +108,7 @@ namespace MainModuleEEGprocessing
         //}
 
         //Инверсия упр. сигнала
-        public bool inversionSign = false;
+        public bool inversionSign = true;
         private void InversionButton_Click( object sender , EventArgs e )
         {
             if( inversionSign ) inversionSign = false;
@@ -221,7 +225,7 @@ namespace MainModuleEEGprocessing
             DopInfoPanel.Invoke( ( MethodInvoker ) delegate
             {
                 ConnectedLSLText.Text = "Подкл. поток: " + inlet.info().name();
-                ConnectedSensorText.Text = "Подкл. канал:" + AbductionLabels[AbductionNumber];
+                ConnectedSensorText.Text = "Подкл. датчик:" + AbductionLabels[AbductionNumber];
                 MainSumLabel.Text = "Мощность осн. част.: " + Math.Truncate(_DopInfoList[ 0 ]).ToString( );
                 CompareSumLabel.Text = "Мощность част. сравн.: " + Math.Truncate( _DopInfoList[ 1 ] ).ToString( );
                 SumRatioLabel.Text = "Соотношение сигналов: " + Math.Truncate( _DopInfoList[ 2 ] ).ToString( )+ "%";
@@ -236,7 +240,7 @@ namespace MainModuleEEGprocessing
             DopInfoPanel.Invoke( ( MethodInvoker ) delegate
             {
                 ConnectedLSLText.Text = "Подкл. поток: " + inlet.info( ).name( );
-                ConnectedSensorText.Text = "Подкл. канал:" + AbductionLabels[ AbductionNumber ];
+                ConnectedSensorText.Text = "Подкл. датчик:" + AbductionLabels[ AbductionNumber ];
                 MainSumLabel.Text = "Мощность осн. частот: " +
                 "alpha " + Math.Truncate( _DopInfoList[ 0 ] ).ToString( ) + "%  \r\n" +
                 "beta " + Math.Truncate( _DopInfoList[ 1 ] ).ToString( ) + "% " +
@@ -512,7 +516,7 @@ namespace MainModuleEEGprocessing
             //Вывод информации о подкл. потоке
             LogOutlet ( "Подключен LSL поток с им. " + inlet.info ( ).name ( ) );
             LogOutlet ( "Доступно каналов (датчиков): " + inlet.info ( ).channel_count ( ) );
-            LogOutlet ( "Подкл. канал: " + AbductionLabels[AbductionNumber] );
+            LogOutlet ( "Подкл. датчик: " + AbductionLabels[AbductionNumber] );
             if(inlet.info ( ).channel_count ( )==0)
             {
                 deadStreams [ deadStreamsCounter ] = inlet.info ( ).name ( );
@@ -523,8 +527,8 @@ namespace MainModuleEEGprocessing
         #endregion
 
         #region Получение данных по отведениям
-        int AbductionNumber = 0;
-        string[ ] AbductionLabels = new string[ 40 ];
+        public int AbductionNumber = 0;
+        public string[ ] AbductionLabels = new string[ 40 ];
         public void XMLReader()
         {
             string xmlstring = inlet.info( ).as_xml( ); // загрузить XML
@@ -608,6 +612,9 @@ namespace MainModuleEEGprocessing
                 EmptyDataCounter = 0;
                 StartLSL ( );
             }
+
+            if( AbductionLabels[ AbductionNumber ] == null )
+                AbductionNumber = 0;
         }
         #endregion
 
@@ -623,11 +630,12 @@ namespace MainModuleEEGprocessing
                 inlet.pull_sample ( sample,0.5 );
                 DataAvailabilityCheck ( );
 
-                EEGcomplex [ i ] = filter ( sample [ 0 ] );
+                //Добавил AbductionNumber вместо 0 ! нужно проверить
+                EEGcomplex[ i ] = filter ( sample [ AbductionNumber ] );
 
                 //Переменная для вывода графика LSL
-                if (LSLChartFilter) { lastLSLin = filter ( sample [ 0 ] ); }
-                else lastLSLin = sample [ 0 ];
+                if (LSLChartFilter) { lastLSLin = filter ( sample [ AbductionNumber ] ); }
+                else lastLSLin = sample [ AbductionNumber ];
             }
             T = stopWatch_1.ElapsedMilliseconds;
             stopWatch_1.Reset ( );
@@ -652,11 +660,11 @@ namespace MainModuleEEGprocessing
                 inlet.pull_sample ( sample , 0.5 );
                 DataAvailabilityCheck ( );
 
-                EEGcomplex [ i ] = filter ( sample [ 0 ] );
+                EEGcomplex [ i ] = filter ( sample [ AbductionNumber ] );
 
                 //Переменная для вывода графика LSL
-                if (LSLChartFilter) { lastLSLin = filter ( sample [ 0 ] ); }
-                else lastLSLin = sample [ 0 ];
+                if (LSLChartFilter) { lastLSLin = filter ( sample [ AbductionNumber ] ); }
+                else lastLSLin = sample [ AbductionNumber ];
             }
 
             //T -= t;//?

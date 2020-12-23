@@ -32,7 +32,7 @@
             this.InletSearch = new System.Windows.Forms.Button();
             this.InletComboBox = new System.Windows.Forms.ComboBox();
             this.SaveButton2 = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.AbductionComboBox = new System.Windows.Forms.ComboBox();
             this.SettingTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
@@ -48,9 +48,7 @@
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.ComparisonRangeLabel = new System.Windows.Forms.Label();
-            this.ComparisonRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
             this.label10 = new System.Windows.Forms.Label();
-            this.MainRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
             this.label12 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.MainRangeLabel = new System.Windows.Forms.Label();
@@ -70,7 +68,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.AbductionLabelsUpdate = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -90,6 +88,8 @@
             this.ReactionSpeedLabel = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.ReactionSpeedTrack = new System.Windows.Forms.TrackBar();
+            this.ComparisonRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
+            this.MainRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
             this.SettingTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox12.SuspendLayout();
@@ -144,15 +144,16 @@
             this.SaveButton2.UseVisualStyleBackColor = true;
             this.SaveButton2.Click += new System.EventHandler(this.SaveButton_Click);
             // 
-            // comboBox1
+            // AbductionComboBox
             // 
-            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.AbductionComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(9, 32);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(391, 21);
-            this.comboBox1.TabIndex = 3;
+            this.AbductionComboBox.FormattingEnabled = true;
+            this.AbductionComboBox.Location = new System.Drawing.Point(9, 32);
+            this.AbductionComboBox.Name = "AbductionComboBox";
+            this.AbductionComboBox.Size = new System.Drawing.Size(391, 21);
+            this.AbductionComboBox.TabIndex = 3;
+            this.AbductionComboBox.SelectedIndexChanged += new System.EventHandler(this.AbductionComboBox_SelectedIndexChanged);
             // 
             // SettingTabControl
             // 
@@ -340,21 +341,6 @@
             this.ComparisonRangeLabel.TabIndex = 15;
             this.ComparisonRangeLabel.Text = "от до";
             // 
-            // ComparisonRangeSlider
-            // 
-            this.ComparisonRangeSlider.BackColor = System.Drawing.SystemColors.Control;
-            this.ComparisonRangeSlider.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ComparisonRangeSlider.Location = new System.Drawing.Point(6, 99);
-            this.ComparisonRangeSlider.Max = 50;
-            this.ComparisonRangeSlider.Min = 0;
-            this.ComparisonRangeSlider.Name = "ComparisonRangeSlider";
-            this.ComparisonRangeSlider.SelectedMax = 50;
-            this.ComparisonRangeSlider.SelectedMin = 0;
-            this.ComparisonRangeSlider.Size = new System.Drawing.Size(473, 37);
-            this.ComparisonRangeSlider.TabIndex = 14;
-            this.ComparisonRangeSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ComparisonRangeGet);
-            this.ComparisonRangeSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComparisonRangeGet);
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -363,21 +349,6 @@
             this.label10.Size = new System.Drawing.Size(147, 13);
             this.label10.TabIndex = 13;
             this.label10.Text = "Основной диапазон частот:";
-            // 
-            // MainRangeSlider
-            // 
-            this.MainRangeSlider.BackColor = System.Drawing.SystemColors.Control;
-            this.MainRangeSlider.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.MainRangeSlider.Location = new System.Drawing.Point(6, 32);
-            this.MainRangeSlider.Max = 50;
-            this.MainRangeSlider.Min = 0;
-            this.MainRangeSlider.Name = "MainRangeSlider";
-            this.MainRangeSlider.SelectedMax = 50;
-            this.MainRangeSlider.SelectedMin = 0;
-            this.MainRangeSlider.Size = new System.Drawing.Size(473, 37);
-            this.MainRangeSlider.TabIndex = 12;
-            this.MainRangeSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
-            this.MainRangeSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
             // 
             // label12
             // 
@@ -548,6 +519,7 @@
             this.button2.TabIndex = 4;
             this.button2.Text = "обновить";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label8
             // 
@@ -564,9 +536,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.AbductionLabelsUpdate);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.comboBox1);
+            this.groupBox2.Controls.Add(this.AbductionComboBox);
             this.groupBox2.Location = new System.Drawing.Point(6, 211);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(485, 126);
@@ -593,17 +565,17 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "Подключенный датчик:";
             // 
-            // button1
+            // AbductionLabelsUpdate
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(405, 31);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "обновить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.AbductionLabelsUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AbductionLabelsUpdate.Location = new System.Drawing.Point(405, 31);
+            this.AbductionLabelsUpdate.Margin = new System.Windows.Forms.Padding(2);
+            this.AbductionLabelsUpdate.Name = "AbductionLabelsUpdate";
+            this.AbductionLabelsUpdate.Size = new System.Drawing.Size(75, 23);
+            this.AbductionLabelsUpdate.TabIndex = 4;
+            this.AbductionLabelsUpdate.Text = "обновить";
+            this.AbductionLabelsUpdate.UseVisualStyleBackColor = true;
+            this.AbductionLabelsUpdate.Click += new System.EventHandler(this.AbductionLabelsUpdate_Click);
             // 
             // label3
             // 
@@ -800,6 +772,36 @@
             this.ReactionSpeedTrack.TabIndex = 9;
             this.ReactionSpeedTrack.ValueChanged += new System.EventHandler(this.ReactionSpeedTrack_ValueChanged);
             // 
+            // ComparisonRangeSlider
+            // 
+            this.ComparisonRangeSlider.BackColor = System.Drawing.SystemColors.Control;
+            this.ComparisonRangeSlider.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ComparisonRangeSlider.Location = new System.Drawing.Point(6, 99);
+            this.ComparisonRangeSlider.Max = 50;
+            this.ComparisonRangeSlider.Min = 0;
+            this.ComparisonRangeSlider.Name = "ComparisonRangeSlider";
+            this.ComparisonRangeSlider.SelectedMax = 50;
+            this.ComparisonRangeSlider.SelectedMin = 0;
+            this.ComparisonRangeSlider.Size = new System.Drawing.Size(473, 37);
+            this.ComparisonRangeSlider.TabIndex = 14;
+            this.ComparisonRangeSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ComparisonRangeGet);
+            this.ComparisonRangeSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComparisonRangeGet);
+            // 
+            // MainRangeSlider
+            // 
+            this.MainRangeSlider.BackColor = System.Drawing.SystemColors.Control;
+            this.MainRangeSlider.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.MainRangeSlider.Location = new System.Drawing.Point(6, 32);
+            this.MainRangeSlider.Max = 50;
+            this.MainRangeSlider.Min = 0;
+            this.MainRangeSlider.Name = "MainRangeSlider";
+            this.MainRangeSlider.SelectedMax = 50;
+            this.MainRangeSlider.SelectedMin = 0;
+            this.MainRangeSlider.Size = new System.Drawing.Size(473, 37);
+            this.MainRangeSlider.TabIndex = 12;
+            this.MainRangeSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
+            this.MainRangeSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -848,7 +850,7 @@
         private System.Windows.Forms.Button InletSearch;
         private System.Windows.Forms.ComboBox InletComboBox;
         private System.Windows.Forms.Button SaveButton2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox AbductionComboBox;
         private System.Windows.Forms.TabControl SettingTabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -859,7 +861,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button AbductionLabelsUpdate;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label6;

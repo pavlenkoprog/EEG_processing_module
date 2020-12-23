@@ -23,6 +23,8 @@ namespace MainModuleEEGprocessing
     {
         private Form1 _form1;
 
+        //var test = _form1.AbductionLabels;
+
         #region Функции формы
         //Переменные
         //Обработка данных
@@ -36,6 +38,9 @@ namespace MainModuleEEGprocessing
         //Фильтрация
         double _varVolt;
         double _varProcess;
+        //Подключение
+        string[ ] _AbductionLabels = new string[ 40 ];
+        int _AbductionNumber;
 
         //При загрузке формы настроек
         public SettingsForm(Form1 form1)
@@ -56,12 +61,20 @@ namespace MainModuleEEGprocessing
             _FullRhythmAnalysis = _form1.FullRhythmAnalysis;
             _FullRhythmAnalysis = Properties.Settings.Default.FullRhythmAnalysis;
             if( _FullRhythmAnalysis )
-                FullRhythmRadio.Checked = true;
-
+                FullRhythmRadio.Checked = true;            
+            //Фильтрация
             _varVolt = _form1.varVolt;
             _varProcess = _form1.varProcess;
+            //Подключение
+            _AbductionLabels = _form1.AbductionLabels;
+            _AbductionNumber = _form1.AbductionNumber;
 
             SetVarForm( );
+            AbductionUpdate( );
+            if( AbductionComboBox.Items.Count != 0 )
+                AbductionComboBox.SelectedIndex = _AbductionNumber;
+
+            SettingTabControl.SelectedIndex = _form1.TubIndex;
         }
 
         //Установка переменных в форме 
@@ -117,7 +130,10 @@ namespace MainModuleEEGprocessing
             { _form1.ComparisonAreaStart = _ComparisonAreaStart; _form1.ComparisonAreaEnd = _ComparisonAreaStart; _form1.LogOutlet( "Сравн.част.изм." ); }
 
             if( _FullRhythmAnalysis != _form1.FullRhythmAnalysis )
-            { _form1.FullRhythmAnalysis = _FullRhythmAnalysis; _form1.LogOutlet( "Тип обработки ЭЭГ изменен. Чтобы измменения вступили в силу требуется перезапустить программу" ); }
+            { _form1.FullRhythmAnalysis = _FullRhythmAnalysis; _form1.LogOutlet( "Тип обработки ЭЭГ изменен" ); }
+
+            if( _AbductionNumber != _form1.AbductionNumber )
+            { _form1.AbductionNumber = _AbductionNumber; _form1.LogOutlet( "Подкл. датчик: " + _AbductionLabels[ _AbductionNumber ] ); }
 
             _form1.LogOutlet ( "Настройки сохранены");
         }
@@ -140,7 +156,7 @@ namespace MainModuleEEGprocessing
             ComparisonRangeLabel.Text = "от " + _ComparisonAreaStart.ToString( ) + "Гц до " + _ComparisonAreaEnd.ToString( ) + "Гц.";
         }
 
-        //Изменение настроект типа обработки
+        //Изменение настроек типа обработки
         private void FullRhythmRadio_CheckedChanged( object sender , EventArgs e )
         {
             groupBox4.Enabled = false;
@@ -150,7 +166,7 @@ namespace MainModuleEEGprocessing
             Properties.Settings.Default.Save( );
         }
 
-        //Изменение настроект типа обработки
+        //Изменение настроек типа обработки
         private void MainAreaRadio_CheckedChanged( object sender , EventArgs e )
         {
             groupBox4.Enabled = true;
@@ -167,6 +183,32 @@ namespace MainModuleEEGprocessing
         {
             string name = InletComboBox.SelectedItem.ToString( );
             _form1.ConnectionByName( name );
+        }
+
+        private void AbductionLabelsUpdate_Click( object sender , EventArgs e )
+        {
+            AbductionUpdate( );
+        }
+
+        //Одновление списка датчиков ЭЭГ
+        void AbductionUpdate()
+        {
+            foreach( string label in _AbductionLabels )
+                if( label != null )
+                    AbductionComboBox.Items.Add( label );
+
+            if( _AbductionLabels.Length == 0 )
+            {
+                label4.Text = "Подключенный датчик: Для обновления списка нужно запустить основной процесс !";
+            }
+        }
+
+        private void AbductionComboBox_SelectedIndexChanged( object sender , EventArgs e )
+        {
+            _AbductionNumber = AbductionComboBox.SelectedIndex;
+
+            Properties.Settings.Default.AbductionNumber = _AbductionNumber;
+            Properties.Settings.Default.Save( );
         }
         #endregion
 
@@ -194,9 +236,11 @@ namespace MainModuleEEGprocessing
 
         }
 
-        private void button1_Click( object sender , EventArgs e )
+        private void button2_Click( object sender , EventArgs e )
         {
 
         }
+
+        
     }
 }
