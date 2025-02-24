@@ -46,5 +46,17 @@ namespace MainModuleEEGprocessing.Properties {
                 this["AbductionNumber"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SimpleAreaPower {
+            get {
+                return ((bool)(this["SimpleAreaPower"]));
+            }
+            set {
+                this["SimpleAreaPower"] = value;
+            }
+        }
     }
 }

@@ -35,6 +35,7 @@ namespace MainModuleEEGprocessing
         int _ComparisonAreaStart;
         int _ComparisonAreaEnd;
         bool _FullRhythmAnalysis;
+        bool _SimpleAreaPower;
         //Фильтрация
         double _varVolt;
         double _varProcess;
@@ -61,7 +62,12 @@ namespace MainModuleEEGprocessing
             _FullRhythmAnalysis = _form1.FullRhythmAnalysis;
             _FullRhythmAnalysis = Properties.Settings.Default.FullRhythmAnalysis;
             if( _FullRhythmAnalysis )
-                FullRhythmRadio.Checked = true;            
+                FullRhythmRadio.Checked = true;
+
+            _SimpleAreaPower = _form1.SimpleAreaPower;
+            _SimpleAreaPower = Properties.Settings.Default.SimpleAreaPower;
+            if (_SimpleAreaPower)
+                OnlyMainAreaRadio.Checked = true;
             //Фильтрация
             _varVolt = _form1.varVolt;
             _varProcess = _form1.varProcess;
@@ -127,12 +133,15 @@ namespace MainModuleEEGprocessing
             { _form1.MainAreaStart = _MainAreaStart; _form1.MainAreaEnd = _MainAreaEnd; _form1.LogOutlet( "Осн.част.изм." ); }
 
             if( _ComparisonAreaStart != _form1.ComparisonAreaStart || _ComparisonAreaEnd != _form1.ComparisonAreaEnd )
-            { _form1.ComparisonAreaStart = _ComparisonAreaStart; _form1.ComparisonAreaEnd = _ComparisonAreaStart; _form1.LogOutlet( "Сравн.част.изм." ); }
+            { _form1.ComparisonAreaStart = _ComparisonAreaStart; _form1.ComparisonAreaEnd = _ComparisonAreaEnd; _form1.LogOutlet( "Сравн.част.изм." ); }
 
             if( _FullRhythmAnalysis != _form1.FullRhythmAnalysis )
             { _form1.FullRhythmAnalysis = _FullRhythmAnalysis; _form1.LogOutlet( "Тип обработки ЭЭГ изменен" ); }
 
-            if( _AbductionNumber != _form1.AbductionNumber )
+            if (_SimpleAreaPower != _form1.SimpleAreaPower)
+            { _form1.SimpleAreaPower = _SimpleAreaPower; _form1.LogOutlet("Тип обработки ЭЭГ изменен"); }
+
+            if ( _AbductionNumber != _form1.AbductionNumber )
             { _form1.AbductionNumber = _AbductionNumber; _form1.LogOutlet( "Подкл. датчик: " + _AbductionLabels[ _AbductionNumber ] ); }
 
             _form1.LogOutlet ( "Настройки сохранены");
@@ -156,24 +165,47 @@ namespace MainModuleEEGprocessing
             ComparisonRangeLabel.Text = "от " + _ComparisonAreaStart.ToString( ) + "Гц до " + _ComparisonAreaEnd.ToString( ) + "Гц.";
         }
 
-        //Изменение настроек типа обработки
+        //Изменение настроек типа обработки 
+        //(Управляющего сигнала)
         private void FullRhythmRadio_CheckedChanged( object sender , EventArgs e )
         {
             groupBox4.Enabled = false;
             _FullRhythmAnalysis = true;
+            _SimpleAreaPower = false;
 
+            Properties.Settings.Default.SimpleAreaPower = false;
             Properties.Settings.Default.FullRhythmAnalysis = true;
             Properties.Settings.Default.Save( );
         }
-
-        //Изменение настроек типа обработки
         private void MainAreaRadio_CheckedChanged( object sender , EventArgs e )
         {
             groupBox4.Enabled = true;
-            _FullRhythmAnalysis = false;
+            ComparisonRangeSlider.Enabled = true;
+            label12.Enabled = true;
+            ComparisonRangeLabel.Enabled = true;
+            label9.Enabled = true;
 
+            _FullRhythmAnalysis = false;
+            _SimpleAreaPower = false;
+
+            Properties.Settings.Default.SimpleAreaPower = false;
             Properties.Settings.Default.FullRhythmAnalysis = false;
             Properties.Settings.Default.Save( );
+        }
+        private void OnlyMainAreaRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            groupBox4.Enabled = true;
+            ComparisonRangeSlider.Enabled = false;
+            label12.Enabled = false;
+            ComparisonRangeLabel.Enabled = false;
+            label9.Enabled = false;
+
+            _FullRhythmAnalysis = false;
+            _SimpleAreaPower = true;
+            
+            Properties.Settings.Default.SimpleAreaPower = true;
+            Properties.Settings.Default.FullRhythmAnalysis = false;
+            Properties.Settings.Default.Save();
         }
         #endregion
 
@@ -241,6 +273,9 @@ namespace MainModuleEEGprocessing
 
         }
 
-        
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

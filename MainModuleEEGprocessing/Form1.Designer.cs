@@ -29,16 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.StarButton = new System.Windows.Forms.ToolStripButton();
-            this.ConnectionButton = new System.Windows.Forms.ToolStripButton();
             this.OptionsButton = new System.Windows.Forms.ToolStripButton();
+            this.ConnectionButton = new System.Windows.Forms.ToolStripButton();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
@@ -72,6 +75,8 @@
             this.SumRatioLabel = new System.Windows.Forms.Label();
             this.IterationTimeText = new System.Windows.Forms.Label();
             this.IterationTimeСheckBox = new System.Windows.Forms.CheckBox();
+            this.SendSignalСhart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.DopChartSplitContainer = new System.Windows.Forms.SplitContainer();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.InfoSplitContainer)).BeginInit();
@@ -87,6 +92,11 @@
             this.InfoGroupBox1.SuspendLayout();
             this.InfoGroupBox2.SuspendLayout();
             this.DopInfoPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SendSignalСhart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DopChartSplitContainer)).BeginInit();
+            this.DopChartSplitContainer.Panel1.SuspendLayout();
+            this.DopChartSplitContainer.Panel2.SuspendLayout();
+            this.DopChartSplitContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -101,7 +111,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(884, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(963, 25);
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -115,16 +125,6 @@
             this.StarButton.Size = new System.Drawing.Size(49, 22);
             this.StarButton.Text = "Запуск";
             // 
-            // ConnectionButton
-            // 
-            this.ConnectionButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ConnectionButton.Image = ((System.Drawing.Image)(resources.GetObject("ConnectionButton.Image")));
-            this.ConnectionButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ConnectionButton.Name = "ConnectionButton";
-            this.ConnectionButton.Size = new System.Drawing.Size(89, 22);
-            this.ConnectionButton.Text = "Подключения";
-            this.ConnectionButton.Click += new System.EventHandler(this.ConnectionButton_Click);
-            // 
             // OptionsButton
             // 
             this.OptionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -134,6 +134,16 @@
             this.OptionsButton.Size = new System.Drawing.Size(71, 22);
             this.OptionsButton.Text = "Настройки";
             this.OptionsButton.Click += new System.EventHandler(this.OptionsButton_Click);
+            // 
+            // ConnectionButton
+            // 
+            this.ConnectionButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ConnectionButton.Image = ((System.Drawing.Image)(resources.GetObject("ConnectionButton.Image")));
+            this.ConnectionButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ConnectionButton.Name = "ConnectionButton";
+            this.ConnectionButton.Size = new System.Drawing.Size(89, 22);
+            this.ConnectionButton.Text = "Подключения";
+            this.ConnectionButton.Click += new System.EventHandler(this.ConnectionButton_Click);
             // 
             // toolStrip2
             // 
@@ -160,7 +170,7 @@
             this.toolStrip2.Location = new System.Drawing.Point(0, 25);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip2.Size = new System.Drawing.Size(884, 27);
+            this.toolStrip2.Size = new System.Drawing.Size(963, 27);
             this.toolStrip2.TabIndex = 5;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -288,7 +298,7 @@
             this.toolChartFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolChartFilter.Name = "toolChartFilter";
             this.toolChartFilter.Size = new System.Drawing.Size(24, 24);
-            this.toolChartFilter.Text = "Вывод данных после фильтрации";
+            this.toolChartFilter.Text = "Фильтрация данных";
             this.toolChartFilter.Click += new System.EventHandler(this.toolChartFilter_Click);
             // 
             // toolStripSeparator3
@@ -342,8 +352,8 @@
             this.InfoSplitContainer.Panel2.Controls.Add(this.InfoGroupBox1);
             this.InfoSplitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.InfoSplitContainer.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.InfoSplitContainer.Size = new System.Drawing.Size(884, 397);
-            this.InfoSplitContainer.SplitterDistance = 649;
+            this.InfoSplitContainer.Size = new System.Drawing.Size(963, 397);
+            this.InfoSplitContainer.SplitterDistance = 728;
             this.InfoSplitContainer.TabIndex = 6;
             // 
             // ChartsSplitContainer
@@ -362,9 +372,9 @@
             // ChartsSplitContainer.Panel2
             // 
             this.ChartsSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.Window;
-            this.ChartsSplitContainer.Panel2.Controls.Add(this.RawSignalChart);
-            this.ChartsSplitContainer.Size = new System.Drawing.Size(642, 389);
-            this.ChartsSplitContainer.SplitterDistance = 298;
+            this.ChartsSplitContainer.Panel2.Controls.Add(this.DopChartSplitContainer);
+            this.ChartsSplitContainer.Size = new System.Drawing.Size(720, 390);
+            this.ChartsSplitContainer.SplitterDistance = 240;
             this.ChartsSplitContainer.TabIndex = 0;
             // 
             // SpectChart
@@ -372,29 +382,31 @@
             this.SpectChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea1.AxisX.Interval = 10D;
-            chartArea1.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            chartArea1.AxisX.Maximum = 50D;
-            chartArea1.AxisX.Minimum = 0D;
-            chartArea1.AxisX.Title = "Частота";
-            chartArea1.AxisY.Title = "Амплитуда";
-            chartArea1.Name = "ChartArea1";
-            this.SpectChart.ChartAreas.Add(chartArea1);
-            legend1.Alignment = System.Drawing.StringAlignment.Center;
-            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend1.Name = "Legend1";
-            this.SpectChart.Legends.Add(legend1);
-            this.SpectChart.Location = new System.Drawing.Point(-15, 20);
+            chartArea7.AxisX.Interval = 10D;
+            chartArea7.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea7.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea7.AxisX.Maximum = 40D;
+            chartArea7.AxisX.Minimum = 0D;
+            chartArea7.AxisX.Title = "Частота";
+            chartArea7.AxisY.Maximum = 20D;
+            chartArea7.AxisY.Minimum = 0D;
+            chartArea7.AxisY.Title = "Амплитуда";
+            chartArea7.Name = "ChartArea1";
+            this.SpectChart.ChartAreas.Add(chartArea7);
+            legend7.Alignment = System.Drawing.StringAlignment.Center;
+            legend7.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend7.Name = "Legend1";
+            this.SpectChart.Legends.Add(legend7);
+            this.SpectChart.Location = new System.Drawing.Point(-15, 1);
             this.SpectChart.Margin = new System.Windows.Forms.Padding(2);
             this.SpectChart.Name = "SpectChart";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.LegendText = "Значения спектра ЭЭГ";
-            series1.Name = "Series1";
-            this.SpectChart.Series.Add(series1);
-            this.SpectChart.Size = new System.Drawing.Size(311, 380);
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.Legend = "Legend1";
+            series7.LegendText = "Значения спектра ЭЭГ";
+            series7.Name = "Series1";
+            this.SpectChart.Series.Add(series7);
+            this.SpectChart.Size = new System.Drawing.Size(253, 381);
             this.SpectChart.TabIndex = 1;
             this.SpectChart.Text = "Значения спектра ЭЭГ";
             // 
@@ -403,25 +415,24 @@
             this.RawSignalChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.AxisX.Maximum = 2500D;
-            chartArea2.AxisX.Minimum = 0D;
-            chartArea2.Name = "ChartArea1";
-            this.RawSignalChart.ChartAreas.Add(chartArea2);
-            legend2.Alignment = System.Drawing.StringAlignment.Center;
-            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend2.Name = "Legend1";
-            this.RawSignalChart.Legends.Add(legend2);
-            this.RawSignalChart.Location = new System.Drawing.Point(2, 3);
+            chartArea8.AxisX.Minimum = 0D;
+            chartArea8.Name = "ChartArea1";
+            this.RawSignalChart.ChartAreas.Add(chartArea8);
+            legend8.Alignment = System.Drawing.StringAlignment.Center;
+            legend8.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend8.Name = "Legend1";
+            this.RawSignalChart.Legends.Add(legend8);
+            this.RawSignalChart.Location = new System.Drawing.Point(2, 2);
             this.RawSignalChart.Margin = new System.Windows.Forms.Padding(2);
             this.RawSignalChart.Name = "RawSignalChart";
             this.RawSignalChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.LegendText = "ЭЭГ полученное по LSL";
-            series2.Name = "Series1";
-            this.RawSignalChart.Series.Add(series2);
-            this.RawSignalChart.Size = new System.Drawing.Size(314, 380);
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series8.Legend = "Legend1";
+            series8.LegendText = "ЭЭГ полученное по LSL";
+            series8.Name = "Series1";
+            this.RawSignalChart.Series.Add(series8);
+            this.RawSignalChart.Size = new System.Drawing.Size(231, 381);
             this.RawSignalChart.TabIndex = 0;
             this.RawSignalChart.Text = "Полученные значения ЭЭГ";
             // 
@@ -433,9 +444,9 @@
             this.InfoGroupBox1.BackColor = System.Drawing.SystemColors.Window;
             this.InfoGroupBox1.Controls.Add(this.LogBox);
             this.InfoGroupBox1.Controls.Add(this.InfoGroupBox2);
-            this.InfoGroupBox1.Location = new System.Drawing.Point(1, 3);
+            this.InfoGroupBox1.Location = new System.Drawing.Point(3, 3);
             this.InfoGroupBox1.Name = "InfoGroupBox1";
-            this.InfoGroupBox1.Size = new System.Drawing.Size(222, 388);
+            this.InfoGroupBox1.Size = new System.Drawing.Size(220, 388);
             this.InfoGroupBox1.TabIndex = 0;
             this.InfoGroupBox1.TabStop = false;
             this.InfoGroupBox1.Text = "Вывод текстовых данных";
@@ -452,7 +463,7 @@
             this.LogBox.Name = "LogBox";
             this.LogBox.ReadOnly = true;
             this.LogBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LogBox.Size = new System.Drawing.Size(210, 183);
+            this.LogBox.Size = new System.Drawing.Size(208, 183);
             this.LogBox.TabIndex = 1;
             this.LogBox.Text = "Вывод логов\r\n\r\nЗдесь будут отображаться основные события и ошибки произошедшие пр" +
     "и выполнении программы\r\n";
@@ -463,9 +474,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.InfoGroupBox2.BackColor = System.Drawing.SystemColors.Window;
             this.InfoGroupBox2.Controls.Add(this.DopInfoPanel);
+            this.InfoGroupBox2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.InfoGroupBox2.Location = new System.Drawing.Point(2, 208);
             this.InfoGroupBox2.Name = "InfoGroupBox2";
-            this.InfoGroupBox2.Size = new System.Drawing.Size(220, 180);
+            this.InfoGroupBox2.Size = new System.Drawing.Size(218, 180);
             this.InfoGroupBox2.TabIndex = 0;
             this.InfoGroupBox2.TabStop = false;
             this.InfoGroupBox2.Text = "Доп. инфо.";
@@ -485,7 +497,7 @@
             this.DopInfoPanel.Controls.Add(this.IterationTimeText);
             this.DopInfoPanel.Location = new System.Drawing.Point(4, 19);
             this.DopInfoPanel.Name = "DopInfoPanel";
-            this.DopInfoPanel.Size = new System.Drawing.Size(210, 155);
+            this.DopInfoPanel.Size = new System.Drawing.Size(208, 155);
             this.DopInfoPanel.TabIndex = 1;
             // 
             // CompareSumLabel
@@ -563,11 +575,57 @@
             this.IterationTimeСheckBox.UseVisualStyleBackColor = true;
             this.IterationTimeСheckBox.CheckedChanged += new System.EventHandler(this.IterationTimeСheckBox_CheckedChanged);
             // 
+            // SendSignalСhart
+            // 
+            this.SendSignalСhart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            chartArea9.AxisX.Minimum = 0D;
+            chartArea9.Name = "ChartArea1";
+            this.SendSignalСhart.ChartAreas.Add(chartArea9);
+            legend9.Alignment = System.Drawing.StringAlignment.Center;
+            legend9.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend9.Name = "Legend1";
+            this.SendSignalСhart.Legends.Add(legend9);
+            this.SendSignalСhart.Location = new System.Drawing.Point(2, 2);
+            this.SendSignalСhart.Margin = new System.Windows.Forms.Padding(2);
+            this.SendSignalСhart.Name = "SendSignalСhart";
+            this.SendSignalСhart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
+            series9.ChartArea = "ChartArea1";
+            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series9.Legend = "Legend1";
+            series9.LegendText = "Отправляемый аправляющий сигнал";
+            series9.Name = "Series1";
+            this.SendSignalСhart.Series.Add(series9);
+            this.SendSignalСhart.Size = new System.Drawing.Size(227, 381);
+            this.SendSignalСhart.TabIndex = 1;
+            this.SendSignalСhart.Text = "Полученные значения ЭЭГ";
+            // 
+            // DopChartSplitContainer
+            // 
+            this.DopChartSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DopChartSplitContainer.BackColor = System.Drawing.SystemColors.Control;
+            this.DopChartSplitContainer.Location = new System.Drawing.Point(3, 3);
+            this.DopChartSplitContainer.Name = "DopChartSplitContainer";
+            // 
+            // DopChartSplitContainer.Panel1
+            // 
+            this.DopChartSplitContainer.Panel1.Controls.Add(this.RawSignalChart);
+            // 
+            // DopChartSplitContainer.Panel2
+            // 
+            this.DopChartSplitContainer.Panel2.Controls.Add(this.SendSignalСhart);
+            this.DopChartSplitContainer.Size = new System.Drawing.Size(470, 385);
+            this.DopChartSplitContainer.SplitterDistance = 235;
+            this.DopChartSplitContainer.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 449);
+            this.ClientSize = new System.Drawing.Size(963, 449);
             this.Controls.Add(this.InfoSplitContainer);
             this.Controls.Add(this.IterationTimeСheckBox);
             this.Controls.Add(this.toolStrip2);
@@ -595,6 +653,11 @@
             this.InfoGroupBox2.ResumeLayout(false);
             this.DopInfoPanel.ResumeLayout(false);
             this.DopInfoPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SendSignalСhart)).EndInit();
+            this.DopChartSplitContainer.Panel1.ResumeLayout(false);
+            this.DopChartSplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DopChartSplitContainer)).EndInit();
+            this.DopChartSplitContainer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -639,6 +702,8 @@
         private System.Windows.Forms.Label CompareSumLabel;
         private System.Windows.Forms.Label MainSumLabel;
         private System.Windows.Forms.ToolStripButton InversionButton;
+        private System.Windows.Forms.DataVisualization.Charting.Chart SendSignalСhart;
+        private System.Windows.Forms.SplitContainer DopChartSplitContainer;
     }
 }
 

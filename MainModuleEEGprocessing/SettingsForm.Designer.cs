@@ -90,6 +90,7 @@
             this.ReactionSpeedTrack = new System.Windows.Forms.TrackBar();
             this.ComparisonRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
             this.MainRangeSlider = new MainModuleEEGprocessing.SelectionRangeSlider();
+            this.OnlyMainAreaRadio = new System.Windows.Forms.RadioButton();
             this.SettingTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox12.SuspendLayout();
@@ -188,14 +189,15 @@
             // 
             this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox12.Controls.Add(this.OnlyMainAreaRadio);
             this.groupBox12.Controls.Add(this.MainAreaRadio);
             this.groupBox12.Controls.Add(this.FullRhythmRadio);
             this.groupBox12.Location = new System.Drawing.Point(6, 6);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(485, 68);
+            this.groupBox12.Size = new System.Drawing.Size(485, 92);
             this.groupBox12.TabIndex = 11;
             this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "Тип обработки ЭЭГ";
+            this.groupBox12.Text = "Тип управляющего сигнала";
             // 
             // MainAreaRadio
             // 
@@ -203,10 +205,9 @@
             this.MainAreaRadio.Checked = true;
             this.MainAreaRadio.Location = new System.Drawing.Point(13, 42);
             this.MainAreaRadio.Name = "MainAreaRadio";
-            this.MainAreaRadio.Size = new System.Drawing.Size(354, 17);
+            this.MainAreaRadio.Size = new System.Drawing.Size(432, 17);
             this.MainAreaRadio.TabIndex = 3;
-            this.MainAreaRadio.TabStop = true;
-            this.MainAreaRadio.Text = "Получение данных по мощности выделеных частотных облостей";
+            this.MainAreaRadio.Text = "Соотношение мощьностей частот основного диапазона и диапазона сравнения";
             this.MainAreaRadio.UseVisualStyleBackColor = true;
             this.MainAreaRadio.CheckedChanged += new System.EventHandler(this.MainAreaRadio_CheckedChanged);
             // 
@@ -251,7 +252,7 @@
             this.groupBox6.Controls.Add(this.label15);
             this.groupBox6.Controls.Add(this.label16);
             this.groupBox6.Controls.Add(this.label17);
-            this.groupBox6.Location = new System.Drawing.Point(6, 267);
+            this.groupBox6.Location = new System.Drawing.Point(6, 293);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(485, 147);
             this.groupBox6.TabIndex = 9;
@@ -260,16 +261,22 @@
             // 
             // comboBox3
             // 
+            this.comboBox3.AllowDrop = true;
             this.comboBox3.AutoCompleteCustomSource.AddRange(new string[] {
             "256",
             "512",
             "1024",
             "2048"});
-            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "256",
+            "512",
+            "1024",
+            "2048"});
             this.comboBox3.Location = new System.Drawing.Point(276, 16);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(121, 21);
             this.comboBox3.TabIndex = 10;
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             this.comboBox3.SelectedValueChanged += new System.EventHandler(this.comboBox3_SelectedValueChanged);
             // 
             // comboBox2
@@ -281,6 +288,10 @@
             "1024",
             "2048"});
             this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "128",
+            "256",
+            "512"});
             this.comboBox2.Location = new System.Drawing.Point(276, 43);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(121, 21);
@@ -324,7 +335,7 @@
             this.groupBox4.Controls.Add(this.label12);
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.MainRangeLabel);
-            this.groupBox4.Location = new System.Drawing.Point(6, 78);
+            this.groupBox4.Location = new System.Drawing.Point(6, 104);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(485, 183);
             this.groupBox4.TabIndex = 6;
@@ -802,6 +813,17 @@
             this.MainRangeSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
             this.MainRangeSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainRangeGet);
             // 
+            // OnlyMainAreaRadio
+            // 
+            this.OnlyMainAreaRadio.AutoSize = true;
+            this.OnlyMainAreaRadio.Location = new System.Drawing.Point(13, 65);
+            this.OnlyMainAreaRadio.Name = "OnlyMainAreaRadio";
+            this.OnlyMainAreaRadio.Size = new System.Drawing.Size(233, 17);
+            this.OnlyMainAreaRadio.TabIndex = 4;
+            this.OnlyMainAreaRadio.Text = "Мощьность основного диапазона частот";
+            this.OnlyMainAreaRadio.UseVisualStyleBackColor = true;
+            this.OnlyMainAreaRadio.CheckedChanged += new System.EventHandler(this.OnlyMainAreaRadio_CheckedChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -908,5 +930,6 @@
         private System.Windows.Forms.GroupBox groupBox12;
         private System.Windows.Forms.RadioButton MainAreaRadio;
         private System.Windows.Forms.RadioButton FullRhythmRadio;
+        private System.Windows.Forms.RadioButton OnlyMainAreaRadio;
     }
 }

@@ -8,12 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using MathNet.Filtering;
 
 using LSL;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Diagnostics;
 using System.Numerics;
+using MathNet.Filtering.FIR;
 
 namespace MainModuleEEGprocessing
 {
@@ -22,6 +24,7 @@ namespace MainModuleEEGprocessing
         //AutoResetEvent ThreadReset = new AutoResetEvent ( false );
         Thread LSLreceiveThread;
         Thread LSLoutletThread;
+        Thread DataProcessingThread;
         liblsl.StreamInlet inlet;
         liblsl.StreamOutlet outlet;
         liblsl.StreamOutlet Fulloutlet;
@@ -30,42 +33,44 @@ namespace MainModuleEEGprocessing
 
         public Form1()
         {
-            InitializeComponent ( );
-            StartProcess( );
+            InitializeComponent();
+            StartProcess();
 
-            LSLreceiveThread = new Thread ( LSLreceive );
-            LSLoutletThread = new Thread ( LSLoutlet );
+            LSLreceiveThread = new Thread(LSLreceive);
+            LSLoutletThread = new Thread(LSLoutlet);//Вывод графика
+            DataProcessingThread = new Thread(ProcessingCall);
 
             //if(FullRhythmAnalysis)
             //    info = new liblsl.StreamInfo( "FullBioSemi" , "float" , 7 , 500 , liblsl.channel_format_t.cf_float32 , "sddsfsdf" );
             //else
             //    info = new liblsl.StreamInfo( "BioSemi" , "float" , 1 , 500 , liblsl.channel_format_t.cf_float32 , "sddsfsdf" );
 
-            info = new liblsl.StreamInfo( "BioSemi" , "float" , 1 , 500 , liblsl.channel_format_t.cf_float32 , "sddsfsdf" );
-            Fullinfo = new liblsl.StreamInfo( "FullBioSemi" , "float" , 7 , 500 , liblsl.channel_format_t.cf_float32 , "sddsfsdf" );
-            outlet = new liblsl.StreamOutlet( info );
-            Fulloutlet = new liblsl.StreamOutlet( Fullinfo );
+            info = new liblsl.StreamInfo("BioSemi", "float", 1, 500, liblsl.channel_format_t.cf_float32, "sddsfsdf");
+            Fullinfo = new liblsl.StreamInfo("FullBioSemi", "float", 8, 500, liblsl.channel_format_t.cf_float32, "sddsfsdf");
+            outlet = new liblsl.StreamOutlet(info);
+            Fulloutlet = new liblsl.StreamOutlet(Fullinfo);
 
             FullRhythmAnalysis = Properties.Settings.Default.FullRhythmAnalysis;
+            SimpleAreaPower = Properties.Settings.Default.SimpleAreaPower;
             AbductionNumber = Properties.Settings.Default.AbductionNumber;
         }
 
         void StartProcess()
         {
-            Process[ ] Processes = Process.GetProcessesByName( "MainModuleEEGprocessing" );
-            if( Processes.Count() >= 2)
+            Process[] Processes = Process.GetProcessesByName("MainModuleEEGprocessing");
+            if (Processes.Count() >= 2)
             {
-                if(Processes[ 0 ].StartTime < Processes[ 1 ].StartTime )
+                if (Processes[0].StartTime < Processes[1].StartTime)
                 {
-                    Processes[ 0 ].Kill( );
-                    Processes[ 0 ].WaitForExit( );
-                    Processes[ 0 ].Dispose( );
+                    Processes[0].Kill();
+                    Processes[0].WaitForExit();
+                    Processes[0].Dispose();
                 }
                 else
                 {
-                    Processes[ 1 ].Kill( );
-                    Processes[ 1 ].WaitForExit( );
-                    Processes[ 1 ].Dispose( );
+                    Processes[1].Kill();
+                    Processes[1].WaitForExit();
+                    Processes[1].Dispose();
                 }
             }
         }
@@ -74,31 +79,31 @@ namespace MainModuleEEGprocessing
 
         //Основные элементы управления
         //При загрузке основной формы
-        private void Form1_Load(object sender , EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
             InfoSplitContainer.SplitterDistance = 650;
         }
 
         public int TubIndex;
         //При нажатии кнопки настройки
-        private void OptionsButton_Click( object sender , EventArgs e )
+        private void OptionsButton_Click(object sender, EventArgs e)
         {
             TubIndex = 0;
-            SettingsForm _SettingsForm = new SettingsForm( this );
-            _SettingsForm.Show( );
+            SettingsForm _SettingsForm = new SettingsForm(this);
+            _SettingsForm.Show();
             OptionsButton.Enabled = false;
-            ConnectionButton.Enabled = false;            
+            ConnectionButton.Enabled = false;
         }
 
         //При нажатии кнопки подключения
-        private void ConnectionButton_Click(object sender , EventArgs e)
+        private void ConnectionButton_Click(object sender, EventArgs e)
         {
             TubIndex = 1;
-            SettingsForm _SettingsForm = new SettingsForm ( this );
-            _SettingsForm.Show ( );
+            SettingsForm _SettingsForm = new SettingsForm(this);
+            _SettingsForm.Show();
             OptionsButton.Enabled = false;
-            ConnectionButton.Enabled = false;            
-        }        
+            ConnectionButton.Enabled = false;
+        }
 
         //Включение кнопок настройки
         public delegate void OptionsButonOn();
@@ -109,32 +114,35 @@ namespace MainModuleEEGprocessing
 
         //Инверсия упр. сигнала
         public bool inversionSign = true;
-        private void InversionButton_Click( object sender , EventArgs e )
+        private void InversionButton_Click(object sender, EventArgs e)
         {
-            if( inversionSign ) inversionSign = false;
+            if (inversionSign) inversionSign = false;
             else inversionSign = true;
         }
 
         //При нажатии кнопки старт
-        private void StartButton_Click(object sender , EventArgs e)
+        private void StartButton_Click(object sender, EventArgs e)
         {
-            if(!LSLreceiveThread.IsAlive)
+            if (!LSLreceiveThread.IsAlive)
             {
                 StartButton.Enabled = false;
                 PauseButton.Enabled = true;
                 OffButton.Enabled = true;
-                LSLreceiveThread = new Thread ( LSLreceive );
-                LSLreceiveThread.Start ( );
+                LSLreceiveThread = new Thread(LSLreceive);
+                LSLreceiveThread.Start();
+
+                DataProcessingThread = new Thread(ProcessingCall);
+                DataProcessingThread.Start();
             }
             if (!LSLoutletThread.IsAlive)
             {
-                LSLoutletThread = new Thread ( LSLoutlet );
-                LSLoutletThread.Start ( );
+                LSLoutletThread = new Thread(LSLoutlet);
+                LSLoutletThread.Start();
             }
         }
 
         //При нажатии кнопки пауза
-        private void PauseButton_Click(object sender , EventArgs e)
+        private void PauseButton_Click(object sender, EventArgs e)
         {
             if (LSLreceiveThread.IsAlive)
             {
@@ -142,18 +150,18 @@ namespace MainModuleEEGprocessing
                 PauseButton.Enabled = false;
                 OffButton.Enabled = true;
 
-                LSLreceiveThread.Abort ( );
-                LSLreceiveThread.Join ( );
+                LSLreceiveThread.Abort();
+                LSLreceiveThread.Join();
             }
             if (LSLoutletThread.IsAlive)
             {
-                LSLoutletThread.Abort ( );
-                LSLoutletThread.Join ( );
+                LSLoutletThread.Abort();
+                LSLoutletThread.Join();
             }
         }
 
         //При нажатии кнопки Выкл
-        private void OffButton_Click(object sender , EventArgs e)
+        private void OffButton_Click(object sender, EventArgs e)
         {
             if (LSLreceiveThread.IsAlive)
             {
@@ -161,113 +169,117 @@ namespace MainModuleEEGprocessing
                 PauseButton.Enabled = false;
                 OffButton.Enabled = false;
 
-                LSLreceiveThread.Abort ( );
-                LSLreceiveThread.Join ( );
+                LSLreceiveThread.Abort();
+                LSLreceiveThread.Join();
             }
             if (LSLoutletThread.IsAlive)
             {
-                LSLoutletThread.Abort ( );
-                LSLoutletThread.Join ( );
+                LSLoutletThread.Abort();
+                LSLoutletThread.Join();
             }
         }
 
         //Элементы управления отвечающие за вкл/откл окон
         //Окно вывода текстовой информации
-        private void LogButton_Click(object sender , EventArgs e)
+        private void LogButton_Click(object sender, EventArgs e)
         {
             switch (InfoSplitContainer.Panel2Collapsed)
             {
-            case true:
-                InfoSplitContainer.Panel2Collapsed = false;
-                break;
-            case false:
-                InfoSplitContainer.Panel2Collapsed = true;
-                break;
+                case true:
+                    InfoSplitContainer.Panel2Collapsed = false;
+                    InfoSplitContainer.Invoke((MethodInvoker)delegate
+                    {});
+                    break;
+                case false:
+                    InfoSplitContainer.Panel2Collapsed = true;
+                    break;
             }
         }
 
         //Окно графика сырого сигнала
-        private void RawSignalButton_Click(object sender , EventArgs e)
+        private void RawSignalButton_Click(object sender, EventArgs e)
         {
             switch (ChartsSplitContainer.Panel2Collapsed)
             {
-            case true:
-            ChartsSplitContainer.Panel2Collapsed = false;
-            if (!LSLoutletThread.IsAlive)
-            {
-                LSLoutletThread = new Thread ( LSLoutlet );
-                LSLoutletThread.Start ( );
-            }
-            break;
-            case false:
-            ChartsSplitContainer.Panel2Collapsed = true;            
-            if (LSLoutletThread.IsAlive)
-            {
-                LSLoutletThread.Abort ( );
-                LSLoutletThread.Join ( );
-            }
-            break;
+                case true:
+                    ChartsSplitContainer.Panel2Collapsed = false;
+                    if (!LSLoutletThread.IsAlive)
+                    {
+                        LSLoutletThread = new Thread(LSLoutlet);
+                        LSLoutletThread.Start();
+                    }
+                    break;
+                case false:
+                    ChartsSplitContainer.Panel2Collapsed = true;
+                    if (LSLoutletThread.IsAlive)
+                    {
+                        LSLoutletThread.Abort();
+                        LSLoutletThread.Join();
+                    }
+                    break;
             }
         }
 
         //Вывод логов
         public void LogOutlet(string text)
         {
-            LogBox.Invoke ( ( MethodInvoker ) delegate
-            {
-                LogBox.AppendText ( "\r\n" + text );
-            } );
+            LogBox.Invoke((MethodInvoker)delegate
+       {
+           LogBox.AppendText("\r\n" + text);
+       });
         }
 
         //Вывод доп информации
-        public void InfOutlet( double [] _DopInfoList )
+        public void InfOutlet(double[] _DopInfoList)
         {
-            DopInfoPanel.Invoke( ( MethodInvoker ) delegate
-            {
-                ConnectedLSLText.Text = "Подкл. поток: " + inlet.info().name();
-                ConnectedSensorText.Text = "Подкл. датчик:" + AbductionLabels[AbductionNumber];
-                MainSumLabel.Text = "Мощность осн. част.: " + Math.Truncate(_DopInfoList[ 0 ]).ToString( );
-                CompareSumLabel.Text = "Мощность част. сравн.: " + Math.Truncate( _DopInfoList[ 1 ] ).ToString( );
-                SumRatioLabel.Text = "Соотношение сигналов: " + Math.Truncate( _DopInfoList[ 2 ] ).ToString( )+ "%";
-                ControlSignalText.Text = "Управляющий сигнал: " + Math.Truncate( _DopInfoList[ 2 ] ).ToString( ) ;
-            } );
+            DopInfoPanel.Invoke((MethodInvoker)delegate
+        {
+            ConnectedLSLText.Text = "Подкл. поток: " + inlet.info().name();
+            ConnectedSensorText.Text = "Подкл. датчик:" + AbductionLabels[AbductionNumber];
+            MainSumLabel.Text = "Мощность осн. част.: " + Math.Truncate(_DopInfoList[0]).ToString();
+            CompareSumLabel.Text = "Мощность част. сравн.: " + Math.Truncate(_DopInfoList[1]).ToString();
+            SumRatioLabel.Text = "Соотношение сигналов: " + Math.Truncate(_DopInfoList[2]).ToString() + "%";
+            ControlSignalText.Text = "Управляющий сигнал: " + Math.Truncate(_DopInfoList[3]).ToString();
+        });
+            DopInfoPanel.Refresh();
         }
 
         //Вывод доп информации
-        public void InfOutletFull( float[ ] _DopInfoList )
+        public void InfOutletFull(float[] _DopInfoList)
         {
             //double[ ] DopInfoList = { alpha , beta , gamma , delta , mu , theta , kappa  };
-            DopInfoPanel.Invoke( ( MethodInvoker ) delegate
-            {
-                ConnectedLSLText.Text = "Подкл. поток: " + inlet.info( ).name( );
-                ConnectedSensorText.Text = "Подкл. датчик:" + AbductionLabels[ AbductionNumber ];
-                MainSumLabel.Text = "Мощность осн. частот: " +
-                "alpha " + Math.Truncate( _DopInfoList[ 0 ] ).ToString( ) + "%  \r\n" +
-                "beta " + Math.Truncate( _DopInfoList[ 1 ] ).ToString( ) + "% " +
-                "gamma " + Math.Truncate( _DopInfoList[ 2 ] ).ToString( ) + "% " +
-                "delta " + Math.Truncate( _DopInfoList[ 3 ] ).ToString( ) + "% ";
+            DopInfoPanel.Invoke((MethodInvoker)delegate
+        {
+            ConnectedLSLText.Text = "Подкл. поток: " + inlet.info().name();
+            ConnectedSensorText.Text = "Подкл. датчик:" + AbductionLabels[AbductionNumber];
+            MainSumLabel.Text = "Мощность осн. частот: " +
+            "selected " + Math.Truncate(_DopInfoList[0]).ToString() + "%  \r\n" +
+            "alpha " + Math.Truncate(_DopInfoList[1]).ToString() + "%  \r\n" +
+            "beta " + Math.Truncate(_DopInfoList[2]).ToString() + "% " +
+            "gamma " + Math.Truncate(_DopInfoList[3]).ToString() + "% " +
+            "delta " + Math.Truncate(_DopInfoList[4]).ToString() + "% ";
 
-                CompareSumLabel.Text = "";
+            CompareSumLabel.Text = "";
 
-                SumRatioLabel.Text = "Мощность доп. частот: " +
-                "mu " + Math.Truncate( _DopInfoList[ 4 ] ).ToString( ) + "%  \r\n" +
-                "theta " + Math.Truncate( _DopInfoList[ 5 ] ).ToString( ) + "% " +
-                "kappa " + Math.Truncate( _DopInfoList[ 6 ] ).ToString( ) + "% ";
+            SumRatioLabel.Text = "Мощность доп. частот: " +
+            "mu " + Math.Truncate(_DopInfoList[5]).ToString() + "%  \r\n" +
+            "theta " + Math.Truncate(_DopInfoList[6]).ToString() + "% " +
+            "kappa " + Math.Truncate(_DopInfoList[7]).ToString() + "% ";
 
-                ControlSignalText.Text = "";
-                
-            } );
+            ControlSignalText.Text = "";
+
+        });
         }
 
         public bool LSLChartFilter = true;
-        private void toolChartFilter_Click(object sender , EventArgs e)
+        private void toolChartFilter_Click(object sender, EventArgs e)
         {
             if (LSLChartFilter) LSLChartFilter = false;
             else LSLChartFilter = true;
         }
 
         public bool LSLLogOutlet = true;
-        private void LogNumericOutButton_Click(object sender , EventArgs e)
+        private void LogNumericOutButton_Click(object sender, EventArgs e)
         {
             if (LSLLogOutlet) LSLLogOutlet = false;
             else LSLLogOutlet = true;
@@ -276,9 +288,9 @@ namespace MainModuleEEGprocessing
         #region Переключение чек бокса доп. инф.
         bool IterationTimeB = true;
         bool ControlSignalB = true;
-        private void IterationTimeСheckBox_CheckedChanged(object sender , EventArgs e)
+        private void IterationTimeСheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if(IterationTimeСheckBox.Checked)
+            if (IterationTimeСheckBox.Checked)
                 IterationTimeB = false;
             else
             {
@@ -290,30 +302,31 @@ namespace MainModuleEEGprocessing
         #endregion
 
         #region Вывод графика LSL
-
+        int counter1 = 0;
+        double[] RawSignalMass = new double[2500];
         public void NewLSLoutlet()
         {
-            int counter1 = 0;
-            double [ ] RawSignalMass = new double [ 2500 ];
+            
             while (true)
             {
-                RawSignalMass [ counter1 ] = lastLSLin;
-                RawSignalChart.Invoke ( ( MethodInvoker ) delegate
+                RawSignalMass[counter1] = lastLSLin;
+                RawSignalChart.Invoke((MethodInvoker)delegate
                 {
-                    RawSignalChart.Series [ 0 ].Points.DataBindY ( RawSignalMass );
-                } );
+                   RawSignalChart.Series[0].Points.DataBindY(RawSignalMass);
+                });
 
                 if (counter1 >= 2400)
                 {
                     counter1 = 0;
-                    RawSignalChart.Invoke ( ( MethodInvoker ) delegate
+                    RawSignalChart.Invoke((MethodInvoker)delegate
                     {
-                        RawSignalChart.Series [ 0 ].Points.Clear ( );
-                        Array.Clear ( RawSignalMass , 0 , RawSignalMass.Length );
-                    } );
+                       RawSignalChart.Series[0].Points.Clear();
+                       Array.Clear(RawSignalMass, 0, RawSignalMass.Length);
+                    });
                 }
+                this.Refresh();
                 counter1++;
-                Thread.Sleep ( 10 );
+                Thread.Sleep(10);
             }
         }
 
@@ -323,32 +336,49 @@ namespace MainModuleEEGprocessing
         {
             //NewLSLoutlet ( );
             int counter1 = 0;
-            double [ ] RawSignalMass = new double [ 2500 ];
+            double[] RawSignalMass = new double[2500];
             double prev = 0;
             while (true)
             {
                 //Выводит данные из lsl в график Вх. данных
                 if (lastLSLin != prev)
                 {
-                    prev = lastLSLin;
-                    RawSignalMass [ counter1 ] = lastLSLin;
-                    counter1++;
-
-                    if (counter1 % 5 == 0)
-                        RawSignalChart.Invoke ( ( MethodInvoker ) delegate
+                    if (LSLChartFilter)
+                    {
+                        RawSignalChart.Invoke((MethodInvoker)delegate
                         {
-                            RawSignalChart.Series [ 0 ].Points.DataBindY ( RawSignalMass );
-                        } );
+                            RawSignalChart.Series[0].Points.DataBindY(filtredDataStore);
+                        });
+                    }                        
+                    else
+                    {
+                        RawSignalChart.Invoke((MethodInvoker)delegate
+                        {
+                            RawSignalChart.Series[0].Points.DataBindY(DataStore.ToArray());
+                        });
+                    }
 
+                    /*
+                    prev = lastLSLin;
+                    RawSignalMass[counter1] = lastLSLin;//данные LSL
+                    counter1++;
+                    if (counter1 % 5 == 0)
+                        RawSignalChart.Invoke((MethodInvoker)delegate
+                   {
+                       //RawSignalChart.Series[0].Points.DataBindY(RawSignalMass);//!!!
+                       //RawSignalChart.Series[0].Points.DataBindY(EEGdouble);//!!!
+                       RawSignalChart.Series[0].Points.DataBindY(filtredDataStore);//!!!
+                   });
                     if (counter1 >= 2500)
                     {
                         counter1 = 0;
-                        RawSignalChart.Invoke ( ( MethodInvoker ) delegate
+                        RawSignalChart.Invoke((MethodInvoker)delegate
                         {
-                            RawSignalChart.Series [ 0 ].Points.Clear ( );
-                            Array.Clear ( RawSignalMass , 0 , RawSignalMass.Length );
-                        } );
+                           RawSignalChart.Series[0].Points.Clear();
+                           Array.Clear(RawSignalMass, 0, RawSignalMass.Length);
+                        });
                     }
+                    */
 
                 }
             }
@@ -370,11 +400,16 @@ namespace MainModuleEEGprocessing
                 {
                     prev = lastLSLin;
                     CHARTCOUNTER++;
-                    SpectChart.Invoke ( ( MethodInvoker ) delegate {
-                        SpectChart.Series [ 0 ].Points.AddY ( lastLSLin );
+                    Invoke((MethodInvoker)delegate
+                    {
+                        SendSignalСhart.Series[0].Points.DataBindY(SendSignalSeries);
+                    });
+
+                    SpectChart.Invoke((MethodInvoker)delegate {
+                        SpectChart.Series[0].Points.AddY(lastLSLin);                        
                         if (CHARTCOUNTER >= CHARTMAX)
-                        { SpectChart.Series [ 0 ].Points.Clear ( ); CHARTCOUNTER = 0; }
-                    } );
+                        { SpectChart.Series[0].Points.Clear(); CHARTCOUNTER = 0; }
+                    });
 
                 }
                 //mutexObj.ReleaseMutex();
@@ -387,22 +422,25 @@ namespace MainModuleEEGprocessing
         #region Логический код
 
         #region Main метод и прием данных
-        Complex [ ] EEGcomplex = new Complex [ 2048 ];
-        Complex [ ] EEGcomplex2 = new Complex [ 2048 ];
+        Complex[] EEGcomplex = new Complex[2048];
+        Complex[] EEGcomplex2 = new Complex[2048];
+        Double[] EEGdouble = new Double[2048];
 
         //Булевые значения
         public bool FullRhythmAnalysis = false;
+        public bool SimpleAreaPower = false;
 
         //Переменные для настроек
+        //public int AnalysisEra = 1024;//Эпоха анализа
         public int AnalysisEra = 256;//Эпоха анализа
         public int IntersectionEra = 128;//Пересечение эпохи
         //Области ритмов
         public int MainAreaStart = 8;
         public int MainAreaEnd = 14;
-        public int ComparisonAreaStart = 0;
+        public int ComparisonAreaStart = 3;
         public int ComparisonAreaEnd = 50;        
 
-        int Xmax = 50;
+        int Xmax = 80;
         double T = 0;
         double t = 0;
 
@@ -416,12 +454,14 @@ namespace MainModuleEEGprocessing
             StartLSL ( );
             while (true)
             {
+                FillMasiv(sample);
                 //inlet.pull_sample ( sample );
 
                 //if (LSLLogOutlet) LogOutlet ( sample [ 0 ].ToString ( ) );
 
                 //LogOutlet ( inlet.info().name() );
 
+                /*
                 //Методы заполнения массивов
                 if (EEGcomplex [ 1 ].Real == 0)
                     FirstFillMasiv ( sample );
@@ -429,18 +469,11 @@ namespace MainModuleEEGprocessing
                     FillMasiv ( sample );
 
                 //Основные операции обработки
-                DataProcessing ( );
+                //DataProcessing ( );
 
+                
                 if (IterationTimeB)
                 {
-                    //Label IterationTimeText = new Label ( );
-
-                    //IterationTimeText.Location = new Point ( 10 , DopInfoPanel.Controls.Count * 20 );
-                    //DopInfoPanel.Invoke ( ( MethodInvoker ) delegate {
-                    //    DopInfoPanel.Controls.Add ( IterationTimeText );
-                    //    IterationTimeText.Text = "Время на итерацию: " + stopWatch_2.ElapsedMilliseconds + " мс";
-                    //} );
-
                     if (IterationTimeText.InvokeRequired)
                         IterationTimeText.Invoke ( new Action ( () => IterationTimeText.Text = "Время на итерацию: " + stopWatch_2.ElapsedMilliseconds + " мс" ) );
                     else IterationTimeСheckBox.Text = "Время на итерацию: " + stopWatch_2.ElapsedMilliseconds + " мс";
@@ -448,6 +481,7 @@ namespace MainModuleEEGprocessing
                 }
 
                 stopWatch_2.Restart();
+                */
             }
         }
         #endregion
@@ -594,6 +628,8 @@ namespace MainModuleEEGprocessing
             Xe = G * ( val - Zp ) + Xp; // "фильтрованное" значение
             return ( Xe );
         }
+                     
+
         #endregion
 
         #region Проверка канала на наличие данных
@@ -621,8 +657,6 @@ namespace MainModuleEEGprocessing
         #region Первый раз заполняет масив данными
         public void FirstFillMasiv(float[] sample)
         {
-            //double T = 0;
-            //double t = 0;
             Stopwatch stopWatch_1 = new Stopwatch ( );
             stopWatch_1.Start ( );
             for (int i = 0 ; i < AnalysisEra ; i++)
@@ -630,50 +664,78 @@ namespace MainModuleEEGprocessing
                 inlet.pull_sample ( sample,0.5 );
                 DataAvailabilityCheck ( );
 
-                //Добавил AbductionNumber вместо 0 ! нужно проверить
-                EEGcomplex[ i ] = filter ( sample [ AbductionNumber ] );
+                //EEGcomplex[i] = sample[AbductionNumber];
 
                 //Переменная для вывода графика LSL
                 if (LSLChartFilter) { lastLSLin = filter ( sample [ AbductionNumber ] ); }
                 else lastLSLin = sample [ AbductionNumber ];
+
+                DataStore.Add(sample[AbductionNumber]);
             }
+
             T = stopWatch_1.ElapsedMilliseconds;
             stopWatch_1.Reset ( );
-            spectrumoutN = ( int ) ( Xmax * T / 1000 );
+            spectrumoutN = ( int ) ( Xmax * T / 1000 );            
         }
         #endregion
 
         #region Повторно заполняет масив данными
+        int testSN = 0;
+        Stopwatch stopWatch_1 = new Stopwatch();
         public void FillMasiv(float [ ] sample)
         {
-            //double T = 0;
-            //double t = 0;
-
-            Stopwatch stopWatch_1 = new Stopwatch ( );
-
+            /*
+            // Убирает старые данные из эпохи анализа
             for (int i = AnalysisEra - IntersectionEra - 1 ; i > 0 ; i--)
-                EEGcomplex [ i + IntersectionEra ] = EEGcomplex [ i ];
-
+                EEGcomplex [ i + IntersectionEra ] = EEGcomplex [ i ];            
+            //для проверки
+            for (int i = AnalysisEra - IntersectionEra - 1; i > 0; i--)
+                EEGdouble[i + IntersectionEra] = EEGdouble[i];            
+            */
+            /*
+            Stopwatch stopWatch_1 = new Stopwatch ( );
             stopWatch_1.Start ( );
+            
             for (int i = 0 ; i < AnalysisEra ; i++)
             {
                 inlet.pull_sample ( sample , 0.5 );
                 DataAvailabilityCheck ( );
-
-                EEGcomplex [ i ] = filter ( sample [ AbductionNumber ] );
+                
+                /*
+                double[] doubleSample = Array.ConvertAll(sample, x => (double)x);
+                EEGcomplex[i] = doubleSample[AbductionNumber];
+                //для проверки
+                EEGdouble[i] = doubleSample[AbductionNumber];
+                *//*
 
                 //Переменная для вывода графика LSL
                 if (LSLChartFilter) { lastLSLin = filter ( sample [ AbductionNumber ] ); }
                 else lastLSLin = sample [ AbductionNumber ];
+
+                DataStore.Add(sample[AbductionNumber]);
+                DataStore.RemoveAt(0);
+            }*/
+
+            inlet.pull_sample(sample, 0.5);
+            DataAvailabilityCheck();
+            DataStore.Add(sample[AbductionNumber]);            
+            if(DataStore.Count>= AnalysisEra)
+                DataStore.RemoveRange(0, DataStore.Count - AnalysisEra);                
+                //DataStore.RemoveAt(0);
+
+            if (LSLChartFilter) { lastLSLin = filter(sample[AbductionNumber]); }
+            else lastLSLin = sample[AbductionNumber];
+
+            testSN++;
+            if (testSN>= AnalysisEra)
+            {
+                T = stopWatch_1.ElapsedMilliseconds;
+                stopWatch_1.Reset();
+                spectrumoutN = (int)(Xmax * T / 1000);
+                testSN = 0;
+                stopWatch_1.Start();
             }
-
-            //T -= t;//?
-            t = stopWatch_1.ElapsedMilliseconds;
-            stopWatch_1.Reset ( );
-            T += t;//?
-            T = 500;
-
-            spectrumoutN = ( int ) ( Xmax * T / 1000 );
+            
         }
 
         #endregion
@@ -757,14 +819,71 @@ namespace MainModuleEEGprocessing
         #endregion
 
         #region Обработка данных
+
+        //Метод вызывает набор основных скриптов в отдельном потоке
+        public void ProcessingCall()
+        {
+            Thread.Sleep(2000);
+            while (true)
+            {
+                Thread.Sleep(100);
+                DataProcessing();
+
+                if (IterationTimeB)
+                {
+                    if (IterationTimeText.InvokeRequired)
+                        IterationTimeText.Invoke(new Action(() => IterationTimeText.Text = "Время на итерацию: " + stopWatch_2.ElapsedMilliseconds + " мс"));
+                    else IterationTimeСheckBox.Text = "Время на итерацию: " + stopWatch_2.ElapsedMilliseconds + " мс";
+                    Application.DoEvents();
+                }
+
+                stopWatch_2.Restart();
+            }
+        }
+
+        List<double> DataStore = new List<double>();
+        List<double> tempDataStore = new List<double>();
+        Double[] filtredDataStore = new double [2048];
+        Complex[] testEEGcomplex = new Complex[2048];
+        //double[] SendSignalSeries = new double[100];
+        List<double> SendSignalSeries = new List<double>();
+
+        int tempDataStoreCount;        
+
         public void DataProcessing()
         {
-            EEGcomplex2 = fft ( EEGcomplex , AnalysisEra );
-            frequencyOut = new double [ spectrumoutN ];
-            amplitudeOut = new double [ spectrumoutN ];
+            if (LSLChartFilter)
+            {
+                //Рабочий фильтр            
+                var lowpass = OnlineFirFilter.CreateBandpass(ImpulseResponse.Finite, 500, 3, 40);
+                try
+                {
+                    filtredDataStore = lowpass.ProcessSamples(DataStore.ToArray());
+                }
+                catch { }
+                for (int i = 0; i < filtredDataStore.Length - 1; i++)
+                    testEEGcomplex[i] = filtredDataStore[i];
+            }
+            else
+            {
+                for (int i = 0; i < DataStore.Count - 1; i++)
+                    testEEGcomplex[i] = DataStore[i];                
+            }
+
+
+            //EEGcomplex2 = fft(EEGcomplex , AnalysisEra );
+            EEGcomplex2 = fft(testEEGcomplex, AnalysisEra);
+            if (spectrumoutN > EEGcomplex2.Length)
+                spectrumoutN = EEGcomplex2.Length;
+            //spectrumoutN = 250;
+
+            frequencyOut = new double[spectrumoutN];
+            amplitudeOut = new double[spectrumoutN];
 
             double MainSum = 0;
+            int test1 = 0;
             double CompareSum = 0;
+            double SelectedCompareSum = 0;
 
             double alpha = 0;
             double beta = 0;
@@ -774,50 +893,68 @@ namespace MainModuleEEGprocessing
             double mu = 0;
             double theta = 0;
             double kappa = 0;
-
-
-            if (spectrumoutN > EEGcomplex2.Length)
-                spectrumoutN = EEGcomplex2.Length;
-
-            for (int i = 0 ; i < spectrumoutN ; i++)
+            
+            for (int i = 0; i < frequencyOut.Length; i++)
             {
-                frequencyOut [ i ] = ( double ) i / T * 1000;
-                amplitudeOut [ i ] = 2.0 * Math.Sqrt ( Math.Pow ( EEGcomplex2 [ i ].Real , 2 ) +
-                    Math.Pow ( EEGcomplex2 [ i ].Imaginary , 2 ) ) / ( double ) AnalysisEra;
+                frequencyOut[i] = (double)i / T * 1000;
+                amplitudeOut[i] = 2.0 * Math.Sqrt(Math.Pow(EEGcomplex2[i].Real, 2) +
+                    Math.Pow(EEGcomplex2[i].Imaginary, 2)) / (double)AnalysisEra;
                 //убрать *10 !!!!!
 
-                if (( frequencyOut [ i ] >= 0 ) && ( frequencyOut [ i ] <= 48 ))
+                if ((frequencyOut[i] >= 0) && (frequencyOut[i] <= 48))
                 {
-                    if( FullRhythmAnalysis )
+                    if (FullRhythmAnalysis)
                     {
-                        if( ( frequencyOut[ i ] >= 8 ) && ( frequencyOut[ i ] <= 13 ) )
-                            alpha += amplitudeOut[ i ];
-                        if( ( frequencyOut[ i ] >= 14 ) && ( frequencyOut[ i ] <= 40 ) )
-                            beta += amplitudeOut[ i ];
-                        if( ( frequencyOut[ i ] >= 30 ) && ( frequencyOut[ i ] <= 50 ) )
-                            gamma += amplitudeOut[ i ];
-                        if( ( frequencyOut[ i ] >= 1 ) && ( frequencyOut[ i ] <= 4 ) )
-                            delta += amplitudeOut[ i ];
-                        if( ( frequencyOut[ i ] >= 8 ) && ( frequencyOut[ i ] <= 13 ) )
-                            mu += amplitudeOut[ i ];
-                        if( ( frequencyOut[ i ] >= 4 ) && ( frequencyOut[ i ] <= 8 ) )
-                            theta += amplitudeOut[ i ];
-                        if( ( frequencyOut[ i ] >= 8 ) && ( frequencyOut[ i ] <= 13 ) )
-                            kappa += amplitudeOut[ i ];
-                        CompareSum += amplitudeOut[ i ];
+                        InfoGroupBox2.ForeColor = Color.DarkOrange;
+
+                        if ((frequencyOut[i] >= 8) && (frequencyOut[i] <= 13))
+                            alpha += amplitudeOut[i];
+                        if ((frequencyOut[i] >= 14) && (frequencyOut[i] <= 40))
+                            beta += amplitudeOut[i];
+                        if ((frequencyOut[i] >= 30) && (frequencyOut[i] <= 50))
+                            gamma += amplitudeOut[i];
+                        if ((frequencyOut[i] >= 1) && (frequencyOut[i] <= 4))
+                            delta += amplitudeOut[i];
+                        if ((frequencyOut[i] >= 8) && (frequencyOut[i] <= 13))
+                            mu += amplitudeOut[i];
+                        if ((frequencyOut[i] >= 4) && (frequencyOut[i] <= 8))
+                            theta += amplitudeOut[i];
+                        if ((frequencyOut[i] >= 8) && (frequencyOut[i] <= 13))
+                            kappa += amplitudeOut[i];
+                        CompareSum += amplitudeOut[i];
+
+                        //добавил 05,11,2021
+                        if ((frequencyOut[i] >= MainAreaStart) && (frequencyOut[i] <= MainAreaEnd))
+                            MainSum += amplitudeOut[i];
+                        if ((frequencyOut[i] >= ComparisonAreaStart) && (frequencyOut[i] <= ComparisonAreaEnd))
+                            SelectedCompareSum += amplitudeOut[i];
+                    }
+                    else if (SimpleAreaPower)
+                    {
+                        InfoGroupBox2.ForeColor = Color.LightSeaGreen;
+
+                        if ((frequencyOut[i] >= MainAreaStart) && (frequencyOut[i] <= MainAreaEnd))
+                        {
+                            MainSum += amplitudeOut[i];
+                            test1++;
+                        }
                     }
                     else
                     {
-                        if (( frequencyOut [ i ] >= 8 ) && ( frequencyOut [ i ] <= 14 ))
-                            MainSum += amplitudeOut [ i ];
-                        if (( frequencyOut [ i ] >= 0 ) && ( frequencyOut [ i ] <= 50 ))
-                            CompareSum += amplitudeOut [ i ];
+                        InfoGroupBox2.ForeColor = Color.DarkBlue;
+
+                        if ((frequencyOut[i] >= MainAreaStart) && (frequencyOut[i] <= MainAreaEnd))
+                            MainSum += amplitudeOut[i];
+                        if ((frequencyOut[i] >= ComparisonAreaStart) && (frequencyOut[i] <= ComparisonAreaEnd))
+                            CompareSum += amplitudeOut[i];
+
                     }
-                    
+
                 }
             }
 
-            if(FullRhythmAnalysis)
+            double SumRatio;
+            if (FullRhythmAnalysis)
             {
                 alpha = alpha / CompareSum * 100;
                 beta = beta / CompareSum * 100;
@@ -826,31 +963,51 @@ namespace MainModuleEEGprocessing
                 mu = mu / CompareSum * 100;
                 theta = theta / CompareSum * 100;
                 kappa = kappa / CompareSum * 100;
-                float[ ] DopInfoList = { ( float ) alpha , ( float ) beta , ( float ) gamma , ( float ) delta , ( float ) mu , ( float ) theta , ( float ) kappa };
+                SumRatio = MainSum / SelectedCompareSum * 100;
+                float[] DopInfoList = { (float)SumRatio, (float)alpha, (float)beta, (float)gamma, (float)delta, (float)mu, (float)theta, (float)kappa };
 
-                InfOutletFull( DopInfoList );
-                SendSignalLSLFull( DopInfoList );
+                InfOutletFull(DopInfoList);
+                SendSignalLSLFull(DopInfoList);
+            }
+            else if (SimpleAreaPower)
+            {
+                SumRatio = MainSum;
+                SendSignalLSL(SumRatio);
+                double[] DopInfoList = { EEGcomplex[1].Real, 0, 0, MainSum };
+                InfOutlet(DopInfoList);    
             }
             else
             {
-                double SumRatio;
-                if( inversionSign )
-                    //SumRatio = 100 - MainSum / CompareSum * 100;
-                    SumRatio = 50 - MainSum / CompareSum * 100;
-                    if( 50 - MainSum / CompareSum * 100 < 0 )
-                        SumRatio = 0;
+                if (inversionSign)
+                    SumRatio = 100 - MainSum / CompareSum * 100;
+                //SumRatio = 50 - MainSum / CompareSum * 100;                   
                 else
                     SumRatio = MainSum / CompareSum * 100;
-                double[ ] DopInfoList = { MainSum , CompareSum , SumRatio };
 
-                InfOutlet( DopInfoList );
-                SendSignalLSL( SumRatio );
-            }            
+                if (SumRatio < 0)
+                    SumRatio = 0;
 
-            SpectChart.Invoke ( ( MethodInvoker ) delegate {
-                SpectChart.Series [ 0 ].Points.Clear ( );
-                SpectChart.Series [ 0 ].Points.DataBindXY ( frequencyOut , amplitudeOut );
-            } );
+                double[] DopInfoList = { MainSum, CompareSum, SumRatio, SumRatio };
+                InfOutlet(DopInfoList);
+                SendSignalLSL(SumRatio);
+            }
+
+
+            SpectChart.Invoke((MethodInvoker)delegate {
+                SpectChart.Series[0].Points.Clear();
+                SpectChart.Series[0].Points.DataBindXY(frequencyOut, amplitudeOut);
+            });
+
+            SendSignalSeries.Add(SumRatio);
+            if (SendSignalSeries.Count >= 100)
+                SendSignalSeries.RemoveAt(0);
+
+            SendSignalСhart.Invoke((MethodInvoker)delegate
+            {
+                SendSignalСhart.Series[0].Points.Clear();
+                SendSignalСhart.Series[0].Points.DataBindY(SendSignalSeries);
+            });
+            SendSignalСhart.Refresh();
         }
 
 
